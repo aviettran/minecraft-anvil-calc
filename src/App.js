@@ -12,7 +12,9 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({ results: combineItems(items_to_combine) });
+    combineItems(items_to_combine).then((results) =>
+      this.setState({ results: results })
+    );
   }
 
   render() {
