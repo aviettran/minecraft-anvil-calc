@@ -1,0 +1,471 @@
+[
+    {
+        "name": "protection",
+        "max_level": 4,
+        "applies_to": [
+            "helmet",
+            "chestplate",
+            "leggings",
+            "boots",
+            "turtle_helmet"
+        ],
+        "item_multiplier": 1,
+        "book_multiplier": 1,
+        "group": "protection"
+    },
+    {
+        "name": "fire_protection",
+        "max_level": 4,
+        "applies_to": [
+            "helmet",
+            "chestplate",
+            "leggings",
+            "boots",
+            "turtle_helmet"
+        ],
+        "item_multiplier": 2,
+        "book_multiplier": 1,
+        "group": "protection"
+    },
+    {
+        "name": "feather_falling",
+        "max_level": 4,
+        "applies_to": [
+            "boots"
+        ],
+        "item_multiplier": 2,
+        "book_multiplier": 1
+    },
+    {
+        "name": "blast_protection",
+        "max_level": 4,
+        "applies_to": [
+            "helmet",
+            "chestplate",
+            "leggings",
+            "boots",
+            "turtle_helmet"
+        ],
+        "item_multiplier": 4,
+        "book_multiplier": 2,
+        "group": "protection"
+    },
+    {
+        "name": "projectile_protection",
+        "max_level": 4,
+        "applies_to": [
+            "helmet",
+            "chestplate",
+            "leggings",
+            "boots",
+            "turtle_helmet"
+        ],
+        "item_multiplier": 2,
+        "book_multiplier": 1,
+        "group": "protection"
+    },
+    {
+        "name": "thorns",
+        "max_level": 3,
+        "applies_to": [
+            "helmet",
+            "chestplate",
+            "leggings",
+            "boots",
+            "turtle_helmet"
+        ],
+        "item_multiplier": 8,
+        "book_multiplier": 4
+    },
+    {
+        "name": "respiration",
+        "max_level": 3,
+        "applies_to": [
+            "helmet",
+            "turtle_helmet"
+        ],
+        "item_multiplier": 4,
+        "book_multiplier": 2
+    },
+    {
+        "name": "depth_strider",
+        "max_level": 3,
+        "applies_to": [
+            "boots"
+        ],
+        "item_multiplier": 4,
+        "book_multiplier": 2,
+        "group": "mobility"
+    },
+    {
+        "name": "aqua_affinity",
+        "max_level": 1,
+        "applies_to": [
+            "helmet",
+            "turtle_helmet"
+        ],
+        "item_multiplier": 4,
+        "book_multiplier": 2
+    },
+    {
+        "name": "sharpness",
+        "max_level": 5,
+        "applies_to": [
+            "sword",
+            "axe"
+        ],
+        "item_multiplier": 1,
+        "book_multiplier": 1,
+        "group": "attack"
+    },
+    {
+        "name": "smite",
+        "max_level": 5,
+        "applies_to": [
+            "sword",
+            "axe"
+        ],
+        "item_multiplier": 2,
+        "book_multiplier": 1,
+        "group": "attack"
+    },
+    {
+        "name": "bane_of_arthropods",
+        "max_level": 5,
+        "applies_to": [
+            "sword",
+            "axe"
+        ],
+        "item_multiplier": 2,
+        "book_multiplier": 1,
+        "group": "attack"
+    },
+    {
+        "name": "knockback",
+        "max_level": 2,
+        "applies_to": [
+            "sword"
+        ],
+        "item_multiplier": 2,
+        "book_multiplier": 1
+    },
+    {
+        "name": "fire_aspect",
+        "max_level": 2,
+        "applies_to": [
+            "sword"
+        ],
+        "item_multiplier": 4,
+        "book_multiplier": 2
+    },
+    {
+        "name": "looting",
+        "max_level": 3,
+        "applies_to": [
+            "sword"
+        ],
+        "item_multiplier": 4,
+        "book_multiplier": 2
+    },
+    {
+        "name": "efficiency",
+        "max_level": 5,
+        "applies_to": [
+            "pickaxe",
+            "shovel",
+            "axe",
+            "shears"
+        ],
+        "item_multiplier": 1,
+        "book_multiplier": 1
+    },
+    {
+        "name": "silk_touch",
+        "max_level": 1,
+        "applies_to": [
+            "pickaxe",
+            "shovel",
+            "axe"
+        ],
+        "item_multiplier": 8,
+        "book_multiplier": 4,
+        "group": "tool_type"
+    },
+    {
+        "name": "unbreaking",
+        "max_level": 3,
+        "applies_to": [
+            "pickaxe",
+            "shovel",
+            "axe",
+            "fishing_rod",
+            "helmet",
+            "chestplate",
+            "leggings",
+            "boots",
+            "sword",
+            "bow",
+            "hoe",
+            "shears",
+            "flint_and_steel",
+            "carrot_on_a_stick",
+            "warped_fungus_on_a_stick",
+            "shield",
+            "elytra",
+            "turtle_helmet",
+            "trident",
+            "crossbow"
+        ],
+        "item_multiplier": 2,
+        "book_multiplier": 1
+    },
+    {
+        "name": "fortune",
+        "max_level": 3,
+        "applies_to": [
+            "pickaxe",
+            "shovel",
+            "axe"
+        ],
+        "item_multiplier": 4,
+        "book_multiplier": 2,
+        "group": "tool_type"
+    },
+    {
+        "name": "power",
+        "max_level": 5,
+        "applies_to": [
+            "bow"
+        ],
+        "item_multiplier": 1,
+        "book_multiplier": 1
+    },
+    {
+        "name": "punch",
+        "max_level": 2,
+        "applies_to": [
+            "bow"
+        ],
+        "item_multiplier": 4,
+        "book_multiplier": 2
+    },
+    {
+        "name": "flame",
+        "max_level": 1,
+        "applies_to": [
+            "bow"
+        ],
+        "item_multiplier": 4,
+        "book_multiplier": 2
+    },
+    {
+        "name": "infinity",
+        "max_level": 1,
+        "applies_to": [
+            "bow"
+        ],
+        "item_multiplier": 8,
+        "book_multiplier": 4,
+        "group": "bow_type"
+    },
+    {
+        "name": "luck_of_the_sea",
+        "max_level": 3,
+        "applies_to": [
+            "fishing_rod"
+        ],
+        "item_multiplier": 4,
+        "book_multiplier": 2
+    },
+    {
+        "name": "lure",
+        "max_level": 3,
+        "applies_to": [
+            "fishing_rod"
+        ],
+        "item_multiplier": 4,
+        "book_multiplier": 2
+    },
+    {
+        "name": "frost_walker",
+        "max_level": 2,
+        "applies_to": [
+            "boots"
+        ],
+        "item_multiplier": 4,
+        "book_multiplier": 2,
+        "enchanting_table": false,
+        "group": "mobility"
+    },
+    {
+        "name": "mending",
+        "max_level": 1,
+        "applies_to": [
+            "pickaxe",
+            "shovel",
+            "axe",
+            "fishing_rod",
+            "helmet",
+            "chestplate",
+            "leggings",
+            "boots",
+            "sword",
+            "bow",
+            "hoe",
+            "shears",
+            "flint_and_steel",
+            "carrot_on_a_stick",
+            "warped_fungus_on_a_stick",
+            "shield",
+            "elytra",
+            "turtle_helmet",
+            "trident",
+            "crossbow"
+        ],
+        "item_multiplier": 4,
+        "book_multiplier": 2,
+        "group": "bow_type",
+        "enchanting_table": false
+    },
+    {
+        "name": "binding_curse",
+        "max_level": 1,
+        "applies_to": [
+            "helmet",
+            "chestplate",
+            "leggings",
+            "boots",
+            "elytra",
+            "carved_pumpkin",
+            "head",
+            "turtle_helmet"
+        ],
+        "item_multiplier": 8,
+        "book_multiplier": 4,
+        "enchanting_table": false
+    },
+    {
+        "name": "vanishing_curse",
+        "max_level": 1,
+        "applies_to": [
+            "pickaxe",
+            "shovel",
+            "axe",
+            "fishing_rod",
+            "helmet",
+            "chestplate",
+            "leggings",
+            "boots",
+            "sword",
+            "bow",
+            "hoe",
+            "shears",
+            "flint_and_steel",
+            "carrot_on_a_stick",
+            "warped_fungus_on_a_stick",
+            "shield",
+            "elytra",
+            "carved_pumpkin",
+            "head",
+            "turtle_helmet",
+            "trident",
+            "crossbow"
+        ],
+        "item_multiplier": 8,
+        "book_multiplier": 4,
+        "enchanting_table": false
+    },
+    {
+        "name": "impaling",
+        "max_level": 5,
+        "applies_to": [
+            "trident"
+        ],
+        "item_multiplier": 4,
+        "book_multiplier": 2
+    },
+    {
+        "name": "riptide",
+        "max_level": 3,
+        "applies_to": [
+            "trident"
+        ],
+        "item_multiplier": 4,
+        "book_multiplier": 2,
+        "group": "trident_type",
+        "group_exception": "returnable"
+    },
+    {
+        "name": "loyalty",
+        "max_level": 3,
+        "applies_to": [
+            "trident"
+        ],
+        "item_multiplier": 1,
+        "book_multiplier": 1,
+        "group": "trident_type",
+        "group_exception": "returnable"
+    },
+    {
+        "name": "channeling",
+        "max_level": 1,
+        "applies_to": [
+            "trident"
+        ],
+        "item_multiplier": 8,
+        "book_multiplier": 4,
+        "group": "trident_type"
+    },
+    {
+        "name": "multishot",
+        "max_level": 1,
+        "applies_to": [
+            "crossbow"
+        ],
+        "item_multiplier": 4,
+        "book_multiplier": 2,
+        "group": "crossbow_type"
+    },
+    {
+        "name": "piercing",
+        "max_level": 4,
+        "applies_to": [
+            "crossbow"
+        ],
+        "item_multiplier": 1,
+        "book_multiplier": 1,
+        "group": "crossbow_type"
+    },
+    {
+        "name": "quick_charge",
+        "max_level": 3,
+        "applies_to": [
+            "crossbow"
+        ],
+        "item_multiplier": 2,
+        "book_multiplier": 1
+    },
+    {
+        "name": "soul_speed",
+        "max_level": 3,
+        "applies_to": [
+            "boots"
+        ],
+        "item_multiplier": 8,
+        "book_multiplier": 4,
+        "enchanting_table": false
+    },
+    {
+        "name": "sweeping_edge",
+        "max_level": 3,
+        "applies_to": [
+            "helmet",
+            "chestplate",
+            "leggings",
+            "boots"
+        ],
+        "item_multiplier": 4,
+        "book_multiplier": 2,
+        "java_only": true
+    }
+]
