@@ -58,7 +58,7 @@ const anvil = (targetItem, sacrificeItem) => {
   return results;
 };
 
-const combineItems = (items, depth) => {
+const combineItems = (items) => {
   items = items.map(getItemData);
 
   //For each item, determine what can be combined into it, use anvil, then call combineItems with what remains
@@ -81,10 +81,10 @@ const combineItems = (items, depth) => {
         );
 
         if (remaining_items.length > 0) {
-          const remaining_items_results = combineItems(
-            [anvilResults.resultingItem, ...remaining_items],
-            depth + 1
-          );
+          const remaining_items_results = combineItems([
+            anvilResults.resultingItem,
+            ...remaining_items,
+          ]);
 
           anvilResults.resultingItem = remaining_items_results.resultingItem;
           anvilResults.cost += remaining_items_results.cost;
