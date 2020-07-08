@@ -3,7 +3,10 @@ import "./App.scss";
 
 import items_to_combine from "./data/items_to_combine.json";
 import Item from "./components/item";
-import { getItemData, combineItems } from "./utils/item";
+import { getItemData } from "./utils/item";
+import worker from 'workerize-loader!./utils/worker.js'
+
+let instance = worker();
 
 class App extends React.Component {
   constructor(props) {
@@ -12,9 +15,9 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    combineItems(items_to_combine).then((results) =>
-      this.setState({ results: results })
-    );
+    instance.combineItems(items_to_combine).then((results) => {
+      this.setState({results: results});
+    })
   }
 
   render() {
