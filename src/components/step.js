@@ -14,12 +14,15 @@ class Step extends React.PureComponent {
         <td>
           <Container>
             <Row>
-              {step.targetItem.name} [{step.targetItem.penalty}]
+              {step.targetItem.name}
+              <Badge pill variant="warning">
+                {step.targetItem.penalty}
+              </Badge>
             </Row>
             <Row>
-              {step.targetItem.enchantments.map((enchantment) => {
+              {step.targetItem.enchantments.map((enchantment, index) => {
                 return (
-                  <Badge pill variant="primary">
+                  <Badge key={index} pill variant="primary">
                     {enchantment.name} {numToNumeral(enchantment.level)}
                   </Badge>
                 );
@@ -30,12 +33,15 @@ class Step extends React.PureComponent {
         <td>
           <Container>
             <Row>
-              {step.sacrificeItem.name} [{step.sacrificeItem.penalty}]
+              {step.sacrificeItem.name}
+              <Badge pill variant="warning">
+                {step.sacrificeItem.penalty}
+              </Badge>
             </Row>
             <Row>
-              {step.sacrificeItem.enchantments.map((enchantment) => {
+              {step.sacrificeItem.enchantments.map((enchantment, index) => {
                 return (
-                  <Badge pill variant="primary">
+                  <Badge key={index} pill variant="primary">
                     {enchantment.name} {numToNumeral(enchantment.level)}
                   </Badge>
                 );
@@ -46,12 +52,15 @@ class Step extends React.PureComponent {
         <td>
           <Container>
             <Row>
-              {step.resultingItem.name} [{step.resultingItem.penalty}]
+              {step.resultingItem.name}
+              <Badge pill variant="warning">
+                {step.resultingItem.penalty}
+              </Badge>
             </Row>
             <Row>
-              {step.resultingItem.enchantments.map((enchantment) => {
+              {step.resultingItem.enchantments.map((enchantment, index) => {
                 return (
-                  <Badge pill variant="primary">
+                  <Badge key={index} pill variant="primary">
                     {enchantment.name} {numToNumeral(enchantment.level)}
                   </Badge>
                 );
