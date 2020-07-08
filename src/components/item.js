@@ -22,15 +22,6 @@ class Item extends React.Component {
       <div>
         <h3>{item.name}</h3>
         <Table>
-          <thead>
-            <tr>
-              <th>Enchantment</th>
-              <th>Level</th>
-              <th>Item Multiplier</th>
-              <th>Book Multiplier</th>
-              <th>Enable</th>
-            </tr>
-          </thead>
           {item.enchantments.map(enchantment =>
             <tr onClick={() => this.handleEnableEnchantment(enchantment)}>
               <td>{enchantment.name}</td>
