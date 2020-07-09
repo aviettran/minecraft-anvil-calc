@@ -112,6 +112,14 @@ class Item extends React.PureComponent {
               options={this.getPossibleEnchantmentOptions(item)}
               onChange={(e) => changeEnchantmentToAdd(e)}
               placeholder="Enchantments..."
+              value={
+                item.enchantmentToAdd
+                  ? {
+                      value: item.enchantmentToAdd,
+                      label: item.enchantmentToAdd,
+                    }
+                  : null
+              }
             />
           </Col>
           <Col xs="4">
