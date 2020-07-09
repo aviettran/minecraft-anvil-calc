@@ -10,11 +10,7 @@ import { getItemData } from "./utils/item";
 import worker from "workerize-loader!./utils/worker.js"; // eslint-disable-line import/no-webpack-loader-syntax
 import { Container, Row, Col, Table, Button } from "react-bootstrap";
 import { levelToExperience, addIndexes } from "./utils/helpers";
-import { combineItems } from "./utils/item";
 import Select from "react-select";
-
-//Mock
-import mock from "./data/mock.json";
 
 let instance = worker();
 
