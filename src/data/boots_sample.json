@@ -18,6 +18,10 @@
       {
         "name": "respiration",
         "level": 3
+      },
+      {
+        "name": "blast_protection",
+        "level": 4
       }
     ]
   },

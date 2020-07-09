@@ -20,6 +20,27 @@ const getItemData = (item) => {
   return new_item;
 };
 
+const checkEnchantmentIsCompatible = (targetItem, newEnchantment) => {
+  return (
+    // There isn't an existing enchantment in a mutal exclusion group
+    !targetItem.enchantments.some(
+      (some_enchantment) =>
+        some_enchantment.group &&
+        newEnchantment.group &&
+        some_enchantment.group === newEnchantment.group &&
+        !(
+          some_enchantment.group_exception &&
+          newEnchantment.group_exception &&
+          some_enchantment.group_exception === newEnchantment.group_exception
+        ) // Rule exception for tridents
+    ) &&
+    //Possible enchantment is applicable to the given item
+    newEnchantment.applies_to.some(
+      (some_item) => some_item === targetItem.name || targetItem.name === "book"
+    )
+  );
+};
+
 const mergeEnchantments = (
   sacrificeItem,
   targetEnchantments,
@@ -80,9 +101,7 @@ const anvil = (targetItem, sacrificeItem) => {
   const sacrificePenalty = sacrificeItem.penalty || 0;
   // Filter non-applicable enchantments
   const filtered_enchantments = sacrificeItem.enchantments.filter(
-    (enchantment) =>
-      targetItem.name === "book" ||
-      enchantment.applies_to.some((some_item) => some_item === targetItem.name)
+    (enchantment) => checkEnchantmentIsCompatible(targetItem, enchantment)
   );
   const mergeResults = mergeEnchantments(
     sacrificeItem,
@@ -168,4 +187,9 @@ const combineItems = (items) => {
   }
 };
 
-export { getEnchantments, getItemData, combineItems };
+export {
+  getEnchantments,
+  getItemData,
+  checkEnchantmentIsCompatible,
+  combineItems,
+};

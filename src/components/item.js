@@ -2,6 +2,7 @@ import React from "react";
 import { Container, Row, Col, Table, Button } from "react-bootstrap";
 import enchantments from "../data/enchantments.json";
 import Select from "react-select";
+import { checkEnchantmentIsCompatible } from "../utils/item";
 
 class Item extends React.PureComponent {
   addDisabledEnchantments(item) {
@@ -28,30 +29,13 @@ class Item extends React.PureComponent {
   }
 
   getPossibleEnchantmentOptions(item) {
-    const existingEnchantments = item.enchantments.map((enchantment) => {
-      return { ...enchantment, enabled: true };
-    });
     return enchantments
       .filter(
         (filtered_enchantment) =>
-          //Possible enchantment is not in list of existing enchantments
-          !existingEnchantments.some(
+          !item.enchantments.some(
             (some_enchantment) =>
-              some_enchantment.name === filtered_enchantment.name ||
-              (some_enchantment.group &&
-              filtered_enchantment.group &&
-              some_enchantment.group === filtered_enchantment.group && // Not in a mutual exclusion group
-                !(
-                  some_enchantment.group_exception &&
-                  filtered_enchantment.group_exception &&
-                  some_enchantment.group_exception ===
-                    filtered_enchantment.group_exception
-                )) // Rule exception for tridents
-          ) &&
-          //Possible enchantment is applicable to the given item
-          filtered_enchantment.applies_to.some(
-            (some_item) => some_item === item.name || item.name === "book"
-          )
+              some_enchantment.name === filtered_enchantment.name
+          ) && checkEnchantmentIsCompatible(item, filtered_enchantment)
       )
       .map((enchantment) => {
         return { value: enchantment.name, label: enchantment.name };
