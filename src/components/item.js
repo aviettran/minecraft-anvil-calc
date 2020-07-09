@@ -1,5 +1,13 @@
 import React from "react";
-import { Container, Row, Col, Table, Button } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Table,
+  Button,
+  InputGroup,
+  FormControl,
+} from "react-bootstrap";
 import enchantments from "../data/enchantments.json";
 import Select from "react-select";
 import { checkEnchantmentIsCompatible } from "../utils/item";
@@ -50,6 +58,7 @@ class Item extends React.PureComponent {
       onAddEnchantment,
       onDeleteEnchantment,
       onChangeLevel,
+      onChangePenalty,
     } = this.props;
 
     return (
@@ -111,6 +120,19 @@ class Item extends React.PureComponent {
             <Button variant="outline-primary" onClick={onDelete}>
               Delete Item
             </Button>
+          </Col>
+          <Col xs="3">
+            <InputGroup className="mb-3">
+              <InputGroup.Prepend>
+                <InputGroup.Text>Penalty</InputGroup.Text>
+              </InputGroup.Prepend>
+              <FormControl
+                type="number"
+                value={item.penalty || 0}
+                min="0"
+                onChange={(e) => onChangePenalty(e, item.index)}
+              />
+            </InputGroup>
           </Col>
         </Row>
       </Container>

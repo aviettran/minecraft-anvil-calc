@@ -102,6 +102,26 @@ class App extends React.Component {
     this.combineAndSetState(new_items_to_combine);
   }
 
+  changeItemPenalty(e, item_index) {
+    if (!e.target) {
+      return;
+    }
+    let new_items_to_combine = [...this.state.items_to_combine];
+    const modifiedItem = new_items_to_combine.find(
+      (item) => item.index === item_index
+    );
+    modifiedItem.penalty = e.target.valueAsNumber;
+    new_items_to_combine = [
+      ...new_items_to_combine.filter((item) => item.index !== item_index),
+      modifiedItem,
+    ];
+    new_items_to_combine.sort((item_a, item_b) => item_a.index - item_b.index);
+    this.setState({
+      items_to_combine: new_items_to_combine,
+    });
+    this.combineAndSetState(new_items_to_combine);
+  }
+
   changeEchantmentToAdd(e, item_index) {
     const new_items_to_combine = [...this.state.items_to_combine];
     new_items_to_combine.find(
@@ -153,7 +173,7 @@ class App extends React.Component {
   }
 
   changeEnchantmentLevel(e, item_index, enchantment) {
-    if (!(e.target && e.target.valueAsNumber)) {
+    if (!e.target) {
       return;
     }
     const new_items_to_combine = [...this.state.items_to_combine];
@@ -206,6 +226,9 @@ class App extends React.Component {
                     }
                     onChangeLevel={(e, enchantment) =>
                       this.changeEnchantmentLevel(e, item.index, enchantment)
+                    }
+                    onChangePenalty={(e) =>
+                      this.changeItemPenalty(e, item.index)
                     }
                   ></Item>
                 );
