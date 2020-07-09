@@ -3,6 +3,7 @@ import "./App.scss";
 
 import boots_sample from "./data/boots_sample.json";
 import items from "./data/items.json";
+import enchantments from "./data/enchantments.json";
 import Item from "./components/item";
 import Step from "./components/step";
 import { getItemData } from "./utils/item";
@@ -19,9 +20,11 @@ let instance = worker();
 class App extends React.Component {
   constructor(props) {
     super(props);
+    const items_to_combine = addIndexes(boots_sample);
     this.state = {
-      items_to_combine: addIndexes(boots_sample),
+      items_to_combine: items_to_combine,
       results: { targetItem: {}, steps: [], status: "Loading..." },
+      nextIndex: items_to_combine.length,
     };
   }
 
@@ -72,10 +75,15 @@ class App extends React.Component {
     if (this.state.itemToAdd) {
       const new_items_to_combine = [
         ...this.state.items_to_combine,
-        { name: this.state.itemToAdd, enchantments: [] },
+        {
+          name: this.state.itemToAdd,
+          enchantments: [],
+          index: this.state.nextIndex,
+        },
       ];
       this.setState({
         items_to_combine: new_items_to_combine,
+        nextIndex: this.state.nextIndex + 1,
       });
       this.combineAndSetState(new_items_to_combine);
     }
@@ -91,22 +99,48 @@ class App extends React.Component {
     this.combineAndSetState(new_items_to_combine);
   }
 
-  enableEnchantment(item_index, enchantment) {
-    const new_items_to_combine = this.state.items_to_combine;
-    const item = new_items_to_combine[item_index];
-    if (enchantment.enabled) {
-      item.enchantments = item.enchantments.filter(
-        (filter_enchantments) => filter_enchantments.name !== enchantment.name
-      );
-    } else {
-      item.enchantments = [
-        ...item.enchantments,
+  changeEchantmentToAdd(e, item_index) {
+    const new_items_to_combine = [...this.state.items_to_combine];
+    new_items_to_combine.find(
+      (item) => item.index === item_index
+    ).enchantmentToAdd = e.value;
+    this.setState({
+      items_to_combine: new_items_to_combine,
+    });
+  }
+
+  getEnchantmentMaxLevel(enchantmentName) {
+    return enchantments.find(
+      (enchantment) => enchantment.name === enchantmentName
+    ).max_level;
+  }
+
+  addEnchantment(item_index) {
+    const new_items_to_combine = [...this.state.items_to_combine];
+    const new_item = new_items_to_combine.find(
+      (item) => item.index === item_index
+    );
+    if (new_item.enchantmentToAdd) {
+      new_item.enchantments = [
+        ...new_item.enchantments,
         {
-          name: enchantment.name,
-          level: enchantment.max_level,
+          name: new_item.enchantmentToAdd,
+          level: this.getEnchantmentMaxLevel(new_item.enchantmentToAdd),
         },
       ];
+      this.setState({
+        items_to_combine: new_items_to_combine,
+      });
+      this.combineAndSetState(new_items_to_combine);
     }
+  }
+
+  deleteEnchantment(item_index, enchantment) {
+    const new_items_to_combine = [...this.state.items_to_combine];
+    const new_item = new_items_to_combine[item_index];
+    new_item.enchantments = new_item.enchantments.filter(
+      (filter_enchantment) => filter_enchantment.name !== enchantment.name
+    );
     this.setState({
       items_to_combine: new_items_to_combine,
     });
@@ -140,8 +174,12 @@ class App extends React.Component {
                     item={getItemData(item)}
                     key={item.index}
                     onDelete={() => this.deleteItem(item.index)}
-                    onEnableEnchantment={(enchantment) =>
-                      this.enableEnchantment(item.index, enchantment)
+                    onAddEnchantment={() => this.addEnchantment(item.index)}
+                    onDeleteEnchantment={(enchantment) =>
+                      this.deleteEnchantment(item.index, enchantment)
+                    }
+                    changeEnchantmentToAdd={(e) =>
+                      this.changeEchantmentToAdd(e, item.index)
                     }
                   ></Item>
                 );

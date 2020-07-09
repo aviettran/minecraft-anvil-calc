@@ -336,8 +336,7 @@
     "applies_to": ["trident"],
     "item_multiplier": 4,
     "book_multiplier": 2,
-    "group": "trident_type",
-    "group_exception": "returnable"
+    "group": "trident_type"
   },
   {
     "name": "loyalty",
@@ -354,7 +353,8 @@
     "applies_to": ["trident"],
     "item_multiplier": 8,
     "book_multiplier": 4,
-    "group": "trident_type"
+    "group": "trident_type",
+    "group_exception": "returnable"
   },
   {
     "name": "multishot",

@@ -1,6 +1,7 @@
 import React from "react";
 import { Container, Row, Col, Table, Button } from "react-bootstrap";
-import enchantments from "../data/echantments.json";
+import enchantments from "../data/enchantments.json";
+import Select from "react-select";
 
 class Item extends React.PureComponent {
   addDisabledEnchantments(item) {
@@ -26,21 +27,60 @@ class Item extends React.PureComponent {
     return [...existingEnchantments, ...possibleEnchantments];
   }
 
+  getPossibleEnchantmentOptions(item) {
+    const existingEnchantments = item.enchantments.map((enchantment) => {
+      return { ...enchantment, enabled: true };
+    });
+    return enchantments
+      .filter(
+        (filtered_enchantment) =>
+          //Possible enchantment is not in list of existing enchantments
+          !existingEnchantments.some(
+            (some_enchantment) =>
+              some_enchantment.name === filtered_enchantment.name ||
+              (some_enchantment.group &&
+              filtered_enchantment.group &&
+              some_enchantment.group === filtered_enchantment.group && // Not in a mutual exclusion group
+                !(
+                  some_enchantment.group_exception &&
+                  filtered_enchantment.group_exception &&
+                  some_enchantment.group_exception ===
+                    filtered_enchantment.group_exception
+                )) // Rule exception for tridents
+          ) &&
+          //Possible enchantment is applicable to the given item
+          filtered_enchantment.applies_to.some(
+            (some_item) => some_item === item.name || item.name === "book"
+          )
+      )
+      .map((enchantment) => {
+        return { value: enchantment.name, label: enchantment.name };
+      });
+  }
+
   render() {
-    const { item, onEnableEnchantment } = this.props;
-    const extendedItem = {
-      ...item,
-      enchantments: this.addDisabledEnchantments(item),
-    };
+    const {
+      item,
+      changeEnchantmentToAdd,
+      onDelete,
+      onAddEnchantment,
+      onDeleteEnchantment,
+    } = this.props;
+    // const extendedItem = {
+    //   ...item,
+    //   enchantments: this.addDisabledEnchantments(item),
+    // };
 
     return (
-      <Container fluid>
+      <Container
+        fluid
+        className={item.index % 2 === 0 ? "even-item" : "odd-item"}
+      >
         <Row>
-          <Col xs="2">{extendedItem.name}</Col>
-          <Col xs="2">
-            <Button variant="outline-primary" onClick={this.props.onDelete}>
-              Delete
-            </Button>
+          <Col xs="4">
+            <h2>
+              {item.name} - {item.index}
+            </h2>
           </Col>
           <Col>
             <Table>
@@ -50,11 +90,10 @@ class Item extends React.PureComponent {
                   <th>Level</th>
                   <th>Item Multiplier</th>
                   <th>Book Multiplier</th>
-                  <th>Enabled</th>
                 </tr>
               </thead>
               <tbody>
-                {extendedItem.enchantments.map((enchantment, index) => (
+                {item.enchantments.map((enchantment, index) => (
                   <tr key={index}>
                     <td>{enchantment.name}</td>
                     <td>
@@ -68,16 +107,33 @@ class Item extends React.PureComponent {
                     <td>{enchantment.item_multiplier}</td>
                     <td>{enchantment.book_multiplier}</td>
                     <td>
-                      <input
-                        type="checkbox"
-                        checked={enchantment.enabled}
-                        onClick={() => onEnableEnchantment(enchantment)}
-                      />
+                      <Button
+                        variant="outline-primary"
+                        onClick={() => onDeleteEnchantment(enchantment)}
+                      >
+                        Delete
+                      </Button>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </Table>
+          </Col>
+        </Row>
+        <Row>
+          <Col xs="2">
+            <Select
+              options={this.getPossibleEnchantmentOptions(item)}
+              onChange={(e) => changeEnchantmentToAdd(e)}
+            />
+          </Col>
+          <Col xs="4">
+            <Button variant="outline-primary" onClick={onAddEnchantment}>
+              Add Enchantment
+            </Button>
+            <Button variant="outline-primary" onClick={onDelete}>
+              Delete Item
+            </Button>
           </Col>
         </Row>
       </Container>

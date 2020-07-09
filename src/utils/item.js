@@ -1,4 +1,4 @@
-import enchantments from "../data/echantments.json";
+import enchantments from "../data/enchantments.json";
 import { levelToExperience } from "../utils/helpers";
 
 const getEnchantments = (item) => {
@@ -109,6 +109,8 @@ const combineItems = (items) => {
         ? singleResult
         : cheapestResults;
     }, allResults[0]);
+  } else {
+    return { targetItem: items[0], steps: [], status: "No items to combine" };
   }
 };
 
