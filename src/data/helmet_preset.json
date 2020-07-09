@@ -1,6 +1,6 @@
 [
   {
-    "name": "boots",
+    "name": "helmet",
     "enchantments": [
       {
         "name": "protection",
@@ -12,33 +12,7 @@
     "name": "book",
     "enchantments": [
       {
-        "name": "feather_falling",
-        "level": 4
-      },
-      {
-        "name": "respiration",
-        "level": 3
-      },
-      {
-        "name": "blast_protection",
-        "level": 4
-      }
-    ]
-  },
-  {
-    "name": "book",
-    "enchantments": [
-      {
         "name": "thorns",
-        "level": 3
-      }
-    ]
-  },
-  {
-    "name": "book",
-    "enchantments": [
-      {
-        "name": "depth_strider",
         "level": 3
       }
     ]
@@ -65,7 +39,16 @@
     "name": "book",
     "enchantments": [
       {
-        "name": "soul_speed",
+        "name": "aqua_affinity",
+        "level": 1
+      }
+    ]
+  },
+  {
+    "name": "book",
+    "enchantments": [
+      {
+        "name": "respiration",
         "level": 3
       }
     ]

@@ -1,7 +1,6 @@
 import React from "react";
 import "./App.scss";
 
-import boots_sample from "./data/boots_sample.json";
 import items from "./data/items.json";
 import enchantments from "./data/enchantments.json";
 import Item from "./components/item";
@@ -12,16 +11,30 @@ import { Container, Row, Col, Table, Button } from "react-bootstrap";
 import { levelToExperience, addIndexes } from "./utils/helpers";
 import Select from "react-select";
 
+// Presets
+import helmet_preset from "./data/helmet_preset.json";
+import chestplate_preset from "./data/chestplate_preset.json";
+import leggings_preset from "./data/leggings_preset.json";
+import boots_preset from "./data/boots_preset.json";
+import sword_sharpness_preset from "./data/sword_sharpness_preset.json";
+
 let instance = worker();
+const presets = {
+  reset: [],
+  helmet: helmet_preset,
+  chestplate: chestplate_preset,
+  leggings: leggings_preset,
+  boots: boots_preset,
+  sword_sharpness: sword_sharpness_preset,
+};
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    const items_to_combine = addIndexes(boots_sample);
     this.state = {
-      items_to_combine: items_to_combine,
+      items_to_combine: [],
       results: { targetItem: {}, steps: [], status: "Loading..." },
-      nextIndex: items_to_combine.length,
+      nextIndex: 0,
     };
   }
 
@@ -66,7 +79,7 @@ class App extends React.Component {
 
   changeItemToAdd(e) {
     this.setState({
-      itemToAdd: e.value,
+      itemToAdd: e.label,
     });
   }
 
@@ -98,6 +111,27 @@ class App extends React.Component {
     this.combineAndSetState(new_items_to_combine);
   }
 
+  getPresetOptions() {
+    return Object.entries(presets).map((entry) => {
+      return { value: entry[0], label: entry[0] };
+    });
+  }
+
+  changePreset(e) {
+    this.setState({
+      preset: e.label,
+    });
+  }
+
+  setPreset() {
+    const new_items_to_combine = addIndexes(presets[this.state.preset]);
+    this.setState({
+      items_to_combine: new_items_to_combine,
+      nextIndex: new_items_to_combine.length,
+    });
+    this.combineAndSetState(new_items_to_combine);
+  }
+
   changeItemPenalty(e, item_index) {
     if (!e.target) {
       return;
@@ -122,7 +156,7 @@ class App extends React.Component {
     const new_items_to_combine = [...this.state.items_to_combine];
     new_items_to_combine.find(
       (item) => item.index === item_index
-    ).enchantmentToAdd = e.value;
+    ).enchantmentToAdd = e.label;
     this.setState({
       items_to_combine: new_items_to_combine,
     });
@@ -206,13 +240,16 @@ class App extends React.Component {
             </Col>
             <Col xs="2">
               <Select
-                options={[]}
-                onChange={(e) => null}
+                options={this.getPresetOptions()}
+                onChange={(e) => this.changePreset(e)}
                 placeholder="Presets..."
               />
             </Col>
-            <Col xs="1">
-              <Button variant="outline-primary" onClick={() => this.addItem()}>
+            <Col xs="2">
+              <Button
+                variant="outline-primary"
+                onClick={() => this.setPreset()}
+              >
                 Select Preset
               </Button>
             </Col>
