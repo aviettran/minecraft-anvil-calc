@@ -25,6 +25,7 @@ const checkEnchantmentIsCompatible = (targetItem, newEnchantment) => {
     // There isn't an existing enchantment in a mutal exclusion group
     !targetItem.enchantments.some(
       (some_enchantment) =>
+        some_enchantment.name !== newEnchantment.name &&
         some_enchantment.group &&
         newEnchantment.group &&
         some_enchantment.group === newEnchantment.group &&
