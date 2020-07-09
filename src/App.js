@@ -196,15 +196,28 @@ class App extends React.Component {
       <div className="App">
         <Container fluid>
           <Row>
-            <Col>
+            <Col xs="2">
               <Select
                 options={this.getAddOptions()}
                 onChange={(e) => this.changeItemToAdd(e)}
+                placeholder="Items..."
               />
             </Col>
-            <Col>
+            <Col xs="1">
               <Button variant="outline-primary" onClick={() => this.addItem()}>
                 Add
+              </Button>
+            </Col>
+            <Col xs="2">
+              <Select
+                options={[]}
+                onChange={(e) => null}
+                placeholder="Presets..."
+              />
+            </Col>
+            <Col xs="1">
+              <Button variant="outline-primary" onClick={() => this.addItem()}>
+                Select Preset
               </Button>
             </Col>
             <Col xs="6"></Col>
