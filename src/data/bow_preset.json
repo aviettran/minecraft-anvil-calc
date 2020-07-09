@@ -1,0 +1,47 @@
+[
+  {
+    "name": "bow",
+    "enchantments": [
+      {
+        "name": "infinity",
+        "level": 1
+      }
+    ]
+  },
+  {
+    "name": "book",
+    "enchantments": [
+      {
+        "name": "punch",
+        "level": 2
+      }
+    ]
+  },
+  {
+    "name": "book",
+    "enchantments": [
+      {
+        "name": "power",
+        "level": 5
+      }
+    ]
+  },
+  {
+    "name": "book",
+    "enchantments": [
+      {
+        "name": "flame",
+        "level": 1
+      }
+    ]
+  },
+  {
+    "name": "book",
+    "enchantments": [
+      {
+        "name": "unbreaking",
+        "level": 3
+      }
+    ]
+  }
+]

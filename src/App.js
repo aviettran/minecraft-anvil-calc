@@ -17,6 +17,9 @@ import chestplate_preset from "./data/chestplate_preset.json";
 import leggings_preset from "./data/leggings_preset.json";
 import boots_preset from "./data/boots_preset.json";
 import sword_sharpness_preset from "./data/sword_sharpness_preset.json";
+import pickaxe_fortune_preset from "./data/pickaxe_fortune_preset.json";
+import pickaxe_silk_touch_preset from "./data/pickaxe_silk_touch_preset.json";
+import bow_preset from "./data/bow_preset.json";
 
 let instance = worker();
 const presets = {
@@ -26,6 +29,9 @@ const presets = {
   leggings: leggings_preset,
   boots: boots_preset,
   sword_sharpness: sword_sharpness_preset,
+  pickaxe_fortune: pickaxe_fortune_preset,
+  pickaxe_silk_touch: pickaxe_silk_touch_preset,
+  bow: bow_preset,
 };
 
 class App extends React.Component {
