@@ -107,10 +107,11 @@ class Item extends React.PureComponent {
           </Col>
         </Row>
         <Row>
-          <Col xs="2">
+          <Col xs="3">
             <Select
               options={this.getPossibleEnchantmentOptions(item)}
               onChange={(e) => changeEnchantmentToAdd(e)}
+              placeholder="Enchantments..."
             />
           </Col>
           <Col xs="4">
