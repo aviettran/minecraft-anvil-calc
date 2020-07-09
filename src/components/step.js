@@ -3,10 +3,6 @@ import { Container, Row, Badge } from "react-bootstrap";
 import { numToNumeral, levelToExperience } from "../utils/helpers";
 
 class Step extends React.PureComponent {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const { step } = this.props;
     return (

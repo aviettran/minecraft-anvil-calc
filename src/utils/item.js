@@ -8,7 +8,8 @@ const getEnchantments = (item) => {
 };
 
 const getItemData = (item) => {
-  item.enchantments = item.enchantments.map((enchantment) => {
+  const new_item = { ...item };
+  new_item.enchantments = new_item.enchantments.map((enchantment) => {
     return {
       ...enchantment,
       ...enchantments.find(
@@ -16,7 +17,7 @@ const getItemData = (item) => {
       ),
     };
   });
-  return item;
+  return new_item;
 };
 
 const totalEnchantmentCosts = (item) => {
@@ -103,7 +104,8 @@ const combineItems = (items) => {
   //Get the cheapest results
   if (allResults.length > 0) {
     return allResults.reduce((cheapestResults, singleResult) => {
-      return levelToExperience(singleResult.cost) < levelToExperience(cheapestResults.cost)
+      return levelToExperience(singleResult.cost) <
+        levelToExperience(cheapestResults.cost)
         ? singleResult
         : cheapestResults;
     }, allResults[0]);

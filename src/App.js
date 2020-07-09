@@ -91,6 +91,28 @@ class App extends React.Component {
     this.combineAndSetState(new_items_to_combine);
   }
 
+  enableEnchantment(item_index, enchantment) {
+    const new_items_to_combine = this.state.items_to_combine;
+    const item = new_items_to_combine[item_index];
+    if (enchantment.enabled) {
+      item.enchantments = item.enchantments.filter(
+        (filter_enchantments) => filter_enchantments.name !== enchantment.name
+      );
+    } else {
+      item.enchantments = [
+        ...item.enchantments,
+        {
+          name: enchantment.name,
+          level: enchantment.max_level,
+        },
+      ];
+    }
+    this.setState({
+      items_to_combine: new_items_to_combine,
+    });
+    this.combineAndSetState(new_items_to_combine);
+  }
+
   render() {
     const { results, items_to_combine } = this.state;
     return (
@@ -118,6 +140,9 @@ class App extends React.Component {
                     item={getItemData(item)}
                     key={item.index}
                     onDelete={() => this.deleteItem(item.index)}
+                    onEnableEnchantment={(enchantment) =>
+                      this.enableEnchantment(item.index, enchantment)
+                    }
                   ></Item>
                 );
               })}

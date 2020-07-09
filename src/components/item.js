@@ -1,26 +1,42 @@
 import React from "react";
 import { Container, Row, Col, Table, Button } from "react-bootstrap";
+import enchantments from "../data/echantments.json";
 
-class Item extends React.Component {
-  constructor(props) {
-    super(props);
-    // props.item.enchantments.forEach(enchantment => {
-    //   enchantment.level = enchantment.max_level;
-    // });
-    this.state = { item: props.item };
-  }
-
-  handleEnableEnchantment(enchantment) {
-    enchantment.enabled = !enchantment.enabled;
-    this.setState({ item: this.state.item });
+class Item extends React.PureComponent {
+  addDisabledEnchantments(item) {
+    const existingEnchantments = item.enchantments.map((enchantment) => {
+      return { ...enchantment, enabled: true };
+    });
+    const possibleEnchantments = enchantments
+      .filter(
+        (filtered_enchantment) =>
+          //Possible enchantment is not in list of existing enchantments
+          !existingEnchantments.some(
+            (some_enchantment) =>
+              some_enchantment.name === filtered_enchantment.name
+          ) &&
+          //Possible enchantment is applicable to the given item
+          filtered_enchantment.applies_to.some(
+            (some_item) => some_item === item.name || item.name === "book"
+          )
+      )
+      .map((enchantment) => {
+        return { ...enchantment, level: enchantment.max_level, enabled: false };
+      });
+    return [...existingEnchantments, ...possibleEnchantments];
   }
 
   render() {
-    const item = this.state.item;
+    const { item, onEnableEnchantment } = this.props;
+    const extendedItem = {
+      ...item,
+      enchantments: this.addDisabledEnchantments(item),
+    };
+
     return (
       <Container fluid>
         <Row>
-          <Col xs="2">{item.name}</Col>
+          <Col xs="2">{extendedItem.name}</Col>
           <Col xs="2">
             <Button variant="outline-primary" onClick={this.props.onDelete}>
               Delete
@@ -34,15 +50,12 @@ class Item extends React.Component {
                   <th>Level</th>
                   <th>Item Multiplier</th>
                   <th>Book Multiplier</th>
-                  <th>Enable</th>
+                  <th>Enabled</th>
                 </tr>
               </thead>
               <tbody>
-                {item.enchantments.map((enchantment, index) => (
-                  <tr
-                    key={index}
-                    onClick={() => this.handleEnableEnchantment(enchantment)}
-                  >
+                {extendedItem.enchantments.map((enchantment, index) => (
+                  <tr key={index}>
                     <td>{enchantment.name}</td>
                     <td>
                       <input
@@ -55,7 +68,11 @@ class Item extends React.Component {
                     <td>{enchantment.item_multiplier}</td>
                     <td>{enchantment.book_multiplier}</td>
                     <td>
-                      <input type="checkbox" checked={enchantment.enabled} />
+                      <input
+                        type="checkbox"
+                        checked={enchantment.enabled}
+                        onClick={() => onEnableEnchantment(enchantment)}
+                      />
                     </td>
                   </tr>
                 ))}
