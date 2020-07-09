@@ -20,32 +20,81 @@ const getItemData = (item) => {
   return new_item;
 };
 
-const totalEnchantmentCosts = (item) => {
-  return item.enchantments.reduce((total, enchantment) => {
-    return (
-      total +
-      enchantment.level *
-        (item.name === "book"
-          ? enchantment.book_multiplier
-          : enchantment.item_multiplier)
-    );
-  }, 0);
+const mergeEnchantments = (
+  sacrificeItem,
+  targetEnchantments,
+  sacrificeEnchantments
+) => {
+  return sacrificeEnchantments.reduce(
+    (mergeResults, sacrificeEnchantment) => {
+      const multiplier =
+        sacrificeItem.name === "book"
+          ? sacrificeEnchantment.book_multiplier
+          : sacrificeEnchantment.item_multiplier;
+
+      // Find if target already has enchantment
+      const matchedEnchantment = mergeResults.resultingEnchantments.find(
+        (resultingEnchantment) =>
+          resultingEnchantment.name === sacrificeEnchantment.name
+      );
+      let newLevel = sacrificeEnchantment.level;
+      // Enchantment matched. Check Level.
+      if (matchedEnchantment) {
+        // Make a copy of the matched enchantment.
+        const newMatchedEnchantment = { ...matchedEnchantment };
+        let levelDifference =
+          sacrificeEnchantment.level - newMatchedEnchantment.level;
+        // Levels are the same. Bump level.
+        if (levelDifference === 0) {
+          levelDifference += 1;
+          newLevel += 1;
+        }
+        if (levelDifference > 0) {
+          mergeResults.cost += levelDifference * multiplier;
+          newMatchedEnchantment.level = newLevel;
+          // Remove old enchantment and replace with new copy
+          mergeResults.resultingEnchantments = [
+            ...mergeResults.resultingEnchantments.filter(
+              (filtered_enchantment) =>
+                filtered_enchantment.name !== newMatchedEnchantment.name
+            ),
+            newMatchedEnchantment,
+          ];
+        }
+      } else {
+        // New enchantment. Add.
+        mergeResults.resultingEnchantments = [
+          ...mergeResults.resultingEnchantments,
+          sacrificeEnchantment,
+        ];
+        mergeResults.cost += newLevel * multiplier;
+      }
+      return mergeResults;
+    },
+    { cost: 0, resultingEnchantments: [...targetEnchantments] }
+  );
 };
 
 const anvil = (targetItem, sacrificeItem) => {
   const targetPenalty = targetItem.penalty || 0;
   const sacrificePenalty = sacrificeItem.penalty || 0;
+  // Filter non-applicable enchantments
   const filtered_enchantments = sacrificeItem.enchantments.filter(
     (enchantment) =>
       targetItem.name === "book" ||
       enchantment.applies_to.some((some_item) => some_item === targetItem.name)
   );
+  const mergeResults = mergeEnchantments(
+    sacrificeItem,
+    targetItem.enchantments,
+    filtered_enchantments
+  );
   const resultingItem = {
     ...targetItem,
-    enchantments: [...targetItem.enchantments, ...filtered_enchantments],
+    enchantments: mergeResults.resultingEnchantments,
   };
   const stepCost =
-    totalEnchantmentCosts(sacrificeItem) +
+    mergeResults.cost +
     Math.pow(2, targetPenalty) -
     1 +
     Math.pow(2, sacrificePenalty) -

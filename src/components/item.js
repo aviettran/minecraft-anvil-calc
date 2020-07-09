@@ -65,6 +65,7 @@ class Item extends React.PureComponent {
       onDelete,
       onAddEnchantment,
       onDeleteEnchantment,
+      onChangeLevel,
     } = this.props;
 
     return (
@@ -92,7 +93,8 @@ class Item extends React.PureComponent {
                         type="number"
                         value={enchantment.level}
                         min="1"
-                        max={enchantment.level}
+                        max={enchantment.max_level}
+                        onChange={(e) => onChangeLevel(e, enchantment)}
                       />
                     </td>
                     <td>{enchantment.item_multiplier}</td>

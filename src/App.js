@@ -10,6 +10,7 @@ import { getItemData } from "./utils/item";
 import worker from "workerize-loader!./utils/worker.js"; // eslint-disable-line import/no-webpack-loader-syntax
 import { Container, Row, Col, Table, Button } from "react-bootstrap";
 import { levelToExperience, addIndexes } from "./utils/helpers";
+import { combineItems } from "./utils/item";
 import Select from "react-select";
 
 //Mock
@@ -52,6 +53,8 @@ class App extends React.Component {
   componentDidMount() {
     this.combineAndSetState(this.state.items_to_combine);
     //this.setState({ results: mock });
+    //Use the following line to debug (no worker)
+    // this.setState({ results: combineItems(this.state.items_to_combine) });
   }
 
   combineAndSetState(items_to_combine) {
@@ -149,6 +152,24 @@ class App extends React.Component {
     this.combineAndSetState(new_items_to_combine);
   }
 
+  changeEnchantmentLevel(e, item_index, enchantment) {
+    if (!(e.target && e.target.valueAsNumber)) {
+      return;
+    }
+    const new_items_to_combine = [...this.state.items_to_combine];
+    const new_item = new_items_to_combine.find(
+      (item) => item.index === item_index
+    );
+    const new_enchantment = new_item.enchantments.find(
+      (find_enchantment) => find_enchantment.name === enchantment.name
+    );
+    new_enchantment.level = e.target.valueAsNumber;
+    this.setState({
+      items_to_combine: new_items_to_combine,
+    });
+    this.combineAndSetState(new_items_to_combine);
+  }
+
   render() {
     const { results, items_to_combine } = this.state;
     return (
@@ -182,6 +203,9 @@ class App extends React.Component {
                     }
                     changeEnchantmentToAdd={(e) =>
                       this.changeEchantmentToAdd(e, item.index)
+                    }
+                    onChangeLevel={(e, enchantment) =>
+                      this.changeEnchantmentLevel(e, item.index, enchantment)
                     }
                   ></Item>
                 );

@@ -1,4 +1,3 @@
 ### TODO
 
-- Implement level selector
-- Add calc for level combining (e.g., IV + IV = V)
+- Anvil mutual exclusion (can't combine mending / infinity on bow)
