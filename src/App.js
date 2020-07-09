@@ -181,6 +181,7 @@ class App extends React.Component {
           level: this.getEnchantmentMaxLevel(new_item.enchantmentToAdd),
         },
       ];
+      new_item.enchantmentToAdd = null;
       this.setState({
         items_to_combine: new_items_to_combine,
       });
