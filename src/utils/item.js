@@ -35,9 +35,14 @@ const totalEnchantmentCosts = (item) => {
 const anvil = (targetItem, sacrificeItem) => {
   const targetPenalty = targetItem.penalty || 0;
   const sacrificePenalty = sacrificeItem.penalty || 0;
+  const filtered_enchantments = sacrificeItem.enchantments.filter(
+    (enchantment) =>
+      targetItem.name === "book" ||
+      enchantment.applies_to.some((some_item) => some_item === targetItem.name)
+  );
   const resultingItem = {
     ...targetItem,
-    enchantments: [...targetItem.enchantments, ...sacrificeItem.enchantments],
+    enchantments: [...targetItem.enchantments, ...filtered_enchantments],
   };
   const stepCost =
     totalEnchantmentCosts(sacrificeItem) +

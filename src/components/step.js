@@ -18,7 +18,11 @@ class Step extends React.PureComponent {
             <Row>
               {step.targetItem.enchantments.map((enchantment, index) => {
                 return (
-                  <Badge key={index} pill variant="primary">
+                  <Badge
+                    key={index}
+                    pill
+                    variant={enchantment.is_curse ? "danger" : "primary"}
+                  >
                     {enchantment.name} {numToNumeral(enchantment.level)}
                   </Badge>
                 );
@@ -37,7 +41,11 @@ class Step extends React.PureComponent {
             <Row>
               {step.sacrificeItem.enchantments.map((enchantment, index) => {
                 return (
-                  <Badge key={index} pill variant="primary">
+                  <Badge
+                    key={index}
+                    pill
+                    variant={enchantment.is_curse ? "danger" : "primary"}
+                  >
                     {enchantment.name} {numToNumeral(enchantment.level)}
                   </Badge>
                 );
@@ -56,7 +64,11 @@ class Step extends React.PureComponent {
             <Row>
               {step.resultingItem.enchantments.map((enchantment, index) => {
                 return (
-                  <Badge key={index} pill variant="primary">
+                  <Badge
+                    key={index}
+                    pill
+                    variant={enchantment.is_curse ? "danger" : "primary"}
+                  >
                     {enchantment.name} {numToNumeral(enchantment.level)}
                   </Badge>
                 );

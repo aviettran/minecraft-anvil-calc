@@ -66,21 +66,12 @@ class Item extends React.PureComponent {
       onAddEnchantment,
       onDeleteEnchantment,
     } = this.props;
-    // const extendedItem = {
-    //   ...item,
-    //   enchantments: this.addDisabledEnchantments(item),
-    // };
 
     return (
-      <Container
-        fluid
-        className={item.index % 2 === 0 ? "even-item" : "odd-item"}
-      >
+      <Container fluid>
         <Row>
           <Col xs="4">
-            <h2>
-              {item.name} - {item.index}
-            </h2>
+            <h2>{item.name}</h2>
           </Col>
           <Col>
             <Table>

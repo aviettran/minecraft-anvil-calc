@@ -50,8 +50,8 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    //combineAndSetState(addIndexes(boots_sample))
-    this.setState({ results: mock });
+    this.combineAndSetState(this.state.items_to_combine);
+    //this.setState({ results: mock });
   }
 
   combineAndSetState(items_to_combine) {
@@ -137,7 +137,9 @@ class App extends React.Component {
 
   deleteEnchantment(item_index, enchantment) {
     const new_items_to_combine = [...this.state.items_to_combine];
-    const new_item = new_items_to_combine[item_index];
+    const new_item = new_items_to_combine.find(
+      (item) => item.index === item_index
+    );
     new_item.enchantments = new_item.enchantments.filter(
       (filter_enchantment) => filter_enchantment.name !== enchantment.name
     );

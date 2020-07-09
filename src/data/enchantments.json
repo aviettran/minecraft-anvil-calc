@@ -290,7 +290,8 @@
     ],
     "item_multiplier": 8,
     "book_multiplier": 4,
-    "enchanting_table": false
+    "enchanting_table": false,
+    "is_curse": true
   },
   {
     "name": "vanishing_curse",
@@ -321,7 +322,8 @@
     ],
     "item_multiplier": 8,
     "book_multiplier": 4,
-    "enchanting_table": false
+    "enchanting_table": false,
+    "is_curse": true
   },
   {
     "name": "impaling",
