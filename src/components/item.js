@@ -4,13 +4,28 @@ import {
   Row,
   Col,
   Table,
-  Button,
   InputGroup,
   FormControl,
 } from "react-bootstrap";
 import enchantments from "../data/enchantments.json";
 import Select from "react-select";
 import { checkEnchantmentIsCompatible } from "../utils/item";
+
+const smallerSelect = {
+  control: (provided, state) => ({
+    ...provided,
+    minHeight: "31px",
+    height: "31px",
+  }),
+  input: (provided, state) => ({
+    ...provided,
+    margin: "0px",
+  }),
+  indicatorsContainer: (provided, state) => ({
+    ...provided,
+    height: "31px",
+  }),
+};
 
 class Item extends React.PureComponent {
   addDisabledEnchantments(item) {
@@ -53,7 +68,6 @@ class Item extends React.PureComponent {
   render() {
     const {
       item,
-      changeEnchantmentToAdd,
       onDelete,
       onAddEnchantment,
       onDeleteEnchantment,
@@ -65,7 +79,51 @@ class Item extends React.PureComponent {
       <Container fluid>
         <Row>
           <Col xs="4">
-            <h2>{item.name}</h2>
+            <Container fluid>
+              <Row className="align-items-center">
+                <Col xs="6">
+                  <h2>{item.name}</h2>
+                </Col>
+                <Col>
+                  <button onClick={onDelete} className="close">
+                    ×
+                  </button>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <InputGroup size="sm">
+                    <InputGroup.Prepend>
+                      <InputGroup.Text>Penalty</InputGroup.Text>
+                    </InputGroup.Prepend>
+                    <FormControl
+                      type="number"
+                      value={item.penalty || 0}
+                      min="0"
+                      onChange={(e) => onChangePenalty(e, item.index)}
+                    />
+                  </InputGroup>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <Select
+                    options={this.getPossibleEnchantmentOptions(item)}
+                    onChange={(e) => onAddEnchantment(e)}
+                    placeholder="Add enchantments..."
+                    value={
+                      item.enchantmentToAdd
+                        ? {
+                            value: item.enchantmentToAdd,
+                            label: item.enchantmentToAdd,
+                          }
+                        : null
+                    }
+                    styles={smallerSelect}
+                  />
+                </Col>
+              </Row>
+            </Container>
           </Col>
           <Col>
             <Table>
@@ -93,55 +151,17 @@ class Item extends React.PureComponent {
                     <td>{enchantment.item_multiplier}</td>
                     <td>{enchantment.book_multiplier}</td>
                     <td>
-                      <Button
-                        variant="outline-primary"
+                      <button
                         onClick={() => onDeleteEnchantment(enchantment)}
+                        className="close"
                       >
-                        Delete
-                      </Button>
+                        ×
+                      </button>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </Table>
-          </Col>
-        </Row>
-        <Row>
-          <Col xs="3">
-            <Select
-              options={this.getPossibleEnchantmentOptions(item)}
-              onChange={(e) => changeEnchantmentToAdd(e)}
-              placeholder="Enchantments..."
-              value={
-                item.enchantmentToAdd
-                  ? {
-                      value: item.enchantmentToAdd,
-                      label: item.enchantmentToAdd,
-                    }
-                  : null
-              }
-            />
-          </Col>
-          <Col xs="4">
-            <Button variant="outline-primary" onClick={onAddEnchantment}>
-              Add Enchantment
-            </Button>
-            <Button variant="outline-primary" onClick={onDelete}>
-              Delete Item
-            </Button>
-          </Col>
-          <Col xs="3">
-            <InputGroup className="mb-3">
-              <InputGroup.Prepend>
-                <InputGroup.Text>Penalty</InputGroup.Text>
-              </InputGroup.Prepend>
-              <FormControl
-                type="number"
-                value={item.penalty || 0}
-                min="0"
-                onChange={(e) => onChangePenalty(e, item.index)}
-              />
-            </InputGroup>
           </Col>
         </Row>
       </Container>

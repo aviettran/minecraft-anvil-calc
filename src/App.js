@@ -67,8 +67,12 @@ class App extends React.Component {
   }
 
   // componentDidMount() {
+  //   //Preload preset
+  //   // this.setState({ items_to_combine: addIndexes(helmet_preset) });
+  //   // this.combineAndSetState(addIndexes(helmet_preset));
+
   //   //Use the following line to debug (no worker)
-  //   combineItems(sword_sharpness_preset);
+  //   // combineItems(sword_sharpness_preset);
   // }
 
   combineAndSetState(items_to_combine) {
@@ -157,36 +161,25 @@ class App extends React.Component {
     this.combineAndSetState(new_items_to_combine);
   }
 
-  changeEchantmentToAdd(e, item_index) {
-    const new_items_to_combine = [...this.state.items_to_combine];
-    new_items_to_combine.find(
-      (item) => item.index === item_index
-    ).enchantmentToAdd = e.label;
-    this.setState({
-      items_to_combine: new_items_to_combine,
-    });
-  }
-
   getEnchantmentMaxLevel(enchantmentName) {
     return enchantments.find(
       (enchantment) => enchantment.name === enchantmentName
     ).max_level;
   }
 
-  addEnchantment(item_index) {
+  addEnchantment(e, item_index) {
     const new_items_to_combine = [...this.state.items_to_combine];
     const new_item = new_items_to_combine.find(
       (item) => item.index === item_index
     );
-    if (new_item.enchantmentToAdd) {
+    if (e.label) {
       new_item.enchantments = [
         ...new_item.enchantments,
         {
-          name: new_item.enchantmentToAdd,
-          level: this.getEnchantmentMaxLevel(new_item.enchantmentToAdd),
+          name: e.label,
+          level: this.getEnchantmentMaxLevel(e.label),
         },
       ];
-      new_item.enchantmentToAdd = null;
       this.setState({
         items_to_combine: new_items_to_combine,
       });
@@ -269,7 +262,7 @@ class App extends React.Component {
                     item={getItemData(item)}
                     key={item.index}
                     onDelete={() => this.deleteItem(item.index)}
-                    onAddEnchantment={() => this.addEnchantment(item.index)}
+                    onAddEnchantment={(e) => this.addEnchantment(e, item.index)}
                     onDeleteEnchantment={(enchantment) =>
                       this.deleteEnchantment(item.index, enchantment)
                     }
