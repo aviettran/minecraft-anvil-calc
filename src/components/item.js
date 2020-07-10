@@ -76,9 +76,9 @@ class Item extends React.PureComponent {
     } = this.props;
 
     return (
-      <Container fluid>
+      <Container>
         <Row>
-          <Col xs="4">
+          <Col sm="auto">
             <Container fluid>
               <Row className="align-items-center">
                 <Col xs="6">
