@@ -6,6 +6,7 @@ import enchantments from "./data/enchantments.json";
 import Item from "./components/item";
 import Step from "./components/step";
 import { getItemData } from "./utils/item";
+//import { combineItems } from "./utils/item"; //for debugging
 import worker from "workerize-loader!./utils/worker.js"; // eslint-disable-line import/no-webpack-loader-syntax
 import { Container, Row, Col, Table, Button } from "react-bootstrap";
 import { levelToExperience, addIndexes } from "./utils/helpers";
@@ -39,7 +40,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       items_to_combine: [],
-      results: { targetItem: {}, steps: [], status: "Loading..." },
+      results: { targetItem: {}, steps: [], status: "No items to combine" },
       nextIndex: 0,
     };
   }
@@ -65,12 +66,10 @@ class App extends React.Component {
     });
   }
 
-  componentDidMount() {
-    this.combineAndSetState(this.state.items_to_combine);
-    //this.setState({ results: mock });
-    //Use the following line to debug (no worker)
-    // this.setState({ results: combineItems(this.state.items_to_combine) });
-  }
+  // componentDidMount() {
+  //   //Use the following line to debug (no worker)
+  //   combineItems(sword_sharpness_preset);
+  // }
 
   combineAndSetState(items_to_combine) {
     this.setState({

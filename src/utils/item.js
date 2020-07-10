@@ -42,12 +42,8 @@ const checkEnchantmentIsCompatible = (targetItem, newEnchantment) => {
   );
 };
 
-const mergeEnchantments = (
-  sacrificeItem,
-  targetEnchantments,
-  sacrificeEnchantments
-) => {
-  return sacrificeEnchantments.reduce(
+const mergeEnchantments = (sacrificeItem, targetEnchantments) => {
+  return sacrificeItem.enchantments.reduce(
     (mergeResults, sacrificeEnchantment) => {
       const multiplier =
         sacrificeItem.name === "book"
@@ -123,6 +119,7 @@ const anvil = (targetItem, sacrificeItem) => {
   const results = {
     resultingItem: resultingItem,
     cost: stepCost,
+    exp: levelToExperience(stepCost),
     steps: [
       {
         targetItem: targetItem,
@@ -144,12 +141,23 @@ const combineItems = (items) => {
     const nonTargets = items.filter(
       (sacrificeItem) => sacrificeItem !== targetItem
     );
-    const eligibleItems = nonTargets.filter(
+    let eligibleItems = nonTargets.filter(
       (sacrificeItem) =>
         sacrificeItem.name === "book" || targetItem.name !== "book"
     );
 
     if (eligibleItems.length > 0) {
+      //Optimize - if book -> book, choose cheapest book
+      if (targetItem.name === "book") {
+        eligibleItems = [
+          eligibleItems.reduce((cheapestBook, item) => {
+            return mergeEnchantments(item, targetItem.enchantments).cost <
+              mergeEnchantments(cheapestBook, targetItem.enchantments).cost
+              ? item
+              : cheapestBook;
+          }, eligibleItems[0]),
+        ];
+      }
       //For each eligible item
       eligibleItems.forEach((sacrificeItem) => {
         let anvilResults = anvil(targetItem, sacrificeItem);
@@ -165,6 +173,7 @@ const combineItems = (items) => {
 
           anvilResults.resultingItem = remaining_items_results.resultingItem;
           anvilResults.cost += remaining_items_results.cost;
+          anvilResults.exp += remaining_items_results.exp;
           anvilResults.steps = [
             ...anvilResults.steps,
             ...remaining_items_results.steps,
@@ -178,8 +187,7 @@ const combineItems = (items) => {
   //Get the cheapest results
   if (allResults.length > 0) {
     return allResults.reduce((cheapestResults, singleResult) => {
-      return levelToExperience(singleResult.cost) <
-        levelToExperience(cheapestResults.cost)
+      return singleResult.exp < cheapestResults.exp
         ? singleResult
         : cheapestResults;
     }, allResults[0]);
