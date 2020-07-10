@@ -5,7 +5,7 @@ import items from "./data/items.json";
 import enchantments from "./data/enchantments.json";
 import Item from "./components/item";
 import Step from "./components/step";
-import { getItemData } from "./utils/item";
+import { getItemData, getDisplayName } from "./utils/item";
 //import { combineItems } from "./utils/item"; //for debugging
 import worker from "workerize-loader!./utils/worker.js"; // eslint-disable-line import/no-webpack-loader-syntax
 import { Container, Row, Col, Table, Button } from "react-bootstrap";
@@ -24,15 +24,24 @@ import bow_preset from "./data/bow_preset.json";
 
 let instance = worker();
 const presets = {
-  reset: [],
-  helmet: helmet_preset,
-  chestplate: chestplate_preset,
-  leggings: leggings_preset,
-  boots: boots_preset,
-  sword_sharpness: sword_sharpness_preset,
-  pickaxe_fortune: pickaxe_fortune_preset,
-  pickaxe_silk_touch: pickaxe_silk_touch_preset,
-  bow: bow_preset,
+  clear: { data: [], display_name: "Clear" },
+  helmet: { data: helmet_preset, display_name: "Helmet" },
+  chestplate: { data: chestplate_preset, display_name: "Chestplate" },
+  leggings: { data: leggings_preset, display_name: "Leggings" },
+  boots: { data: boots_preset, display_name: "Boots" },
+  sword_sharpness: {
+    data: sword_sharpness_preset,
+    display_name: "Sword (Sharpness)",
+  },
+  pickaxe_fortune: {
+    data: pickaxe_fortune_preset,
+    display_name: "Pickaxe (Fortune)",
+  },
+  pickaxe_silk_touch: {
+    data: pickaxe_silk_touch_preset,
+    display_name: "Pickaxe (Silk Touch)",
+  },
+  bow: { data: bow_preset, display_name: "Bow" },
 };
 
 class App extends React.Component {
@@ -57,12 +66,12 @@ class App extends React.Component {
     const filtered_items = items.filter((item) => {
       return (
         !to_combine_item_type ||
-        item === to_combine_item_type ||
-        item === "book"
+        item.name === to_combine_item_type ||
+        item.name === "book"
       );
     });
     return filtered_items.map((item) => {
-      return { value: item, label: item };
+      return { value: item.name, label: getDisplayName(item.name) };
     });
   }
 
@@ -88,7 +97,7 @@ class App extends React.Component {
 
   changeItemToAdd(e) {
     this.setState({
-      itemToAdd: e.label,
+      itemToAdd: e.value,
     });
   }
 
@@ -122,18 +131,18 @@ class App extends React.Component {
 
   getPresetOptions() {
     return Object.entries(presets).map((entry) => {
-      return { value: entry[0], label: entry[0] };
+      return { value: entry[0], label: entry[1].display_name };
     });
   }
 
   changePreset(e) {
     this.setState({
-      preset: e.label,
+      preset: e.value,
     });
   }
 
   setPreset() {
-    const new_items_to_combine = addIndexes(presets[this.state.preset]);
+    const new_items_to_combine = addIndexes(presets[this.state.preset].data);
     this.setState({
       items_to_combine: new_items_to_combine,
       nextIndex: new_items_to_combine.length,
@@ -172,12 +181,12 @@ class App extends React.Component {
     const new_item = new_items_to_combine.find(
       (item) => item.index === item_index
     );
-    if (e.label) {
+    if (e.value) {
       new_item.enchantments = [
         ...new_item.enchantments,
         {
-          name: e.label,
-          level: this.getEnchantmentMaxLevel(e.label),
+          name: e.value,
+          level: this.getEnchantmentMaxLevel(e.value),
         },
       ];
       this.setState({

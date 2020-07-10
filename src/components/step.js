@@ -1,6 +1,12 @@
 import React from "react";
 import { Container, Row, Badge } from "react-bootstrap";
-import { numToNumeral, levelToExperience } from "../utils/helpers";
+import {
+  numToNumeral,
+  levelToExperience,
+  getEnchantmentDisplayName,
+} from "../utils/helpers";
+import { getDisplayName } from "../utils/item";
+import Icon from "./icon";
 
 class Step extends React.PureComponent {
   render() {
@@ -10,7 +16,8 @@ class Step extends React.PureComponent {
         <td>
           <Container>
             <Row>
-              {step.targetItem.name}
+              <Icon name={step.targetItem.name} size={16} />
+              {getDisplayName(step.targetItem.name)}
               <Badge pill variant="warning">
                 {step.targetItem.penalty}
               </Badge>
@@ -23,7 +30,8 @@ class Step extends React.PureComponent {
                     pill
                     variant={enchantment.is_curse ? "danger" : "primary"}
                   >
-                    {enchantment.name} {numToNumeral(enchantment.level)}
+                    {getEnchantmentDisplayName(enchantment.name)}{" "}
+                    {numToNumeral(enchantment.level)}
                   </Badge>
                 );
               })}
@@ -33,7 +41,8 @@ class Step extends React.PureComponent {
         <td>
           <Container>
             <Row>
-              {step.sacrificeItem.name}
+              <Icon name={step.sacrificeItem.name} size={16} />
+              {getDisplayName(step.sacrificeItem.name)}
               <Badge pill variant="warning">
                 {step.sacrificeItem.penalty}
               </Badge>
@@ -46,7 +55,8 @@ class Step extends React.PureComponent {
                     pill
                     variant={enchantment.is_curse ? "danger" : "primary"}
                   >
-                    {enchantment.name} {numToNumeral(enchantment.level)}
+                    {getEnchantmentDisplayName(enchantment.name)}{" "}
+                    {numToNumeral(enchantment.level)}
                   </Badge>
                 );
               })}
@@ -56,7 +66,8 @@ class Step extends React.PureComponent {
         <td>
           <Container>
             <Row>
-              {step.resultingItem.name}
+              <Icon name={step.resultingItem.name} size={16} />
+              {getDisplayName(step.resultingItem.name)}
               <Badge pill variant="warning">
                 {step.resultingItem.penalty}
               </Badge>
@@ -69,7 +80,8 @@ class Step extends React.PureComponent {
                     pill
                     variant={enchantment.is_curse ? "danger" : "primary"}
                   >
-                    {enchantment.name} {numToNumeral(enchantment.level)}
+                    {getEnchantmentDisplayName(enchantment.name)}{" "}
+                    {numToNumeral(enchantment.level)}
                   </Badge>
                 );
               })}

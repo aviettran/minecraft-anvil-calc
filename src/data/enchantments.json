@@ -1,6 +1,7 @@
 [
   {
     "name": "protection",
+    "display_name": "Protection",
     "max_level": 4,
     "applies_to": [
       "helmet",
@@ -15,6 +16,7 @@
   },
   {
     "name": "fire_protection",
+    "display_name": "Fire Protection",
     "max_level": 4,
     "applies_to": [
       "helmet",
@@ -29,6 +31,7 @@
   },
   {
     "name": "feather_falling",
+    "display_name": "Feather Falling",
     "max_level": 4,
     "applies_to": ["boots"],
     "item_multiplier": 2,
@@ -36,6 +39,7 @@
   },
   {
     "name": "blast_protection",
+    "display_name": "Blast Protection",
     "max_level": 4,
     "applies_to": [
       "helmet",
@@ -50,6 +54,7 @@
   },
   {
     "name": "projectile_protection",
+    "display_name": "Projectile Protection",
     "max_level": 4,
     "applies_to": [
       "helmet",
@@ -64,6 +69,7 @@
   },
   {
     "name": "thorns",
+    "display_name": "Thorns",
     "max_level": 3,
     "applies_to": [
       "helmet",
@@ -77,6 +83,7 @@
   },
   {
     "name": "respiration",
+    "display_name": "Respiration",
     "max_level": 3,
     "applies_to": ["helmet", "turtle_helmet"],
     "item_multiplier": 4,
@@ -84,6 +91,7 @@
   },
   {
     "name": "depth_strider",
+    "display_name": "Depth Strider",
     "max_level": 3,
     "applies_to": ["boots"],
     "item_multiplier": 4,
@@ -92,6 +100,7 @@
   },
   {
     "name": "aqua_affinity",
+    "display_name": "Aqua Affinity",
     "max_level": 1,
     "applies_to": ["helmet", "turtle_helmet"],
     "item_multiplier": 4,
@@ -99,6 +108,7 @@
   },
   {
     "name": "sharpness",
+    "display_name": "Sharpness",
     "max_level": 5,
     "applies_to": ["sword", "axe"],
     "item_multiplier": 1,
@@ -107,6 +117,7 @@
   },
   {
     "name": "smite",
+    "display_name": "Smite",
     "max_level": 5,
     "applies_to": ["sword", "axe"],
     "item_multiplier": 2,
@@ -115,6 +126,7 @@
   },
   {
     "name": "bane_of_arthropods",
+    "display_name": "Bane of Arthropods",
     "max_level": 5,
     "applies_to": ["sword", "axe"],
     "item_multiplier": 2,
@@ -123,6 +135,7 @@
   },
   {
     "name": "knockback",
+    "display_name": "Knockback",
     "max_level": 2,
     "applies_to": ["sword"],
     "item_multiplier": 2,
@@ -130,6 +143,7 @@
   },
   {
     "name": "fire_aspect",
+    "display_name": "Fire Aspect",
     "max_level": 2,
     "applies_to": ["sword"],
     "item_multiplier": 4,
@@ -137,6 +151,7 @@
   },
   {
     "name": "looting",
+    "display_name": "Looting",
     "max_level": 3,
     "applies_to": ["sword"],
     "item_multiplier": 4,
@@ -144,6 +159,7 @@
   },
   {
     "name": "efficiency",
+    "display_name": "Efficiency",
     "max_level": 5,
     "applies_to": ["pickaxe", "shovel", "axe", "shears"],
     "item_multiplier": 1,
@@ -151,6 +167,7 @@
   },
   {
     "name": "silk_touch",
+    "display_name": "Silk Touch",
     "max_level": 1,
     "applies_to": ["pickaxe", "shovel", "axe"],
     "item_multiplier": 8,
@@ -159,6 +176,7 @@
   },
   {
     "name": "unbreaking",
+    "display_name": "Unbreaking",
     "max_level": 3,
     "applies_to": [
       "pickaxe",
@@ -187,6 +205,7 @@
   },
   {
     "name": "fortune",
+    "display_name": "Fortune",
     "max_level": 3,
     "applies_to": ["pickaxe", "shovel", "axe"],
     "item_multiplier": 4,
@@ -195,6 +214,7 @@
   },
   {
     "name": "power",
+    "display_name": "Power",
     "max_level": 5,
     "applies_to": ["bow"],
     "item_multiplier": 1,
@@ -202,6 +222,7 @@
   },
   {
     "name": "punch",
+    "display_name": "Punch",
     "max_level": 2,
     "applies_to": ["bow"],
     "item_multiplier": 4,
@@ -209,6 +230,7 @@
   },
   {
     "name": "flame",
+    "display_name": "Flame",
     "max_level": 1,
     "applies_to": ["bow"],
     "item_multiplier": 4,
@@ -216,6 +238,7 @@
   },
   {
     "name": "infinity",
+    "display_name": "Infinity",
     "max_level": 1,
     "applies_to": ["bow"],
     "item_multiplier": 8,
@@ -224,6 +247,7 @@
   },
   {
     "name": "luck_of_the_sea",
+    "display_name": "Luck of the Sea",
     "max_level": 3,
     "applies_to": ["fishing_rod"],
     "item_multiplier": 4,
@@ -231,6 +255,7 @@
   },
   {
     "name": "lure",
+    "display_name": "Lure",
     "max_level": 3,
     "applies_to": ["fishing_rod"],
     "item_multiplier": 4,
@@ -238,6 +263,7 @@
   },
   {
     "name": "frost_walker",
+    "display_name": "Frost Walker",
     "max_level": 2,
     "applies_to": ["boots"],
     "item_multiplier": 4,
@@ -247,6 +273,7 @@
   },
   {
     "name": "mending",
+    "display_name": "Mending",
     "max_level": 1,
     "applies_to": [
       "pickaxe",
@@ -277,6 +304,7 @@
   },
   {
     "name": "binding_curse",
+    "display_name": "Curse of Binding",
     "max_level": 1,
     "applies_to": [
       "helmet",
@@ -295,6 +323,7 @@
   },
   {
     "name": "vanishing_curse",
+    "display_name": "Curse of Vanishing",
     "max_level": 1,
     "applies_to": [
       "pickaxe",
@@ -327,6 +356,7 @@
   },
   {
     "name": "impaling",
+    "display_name": "Impaling",
     "max_level": 5,
     "applies_to": ["trident"],
     "item_multiplier": 4,
@@ -334,6 +364,7 @@
   },
   {
     "name": "riptide",
+    "display_name": "Riptide",
     "max_level": 3,
     "applies_to": ["trident"],
     "item_multiplier": 4,
@@ -342,6 +373,7 @@
   },
   {
     "name": "loyalty",
+    "display_name": "Loyalty",
     "max_level": 3,
     "applies_to": ["trident"],
     "item_multiplier": 1,
@@ -351,6 +383,7 @@
   },
   {
     "name": "channeling",
+    "display_name": "Channeling",
     "max_level": 1,
     "applies_to": ["trident"],
     "item_multiplier": 8,
@@ -360,6 +393,7 @@
   },
   {
     "name": "multishot",
+    "display_name": "Multishot",
     "max_level": 1,
     "applies_to": ["crossbow"],
     "item_multiplier": 4,
@@ -368,6 +402,7 @@
   },
   {
     "name": "piercing",
+    "display_name": "Piercing",
     "max_level": 4,
     "applies_to": ["crossbow"],
     "item_multiplier": 1,
@@ -376,6 +411,7 @@
   },
   {
     "name": "quick_charge",
+    "display_name": "Quick Charge",
     "max_level": 3,
     "applies_to": ["crossbow"],
     "item_multiplier": 2,
@@ -383,6 +419,7 @@
   },
   {
     "name": "soul_speed",
+    "display_name": "Soul Speed",
     "max_level": 3,
     "applies_to": ["boots"],
     "item_multiplier": 8,
@@ -391,6 +428,7 @@
   },
   {
     "name": "sweeping_edge",
+    "display_name": "Sweeping Edge",
     "max_level": 3,
     "applies_to": ["sword"],
     "item_multiplier": 4,
