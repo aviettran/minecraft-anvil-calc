@@ -30,29 +30,6 @@ const smallerSelect = {
 };
 
 class Item extends React.PureComponent {
-  addDisabledEnchantments(item) {
-    const existingEnchantments = item.enchantments.map((enchantment) => {
-      return { ...enchantment, enabled: true };
-    });
-    const possibleEnchantments = enchantments
-      .filter(
-        (filtered_enchantment) =>
-          //Possible enchantment is not in list of existing enchantments
-          !existingEnchantments.some(
-            (some_enchantment) =>
-              some_enchantment.name === filtered_enchantment.name
-          ) &&
-          //Possible enchantment is applicable to the given item
-          filtered_enchantment.applies_to.some(
-            (some_item) => some_item === item.name || item.name === "book"
-          )
-      )
-      .map((enchantment) => {
-        return { ...enchantment, level: enchantment.max_level, enabled: false };
-      });
-    return [...existingEnchantments, ...possibleEnchantments];
-  }
-
   getPossibleEnchantmentOptions(item) {
     return enchantments
       .filter(

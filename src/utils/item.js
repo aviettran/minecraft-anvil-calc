@@ -37,14 +37,19 @@ const checkEnchantmentIsCompatible = (targetItem, newEnchantment) => {
         ) // Rule exception for tridents
     ) &&
     //Possible enchantment is applicable to the given item
-    newEnchantment.applies_to.some(
-      (some_item) => some_item === targetItem.name || targetItem.name === "book"
-    )
+    (newEnchantment.applies_to.some(
+      (some_item) => some_item === targetItem.name
+    ) ||
+      targetItem.name === "book")
   );
 };
 
-const mergeEnchantments = (sacrificeItem, targetEnchantments) => {
-  return sacrificeItem.enchantments.reduce(
+const mergeEnchantments = (
+  sacrificeItem,
+  targetEnchantments,
+  sacrificeEnchantments //mutable
+) => {
+  return sacrificeEnchantments.reduce(
     (mergeResults, sacrificeEnchantment) => {
       const multiplier =
         sacrificeItem.name === "book"
@@ -152,8 +157,16 @@ const combineItems = (items) => {
       if (targetItem.name === "book") {
         eligibleItems = [
           eligibleItems.reduce((cheapestBook, item) => {
-            return mergeEnchantments(item, targetItem.enchantments).cost <
-              mergeEnchantments(cheapestBook, targetItem.enchantments).cost
+            return mergeEnchantments(
+              item,
+              targetItem.enchantments,
+              item.enchantments
+            ).cost <
+              mergeEnchantments(
+                cheapestBook,
+                targetItem.enchantments,
+                cheapestBook.enchantments
+              ).cost
               ? item
               : cheapestBook;
           }, eligibleItems[0]),
