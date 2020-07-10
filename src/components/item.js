@@ -9,7 +9,9 @@ import {
 } from "react-bootstrap";
 import enchantments from "../data/enchantments.json";
 import Select from "react-select";
-import { checkEnchantmentIsCompatible } from "../utils/item";
+import { checkEnchantmentIsCompatible, getDisplayName } from "../utils/item";
+import { getEnchantmentDisplayName } from "../utils/helpers";
+import Icon from "./icon";
 
 const smallerSelect = {
   control: (provided, state) => ({
@@ -61,7 +63,10 @@ class Item extends React.PureComponent {
           ) && checkEnchantmentIsCompatible(item, filtered_enchantment)
       )
       .map((enchantment) => {
-        return { value: enchantment.name, label: enchantment.name };
+        return {
+          value: enchantment.name,
+          label: getEnchantmentDisplayName(enchantment.name),
+        };
       });
   }
 
@@ -81,8 +86,11 @@ class Item extends React.PureComponent {
           <Col sm="auto">
             <Container fluid>
               <Row className="align-items-center">
-                <Col xs="6">
-                  <h2>{item.name}</h2>
+                <Col xs="1">
+                  <Icon name={item.name} size={32} />
+                </Col>
+                <Col xs="5">
+                  <h2>{getDisplayName(item.name)}</h2>
                 </Col>
                 <Col>
                   <button onClick={onDelete} className="close">
@@ -111,14 +119,6 @@ class Item extends React.PureComponent {
                     options={this.getPossibleEnchantmentOptions(item)}
                     onChange={(e) => onAddEnchantment(e)}
                     placeholder="Add enchantments..."
-                    value={
-                      item.enchantmentToAdd
-                        ? {
-                            value: item.enchantmentToAdd,
-                            label: item.enchantmentToAdd,
-                          }
-                        : null
-                    }
                     styles={smallerSelect}
                   />
                 </Col>
@@ -138,7 +138,7 @@ class Item extends React.PureComponent {
               <tbody>
                 {item.enchantments.map((enchantment, index) => (
                   <tr key={index}>
-                    <td>{enchantment.name}</td>
+                    <td>{getEnchantmentDisplayName(enchantment.name)}</td>
                     <td>
                       <input
                         type="number"

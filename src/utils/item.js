@@ -1,5 +1,6 @@
 import enchantments from "../data/enchantments.json";
 import { levelToExperience } from "../utils/helpers";
+import items from "../data/items.json";
 
 const getEnchantments = (item) => {
   return enchantments.filter((enchantment) =>
@@ -196,9 +197,15 @@ const combineItems = (items) => {
   }
 };
 
+const getDisplayName = (item_name) => {
+  const item_data = items.find((find_item) => find_item.name === item_name);
+  return item_data ? item_data.display_name : null;
+};
+
 export {
   getEnchantments,
   getItemData,
   checkEnchantmentIsCompatible,
   combineItems,
+  getDisplayName,
 };

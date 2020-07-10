@@ -1,3 +1,5 @@
+import enchantments from "../data/enchantments.json";
+
 const numToNumeral = (num) => {
   switch (num) {
     case 1:
@@ -31,4 +33,16 @@ const addIndexes = (arrayToIndex) => {
   });
 };
 
-export { numToNumeral, levelToExperience, addIndexes };
+const getEnchantmentDisplayName = (enchantment_name) => {
+  const enchantment_data = enchantments.find(
+    (find_enchantment) => find_enchantment.name === enchantment_name
+  );
+  return enchantment_data ? enchantment_data.display_name : null;
+};
+
+export {
+  numToNumeral,
+  levelToExperience,
+  addIndexes,
+  getEnchantmentDisplayName,
+};
