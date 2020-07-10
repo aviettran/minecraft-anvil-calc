@@ -224,27 +224,27 @@ class App extends React.Component {
     return (
       <div className="App">
         <Container fluid>
-          <Row>
-            <Col xs="2">
+          <Row xl="auto">
+            <Col xs="4" xl="2">
               <Select
                 options={this.getAddOptions()}
                 onChange={(e) => this.changeItemToAdd(e)}
                 placeholder="Items..."
               />
             </Col>
-            <Col xs="1">
+            <Col xs="2" xl="1">
               <Button variant="outline-primary" onClick={() => this.addItem()}>
                 Add
               </Button>
             </Col>
-            <Col xs="2">
+            <Col xs="4" xl="2">
               <Select
                 options={this.getPresetOptions()}
                 onChange={(e) => this.changePreset(e)}
                 placeholder="Presets..."
               />
             </Col>
-            <Col xs="2">
+            <Col xs="2" xl="1">
               <Button
                 variant="outline-primary"
                 onClick={() => this.setPreset()}
@@ -252,10 +252,9 @@ class App extends React.Component {
                 Select Preset
               </Button>
             </Col>
-            <Col xs="6"></Col>
           </Row>
           <Row>
-            <Col>
+            <Col xs="auto">
               {items_to_combine.map((item) => {
                 return (
                   <Item
@@ -279,7 +278,7 @@ class App extends React.Component {
                 );
               })}
             </Col>
-            <Col>
+            <Col xs="6">
               <h3>Results</h3>
               <p>{results.status}</p>
               <p>Total Levels: {results.cost}</p>
