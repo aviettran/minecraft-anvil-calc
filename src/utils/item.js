@@ -69,7 +69,10 @@ const mergeEnchantments = (
         let levelDifference =
           sacrificeEnchantment.level - newMatchedEnchantment.level;
         // Levels are the same. Bump level.
-        if (levelDifference === 0) {
+        if (
+          levelDifference === 0 &&
+          newMatchedEnchantment.max_level > newMatchedEnchantment.level
+        ) {
           levelDifference += 1;
           newLevel += 1;
         }

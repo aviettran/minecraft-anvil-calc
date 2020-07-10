@@ -96,6 +96,7 @@ class Item extends React.PureComponent {
                     options={this.getPossibleEnchantmentOptions(item)}
                     onChange={(e) => onAddEnchantment(e)}
                     placeholder="Add enchantments..."
+                    value={null} //Enchantments added immediately; this should always be null
                     styles={smallerSelect}
                   />
                 </Col>
