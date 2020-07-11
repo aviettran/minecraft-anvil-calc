@@ -6,7 +6,7 @@ import enchantments from "./data/enchantments.json";
 import Item from "./components/item";
 import Step from "./components/step";
 import { getItemData, getDisplayName } from "./utils/item";
-//import { combineItems } from "./utils/item"; //for debugging
+// import { combineItems } from "./utils/item"; //for debugging
 import worker from "workerize-loader!./utils/worker.js"; // eslint-disable-line import/no-webpack-loader-syntax
 import { Container, Row, Col, Table, Button } from "react-bootstrap";
 import { levelToExperience, addIndexes } from "./utils/helpers";
@@ -49,7 +49,11 @@ class App extends React.Component {
     super(props);
     this.state = {
       items_to_combine: [],
-      results: { targetItem: {}, steps: [], status: "No items to combine" },
+      results: {
+        targetItem: {},
+        steps: [],
+        status: "No items or items cannot be combined.",
+      },
       nextIndex: 0,
     };
   }
@@ -76,12 +80,12 @@ class App extends React.Component {
   }
 
   // componentDidMount() {
-  //   //Preload preset
-  //   // this.setState({ items_to_combine: addIndexes(helmet_preset) });
-  //   // this.combineAndSetState(addIndexes(helmet_preset));
+  //Preload preset
+  // this.setState({ items_to_combine: addIndexes(test_preset) });
+  // this.combineAndSetState(addIndexes(test_preset));
 
   //   //Use the following line to debug (no worker)
-  //   // combineItems(sword_sharpness_preset);
+  // combineItems(addIndexes(test_preset));
   // }
 
   combineAndSetState(items_to_combine) {
@@ -228,6 +232,24 @@ class App extends React.Component {
     this.combineAndSetState(new_items_to_combine);
   }
 
+  checkPreserve(e, item_index, enchantment) {
+    if (!e.target) {
+      return;
+    }
+    const new_items_to_combine = [...this.state.items_to_combine];
+    const new_item = new_items_to_combine.find(
+      (item) => item.index === item_index
+    );
+    const new_enchantment = new_item.enchantments.find(
+      (find_enchantment) => find_enchantment.name === enchantment.name
+    );
+    new_enchantment.preserve = e.target.checked;
+    this.setState({
+      items_to_combine: new_items_to_combine,
+    });
+    this.combineAndSetState(new_items_to_combine);
+  }
+
   render() {
     const { results, items_to_combine } = this.state;
     return (
@@ -283,6 +305,9 @@ class App extends React.Component {
                     onChangePenalty={(e) =>
                       this.changeItemPenalty(e, item.index)
                     }
+                    onCheckPreserve={(e, enchantment) =>
+                      this.checkPreserve(e, item.index, enchantment)
+                    }
                   ></Item>
                 );
               })}
@@ -290,7 +315,7 @@ class App extends React.Component {
             <Col xs="6">
               <h3>Results</h3>
               <p>{results.status}</p>
-              <p>Total Levels: {results.cost}</p>
+              <p>Total Levels: {results.cost || 0}</p>
               <p>
                 Total Experience:{" "}
                 {results.steps.reduce(
