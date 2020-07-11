@@ -6,6 +6,9 @@ import {
   Table,
   InputGroup,
   FormControl,
+  Form,
+  OverlayTrigger,
+  Tooltip,
 } from "react-bootstrap";
 import enchantments from "../data/enchantments.json";
 import Select from "react-select";
@@ -55,6 +58,7 @@ class Item extends React.PureComponent {
       onDeleteEnchantment,
       onChangeLevel,
       onChangePenalty,
+      onCheckPreserve,
     } = this.props;
 
     return (
@@ -109,8 +113,19 @@ class Item extends React.PureComponent {
                 <tr>
                   <th>Enchantment</th>
                   <th>Level</th>
-                  <th>Item Multiplier</th>
-                  <th>Book Multiplier</th>
+                  <th>Item ×</th>
+                  <th>Book ×</th>
+                  <OverlayTrigger
+                    placement="right"
+                    overlay={
+                      <Tooltip id={`tooltip-${item.index}`}>
+                        If mutually exclusive enchantments exist, use this
+                        checkbox to choose the one you want.
+                      </Tooltip>
+                    }
+                  >
+                    <th>Preserve</th>
+                  </OverlayTrigger>
                 </tr>
               </thead>
               <tbody>
@@ -128,6 +143,12 @@ class Item extends React.PureComponent {
                     </td>
                     <td>{enchantment.item_multiplier}</td>
                     <td>{enchantment.book_multiplier}</td>
+                    <td>
+                      <Form.Check
+                        type="checkbox"
+                        onChange={(e) => onCheckPreserve(e, enchantment)}
+                      />
+                    </td>
                     <td>
                       <button
                         onClick={() => onDeleteEnchantment(enchantment)}

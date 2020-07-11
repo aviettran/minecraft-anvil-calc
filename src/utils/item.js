@@ -21,6 +21,20 @@ const getItemData = (item) => {
   return new_item;
 };
 
+//If the box is checked on preserve enchantment, the end result must contain it
+const areEnchantmentsPreserved = (
+  sacrificedItemEnchantments,
+  filtered_enchantments
+) => {
+  const removedEnchantments = sacrificedItemEnchantments.filter(
+    (sacrificed_enchantment) =>
+      !filtered_enchantments.includes(sacrificed_enchantment)
+  );
+  return !removedEnchantments.some(
+    (removed_enchantment) => removed_enchantment.preserve
+  );
+};
+
 const checkEnchantmentIsCompatible = (targetItem, newEnchantment) => {
   return (
     // There isn't an existing enchantment in a mutal exclusion group
@@ -109,6 +123,11 @@ const anvil = (targetItem, sacrificeItem) => {
   const filtered_enchantments = sacrificeItem.enchantments.filter(
     (enchantment) => checkEnchantmentIsCompatible(targetItem, enchantment)
   );
+  if (
+    !areEnchantmentsPreserved(sacrificeItem.enchantments, filtered_enchantments)
+  ) {
+    return { error: true, status: "Preserved enchantments have been lost" };
+  }
   const mergeResults = mergeEnchantments(
     sacrificeItem,
     targetItem.enchantments,
@@ -178,6 +197,10 @@ const combineItems = (items) => {
       //For each eligible item
       eligibleItems.forEach((sacrificeItem) => {
         let anvilResults = anvil(targetItem, sacrificeItem);
+        //Constraint violated in anvil call; return
+        if (anvilResults.error) {
+          return;
+        }
         const remaining_items = nonTargets.filter(
           (item) => item !== sacrificeItem
         );
@@ -187,6 +210,11 @@ const combineItems = (items) => {
             anvilResults.resultingItem,
             ...remaining_items,
           ]);
+
+          //Error found in the recursive call means that a constraint was violated; return
+          if (remaining_items_results.error) {
+            return;
+          }
 
           anvilResults.resultingItem = remaining_items_results.resultingItem;
           anvilResults.cost += remaining_items_results.cost;
@@ -209,7 +237,12 @@ const combineItems = (items) => {
         : cheapestResults;
     }, allResults[0]);
   } else {
-    return { targetItem: items[0], steps: [], status: "No items to combine" };
+    return {
+      targetItem: items[0],
+      steps: [],
+      error: true,
+      status: "No items or items cannot be combined.",
+    };
   }
 };
 
