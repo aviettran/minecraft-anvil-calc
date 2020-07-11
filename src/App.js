@@ -5,6 +5,7 @@ import items from "./data/items.json";
 import enchantments from "./data/enchantments.json";
 import Item from "./components/item";
 import Step from "./components/step";
+import Icon from "./components/icon";
 import { getItemData, getDisplayName } from "./utils/item";
 // import { combineItems } from "./utils/item"; //for debugging
 import worker from "workerize-loader!./utils/worker.js"; // eslint-disable-line import/no-webpack-loader-syntax
@@ -255,6 +256,23 @@ class App extends React.Component {
     return (
       <div className="App">
         <Container fluid>
+          <Row>
+            <Col xs="auto">
+              <Icon name="anvil" size="64" />
+            </Col>
+            <Col>
+              <h1>Minecraft Anvil Calculator</h1>
+              <p>
+                Add an item or select a preset to begin.
+                <a
+                  href="https://github.com/aviettran/minecraft-anvil-calc"
+                  className="github"
+                >
+                  [github]
+                </a>
+              </p>
+            </Col>
+          </Row>
           <Row xl="auto">
             <Col xs="4" xl="2">
               <Select
