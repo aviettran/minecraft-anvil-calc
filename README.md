@@ -1,3 +1,1 @@
-### TODO
-
-- Prioritize a certain exclusive?
+https://aviettran.github.io/minecraft-anvil-calc/
