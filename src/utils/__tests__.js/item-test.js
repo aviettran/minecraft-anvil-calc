@@ -1,12 +1,10 @@
 import {
-  getEnchantments,
   getItemData,
   areEnchantmentsPreserved,
   checkEnchantmentIsCompatible,
   mergeEnchantments,
   anvil,
   combineItems,
-  getDisplayName,
 } from "../item";
 import enchantments from "../../data/enchantments.json";
 
@@ -92,6 +90,7 @@ it("test trident compatibility", () => {
 });
 
 it("test merging enchanntments", () => {
+  const settings = { java_edition: false };
   let test_sword = {
     name: "sword",
     enchantments: [
@@ -132,9 +131,12 @@ it("test merging enchanntments", () => {
     ],
   };
 
-  const merge_results = mergeEnchantments(test_book, test_sword.enchantments, [
-    ...test_book.enchantments,
-  ]);
+  const merge_results = mergeEnchantments(
+    test_book,
+    test_sword.enchantments,
+    [...test_book.enchantments],
+    settings
+  );
 
   expect(
     merge_results.resultingEnchantments.find(
@@ -155,6 +157,7 @@ it("test merging enchanntments", () => {
 });
 
 it("test anvil", () => {
+  const settings = { java_edition: false };
   let test_sword = {
     name: "sword",
     enchantments: [
@@ -201,7 +204,7 @@ it("test anvil", () => {
     penalty: 1,
   };
 
-  const anvil_results = anvil(test_sword, test_book);
+  const anvil_results = anvil(test_sword, test_book, settings);
   const anvil_enchantments = anvil_results.resultingItem.enchantments;
 
   expect(
@@ -223,6 +226,7 @@ it("test anvil", () => {
 });
 
 it("test combine items", () => {
+  const settings = { java_edition: false };
   let test_sword = {
     name: "sword",
     enchantments: [
@@ -276,7 +280,10 @@ it("test combine items", () => {
     ],
   };
 
-  let combine_results = combineItems([test_sword, test_book_1, test_book_2]);
+  let combine_results = combineItems(
+    [test_sword, test_book_1, test_book_2],
+    settings
+  );
   let combine_enchantments = combine_results.resultingItem.enchantments;
 
   // Sharpness
@@ -301,6 +308,7 @@ it("test combine items", () => {
   ).toEqual(undefined);
   expect(combine_results.cost).toEqual(20);
 
+  // Smite
   test_book_1.enchantments.find(
     (enchantment) => enchantment.name === "sharpness"
   ).preserve = false;
@@ -308,10 +316,12 @@ it("test combine items", () => {
     (enchantment) => enchantment.name === "smite"
   ).preserve = true;
 
-  combine_results = combineItems([test_sword, test_book_1, test_book_2]);
+  combine_results = combineItems(
+    [test_sword, test_book_1, test_book_2],
+    settings
+  );
   combine_enchantments = combine_results.resultingItem.enchantments;
 
-  // Smite
   expect(
     combine_enchantments.find((enchantment) => enchantment.name === "smite")
       .level
@@ -320,4 +330,12 @@ it("test combine items", () => {
     combine_enchantments.find((enchantment) => enchantment.name === "sharpness")
   ).toEqual(undefined);
   expect(combine_results.cost).toEqual(19);
+
+  // Java Edition
+  settings.java_edition = true;
+  combine_results = combineItems(
+    [test_sword, test_book_1, test_book_2],
+    settings
+  );
+  expect(combine_results.cost).toEqual(29);
 });
