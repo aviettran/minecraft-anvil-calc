@@ -254,7 +254,10 @@ const getDisplayName = (item_name) => {
 export {
   getEnchantments,
   getItemData,
+  areEnchantmentsPreserved,
   checkEnchantmentIsCompatible,
+  mergeEnchantments,
+  anvil,
   combineItems,
   getDisplayName,
 };
