@@ -1,6 +1,6 @@
 name: Test
 on:
-  pull:
+  pr:
     branches: [master]
 jobs:
   build-and-deploy:
