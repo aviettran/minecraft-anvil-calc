@@ -61,7 +61,8 @@ const checkEnchantmentIsCompatible = (targetItem, newEnchantment) => {
 const mergeEnchantments = (
   sacrificeItem,
   targetEnchantments,
-  sacrificeEnchantments //mutable
+  sacrificeEnchantments, //mutable
+  settings
 ) => {
   return sacrificeEnchantments.reduce(
     (mergeResults, sacrificeEnchantment) => {
@@ -91,7 +92,9 @@ const mergeEnchantments = (
           newLevel += 1;
         }
         if (levelDifference > 0) {
-          mergeResults.cost += levelDifference * multiplier;
+          mergeResults.cost += settings.java_edition
+            ? 0
+            : levelDifference * multiplier;
           newMatchedEnchantment.level = newLevel;
           // Remove old enchantment and replace with new copy
           mergeResults.resultingEnchantments = [
@@ -102,6 +105,8 @@ const mergeEnchantments = (
             newMatchedEnchantment,
           ];
         }
+        // If Java Edition, cost is always just multiplier * new level
+        mergeResults.cost += settings.java_edition ? newLevel * multiplier : 0;
       } else {
         // New enchantment. Add.
         mergeResults.resultingEnchantments = [
@@ -116,7 +121,7 @@ const mergeEnchantments = (
   );
 };
 
-const anvil = (targetItem, sacrificeItem) => {
+const anvil = (targetItem, sacrificeItem, settings) => {
   const targetPenalty = targetItem.penalty || 0;
   const sacrificePenalty = sacrificeItem.penalty || 0;
   // Filter non-applicable enchantments
@@ -131,7 +136,8 @@ const anvil = (targetItem, sacrificeItem) => {
   const mergeResults = mergeEnchantments(
     sacrificeItem,
     targetItem.enchantments,
-    filtered_enchantments
+    filtered_enchantments,
+    settings
   );
   const resultingItem = {
     ...targetItem,
@@ -142,7 +148,10 @@ const anvil = (targetItem, sacrificeItem) => {
     Math.pow(2, targetPenalty) -
     1 +
     Math.pow(2, sacrificePenalty) -
-    1;
+    1 +
+    (settings.java_edition
+      ? sacrificeItem.enchantments.length - filtered_enchantments.length // JE only: add 1 per non-applicable enchantment
+      : 0);
   resultingItem.penalty = Math.max(targetPenalty, sacrificePenalty) + 1;
   const results = {
     resultingItem: resultingItem,
@@ -160,7 +169,7 @@ const anvil = (targetItem, sacrificeItem) => {
   return results;
 };
 
-const combineItems = (items) => {
+const combineItems = (items, settings) => {
   items = items.map(getItemData);
 
   //For each item, determine what can be combined into it, use anvil, then call combineItems with what remains
@@ -182,12 +191,14 @@ const combineItems = (items) => {
             return mergeEnchantments(
               item,
               targetItem.enchantments,
-              item.enchantments
+              item.enchantments,
+              settings
             ).cost <
               mergeEnchantments(
                 cheapestBook,
                 targetItem.enchantments,
-                cheapestBook.enchantments
+                cheapestBook.enchantments,
+                settings
               ).cost
               ? item
               : cheapestBook;
@@ -196,7 +207,7 @@ const combineItems = (items) => {
       }
       //For each eligible item
       eligibleItems.forEach((sacrificeItem) => {
-        let anvilResults = anvil(targetItem, sacrificeItem);
+        let anvilResults = anvil(targetItem, sacrificeItem, settings);
         //Constraint violated in anvil call; return
         if (anvilResults.error) {
           return;
@@ -206,10 +217,10 @@ const combineItems = (items) => {
         );
 
         if (remaining_items.length > 0) {
-          const remaining_items_results = combineItems([
-            anvilResults.resultingItem,
-            ...remaining_items,
-          ]);
+          const remaining_items_results = combineItems(
+            [anvilResults.resultingItem, ...remaining_items],
+            settings
+          );
 
           //Error found in the recursive call means that a constraint was violated; return
           if (remaining_items_results.error) {

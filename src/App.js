@@ -9,7 +9,7 @@ import Icon from "./components/icon";
 import { getItemData, getDisplayName } from "./utils/item";
 // import { combineItems } from "./utils/item"; //for debugging
 import worker from "workerize-loader!./utils/worker.js"; // eslint-disable-line import/no-webpack-loader-syntax
-import { Container, Row, Col, Table, Button } from "react-bootstrap";
+import { Container, Row, Col, Table, Button, Form } from "react-bootstrap";
 import { levelToExperience, addIndexes } from "./utils/helpers";
 import Select from "react-select";
 
@@ -56,6 +56,7 @@ class App extends React.Component {
         status: "No items or items cannot be combined.",
       },
       nextIndex: 0,
+      settings: { java_edition: false },
     };
   }
 
@@ -89,15 +90,17 @@ class App extends React.Component {
   // combineItems(addIndexes(test_preset));
   // }
 
-  combineAndSetState(items_to_combine) {
+  combineAndSetState(items_to_combine, settings) {
     this.setState({
       results: { targetItem: {}, steps: [], status: "Loading..." },
     });
     instance.terminate();
     instance = worker();
-    instance.combineItemsExecute(items_to_combine).then((results) => {
-      this.setState({ results: results });
-    });
+    instance
+      .combineItemsExecute(items_to_combine, settings || this.state.settings)
+      .then((results) => {
+        this.setState({ results: results });
+      });
   }
 
   changeItemToAdd(e) {
@@ -251,12 +254,26 @@ class App extends React.Component {
     this.combineAndSetState(new_items_to_combine);
   }
 
+  checkJavaEdition(e) {
+    if (!e.target) {
+      return;
+    }
+    const new_settings = {
+      ...this.state.settings,
+      java_edition: e.target.checked,
+    };
+    this.setState({
+      settings: new_settings,
+    });
+    this.combineAndSetState(this.state.items_to_combine, new_settings);
+  }
+
   render() {
     const { results, items_to_combine } = this.state;
     return (
       <div className="App">
         <Container fluid>
-          <Row>
+          <Row className="align-items-center">
             <Col xs="auto">
               <Icon name="anvil" size="64" />
             </Col>
@@ -273,33 +290,40 @@ class App extends React.Component {
               </p>
             </Col>
           </Row>
-          <Row xl="auto">
-            <Col xs="4" xl="2">
+          <Row xl="auto" className="align-items-center">
+            <Col xs="6" xl="2">
               <Select
                 options={this.getAddOptions()}
                 onChange={(e) => this.changeItemToAdd(e)}
                 placeholder="Items..."
               />
             </Col>
-            <Col xs="2" xl="1">
+            <Col xl="1">
               <Button variant="outline-primary" onClick={() => this.addItem()}>
                 Add
               </Button>
             </Col>
-            <Col xs="4" xl="2">
+            <Col xs="6" xl="2">
               <Select
                 options={this.getPresetOptions()}
                 onChange={(e) => this.changePreset(e)}
                 placeholder="Presets..."
               />
             </Col>
-            <Col xs="2" xl="1">
+            <Col xl="1">
               <Button
                 variant="outline-primary"
                 onClick={() => this.setPreset()}
               >
                 Select Preset
               </Button>
+            </Col>
+            <Col xl="2">
+              <Form.Check
+                type="checkbox"
+                label="Java Edition"
+                onChange={(e) => this.checkJavaEdition(e)}
+              />
             </Col>
           </Row>
           <Row>
