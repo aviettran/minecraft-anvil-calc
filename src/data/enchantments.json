@@ -33,7 +33,9 @@
     "name": "feather_falling",
     "display_name": "Feather Falling",
     "max_level": 4,
-    "applies_to": ["boots"],
+    "applies_to": [
+      "boots"
+    ],
     "item_multiplier": 2,
     "book_multiplier": 1
   },
@@ -85,7 +87,10 @@
     "name": "respiration",
     "display_name": "Respiration",
     "max_level": 3,
-    "applies_to": ["helmet", "turtle_helmet"],
+    "applies_to": [
+      "helmet",
+      "turtle_helmet"
+    ],
     "item_multiplier": 4,
     "book_multiplier": 2
   },
@@ -93,7 +98,9 @@
     "name": "depth_strider",
     "display_name": "Depth Strider",
     "max_level": 3,
-    "applies_to": ["boots"],
+    "applies_to": [
+      "boots"
+    ],
     "item_multiplier": 4,
     "book_multiplier": 2,
     "group": "mobility"
@@ -102,7 +109,10 @@
     "name": "aqua_affinity",
     "display_name": "Aqua Affinity",
     "max_level": 1,
-    "applies_to": ["helmet", "turtle_helmet"],
+    "applies_to": [
+      "helmet",
+      "turtle_helmet"
+    ],
     "item_multiplier": 4,
     "book_multiplier": 2
   },
@@ -110,7 +120,10 @@
     "name": "sharpness",
     "display_name": "Sharpness",
     "max_level": 5,
-    "applies_to": ["sword", "axe"],
+    "applies_to": [
+      "sword",
+      "axe"
+    ],
     "item_multiplier": 1,
     "book_multiplier": 1,
     "group": "attack"
@@ -119,7 +132,10 @@
     "name": "smite",
     "display_name": "Smite",
     "max_level": 5,
-    "applies_to": ["sword", "axe"],
+    "applies_to": [
+      "sword",
+      "axe"
+    ],
     "item_multiplier": 2,
     "book_multiplier": 1,
     "group": "attack"
@@ -128,7 +144,10 @@
     "name": "bane_of_arthropods",
     "display_name": "Bane of Arthropods",
     "max_level": 5,
-    "applies_to": ["sword", "axe"],
+    "applies_to": [
+      "sword",
+      "axe"
+    ],
     "item_multiplier": 2,
     "book_multiplier": 1,
     "group": "attack"
@@ -137,7 +156,9 @@
     "name": "knockback",
     "display_name": "Knockback",
     "max_level": 2,
-    "applies_to": ["sword"],
+    "applies_to": [
+      "sword"
+    ],
     "item_multiplier": 2,
     "book_multiplier": 1
   },
@@ -145,7 +166,9 @@
     "name": "fire_aspect",
     "display_name": "Fire Aspect",
     "max_level": 2,
-    "applies_to": ["sword"],
+    "applies_to": [
+      "sword"
+    ],
     "item_multiplier": 4,
     "book_multiplier": 2
   },
@@ -153,7 +176,9 @@
     "name": "looting",
     "display_name": "Looting",
     "max_level": 3,
-    "applies_to": ["sword"],
+    "applies_to": [
+      "sword"
+    ],
     "item_multiplier": 4,
     "book_multiplier": 2
   },
@@ -161,7 +186,13 @@
     "name": "efficiency",
     "display_name": "Efficiency",
     "max_level": 5,
-    "applies_to": ["pickaxe", "shovel", "axe", "shears"],
+    "applies_to": [
+      "pickaxe",
+      "shovel",
+      "axe",
+      "shears",
+      "hoe"
+    ],
     "item_multiplier": 1,
     "book_multiplier": 1
   },
@@ -169,7 +200,12 @@
     "name": "silk_touch",
     "display_name": "Silk Touch",
     "max_level": 1,
-    "applies_to": ["pickaxe", "shovel", "axe"],
+    "applies_to": [
+      "pickaxe",
+      "shovel",
+      "axe",
+      "hoe"
+    ],
     "item_multiplier": 8,
     "book_multiplier": 4,
     "group": "tool_type"
@@ -207,7 +243,12 @@
     "name": "fortune",
     "display_name": "Fortune",
     "max_level": 3,
-    "applies_to": ["pickaxe", "shovel", "axe"],
+    "applies_to": [
+      "pickaxe",
+      "shovel",
+      "axe",
+      "hoe"
+    ],
     "item_multiplier": 4,
     "book_multiplier": 2,
     "group": "tool_type"
@@ -216,7 +257,9 @@
     "name": "power",
     "display_name": "Power",
     "max_level": 5,
-    "applies_to": ["bow"],
+    "applies_to": [
+      "bow"
+    ],
     "item_multiplier": 1,
     "book_multiplier": 1
   },
@@ -224,7 +267,9 @@
     "name": "punch",
     "display_name": "Punch",
     "max_level": 2,
-    "applies_to": ["bow"],
+    "applies_to": [
+      "bow"
+    ],
     "item_multiplier": 4,
     "book_multiplier": 2
   },
@@ -232,7 +277,9 @@
     "name": "flame",
     "display_name": "Flame",
     "max_level": 1,
-    "applies_to": ["bow"],
+    "applies_to": [
+      "bow"
+    ],
     "item_multiplier": 4,
     "book_multiplier": 2
   },
@@ -240,7 +287,9 @@
     "name": "infinity",
     "display_name": "Infinity",
     "max_level": 1,
-    "applies_to": ["bow"],
+    "applies_to": [
+      "bow"
+    ],
     "item_multiplier": 8,
     "book_multiplier": 4,
     "group": "bow_type"
@@ -249,7 +298,9 @@
     "name": "luck_of_the_sea",
     "display_name": "Luck of the Sea",
     "max_level": 3,
-    "applies_to": ["fishing_rod"],
+    "applies_to": [
+      "fishing_rod"
+    ],
     "item_multiplier": 4,
     "book_multiplier": 2
   },
@@ -257,7 +308,9 @@
     "name": "lure",
     "display_name": "Lure",
     "max_level": 3,
-    "applies_to": ["fishing_rod"],
+    "applies_to": [
+      "fishing_rod"
+    ],
     "item_multiplier": 4,
     "book_multiplier": 2
   },
@@ -265,7 +318,9 @@
     "name": "frost_walker",
     "display_name": "Frost Walker",
     "max_level": 2,
-    "applies_to": ["boots"],
+    "applies_to": [
+      "boots"
+    ],
     "item_multiplier": 4,
     "book_multiplier": 2,
     "enchanting_table": false,
@@ -358,7 +413,9 @@
     "name": "impaling",
     "display_name": "Impaling",
     "max_level": 5,
-    "applies_to": ["trident"],
+    "applies_to": [
+      "trident"
+    ],
     "item_multiplier": 4,
     "book_multiplier": 2
   },
@@ -366,7 +423,9 @@
     "name": "riptide",
     "display_name": "Riptide",
     "max_level": 3,
-    "applies_to": ["trident"],
+    "applies_to": [
+      "trident"
+    ],
     "item_multiplier": 4,
     "book_multiplier": 2,
     "group": "trident_type"
@@ -375,7 +434,9 @@
     "name": "loyalty",
     "display_name": "Loyalty",
     "max_level": 3,
-    "applies_to": ["trident"],
+    "applies_to": [
+      "trident"
+    ],
     "item_multiplier": 1,
     "book_multiplier": 1,
     "group": "trident_type",
@@ -385,7 +446,9 @@
     "name": "channeling",
     "display_name": "Channeling",
     "max_level": 1,
-    "applies_to": ["trident"],
+    "applies_to": [
+      "trident"
+    ],
     "item_multiplier": 8,
     "book_multiplier": 4,
     "group": "trident_type",
@@ -395,7 +458,9 @@
     "name": "multishot",
     "display_name": "Multishot",
     "max_level": 1,
-    "applies_to": ["crossbow"],
+    "applies_to": [
+      "crossbow"
+    ],
     "item_multiplier": 4,
     "book_multiplier": 2,
     "group": "crossbow_type"
@@ -404,7 +469,9 @@
     "name": "piercing",
     "display_name": "Piercing",
     "max_level": 4,
-    "applies_to": ["crossbow"],
+    "applies_to": [
+      "crossbow"
+    ],
     "item_multiplier": 1,
     "book_multiplier": 1,
     "group": "crossbow_type"
@@ -413,7 +480,9 @@
     "name": "quick_charge",
     "display_name": "Quick Charge",
     "max_level": 3,
-    "applies_to": ["crossbow"],
+    "applies_to": [
+      "crossbow"
+    ],
     "item_multiplier": 2,
     "book_multiplier": 1
   },
@@ -421,7 +490,9 @@
     "name": "soul_speed",
     "display_name": "Soul Speed",
     "max_level": 3,
-    "applies_to": ["boots"],
+    "applies_to": [
+      "boots"
+    ],
     "item_multiplier": 8,
     "book_multiplier": 4,
     "enchanting_table": false
@@ -430,7 +501,9 @@
     "name": "sweeping_edge",
     "display_name": "Sweeping Edge",
     "max_level": 3,
-    "applies_to": ["sword"],
+    "applies_to": [
+      "sword"
+    ],
     "item_multiplier": 4,
     "book_multiplier": 2,
     "java_only": true
