@@ -22,6 +22,8 @@ import sword_sharpness_preset from "./data/sword_sharpness_preset.json";
 import pickaxe_fortune_preset from "./data/pickaxe_fortune_preset.json";
 import pickaxe_silk_touch_preset from "./data/pickaxe_silk_touch_preset.json";
 import bow_preset from "./data/bow_preset.json";
+import hoe_fortune_preset from "./data/hoe_fortune_preset.json";
+import hoe_silk_touch_preset from "./data/hoe_silk_touch_preset.json";
 
 let instance = worker();
 const presets = {
@@ -43,6 +45,14 @@ const presets = {
     display_name: "Pickaxe (Silk Touch)",
   },
   bow: { data: bow_preset, display_name: "Bow" },
+  hoe_fortune: {
+    data: hoe_fortune_preset,
+    display_name: "Hoe (Fortune)",
+  },
+  hoe_silk_touch: {
+    data: hoe_silk_touch_preset,
+    display_name: "Hoe (Silk Touch)",
+  },
 };
 
 class App extends React.Component {
