@@ -82,9 +82,7 @@ class Item extends React.PureComponent {
               <Row>
                 <Col>
                   <InputGroup size="sm">
-                    <InputGroup.Prepend>
-                      <InputGroup.Text>Penalty</InputGroup.Text>
-                    </InputGroup.Prepend>
+                    <InputGroup.Text>Penalty</InputGroup.Text>
                     <FormControl
                       type="number"
                       value={item.penalty || 0}

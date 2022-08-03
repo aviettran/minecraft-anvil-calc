@@ -8,7 +8,7 @@ import Step from "./components/step";
 import Icon from "./components/icon";
 import { getItemData, getDisplayName } from "./utils/item";
 // import { combineItems } from "./utils/item"; //for debugging
-import worker from "workerize-loader!./utils/worker.js"; // eslint-disable-line import/no-webpack-loader-syntax
+import worker from 'workerize-loader!./utils/worker'; // eslint-disable-line import/no-webpack-loader-syntax
 import { Container, Row, Col, Table, Button, Form } from "react-bootstrap";
 import { levelToExperience, addIndexes } from "./utils/helpers";
 import Select from "react-select";
