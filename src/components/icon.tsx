@@ -1,6 +1,11 @@
 import React from "react";
 
-class Icon extends React.PureComponent {
+interface IconProps {
+  name: string,
+  size: number
+}
+
+class Icon extends React.PureComponent<IconProps> {
   render() {
     const { name, size } = this.props;
     return (

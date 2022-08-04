@@ -11,30 +11,41 @@ import {
   Tooltip,
 } from "react-bootstrap";
 import enchantments from "../data/enchantments.json";
-import Select from "react-select";
+import Select, { StylesConfig } from "react-select";
 import { checkEnchantmentIsCompatible, getDisplayName } from "../utils/item";
 import { getEnchantmentDisplayName } from "../utils/helpers";
 import Icon from "./icon";
+import { Enchantment, EnchantmentSpecification, ItemData } from "../models";
 
-const smallerSelect = {
-  control: (provided, state) => ({
+const smallerSelect: StylesConfig = {
+  control: (provided) => ({
     ...provided,
     minHeight: "31px",
     height: "31px",
   }),
-  input: (provided, state) => ({
+  input: (provided) => ({
     ...provided,
     margin: "0px",
   }),
-  indicatorsContainer: (provided, state) => ({
+  indicatorsContainer: (provided) => ({
     ...provided,
     height: "31px",
   }),
 };
 
-class Item extends React.PureComponent {
-  getPossibleEnchantmentOptions(item) {
-    return enchantments
+interface ItemProps {
+  item: ItemData,
+  onDelete: React.MouseEventHandler,
+  onAddEnchantment: (e: any) => void,
+  onDeleteEnchantment: (enchantment: Enchantment) => void,
+  onChangeLevel: (e: React.ChangeEvent<HTMLInputElement>, enchantment: Enchantment) => void,
+  onChangePenalty: (fn: any, index: number) => void,
+  onCheckPreserve: (e: React.ChangeEvent<HTMLInputElement>, enchantment: Enchantment) => void,
+}
+
+class Item extends React.PureComponent<ItemProps> {
+  getPossibleEnchantmentOptions(item: ItemData) {
+    return (enchantments as Array<EnchantmentSpecification>)
       .filter(
         (filtered_enchantment) =>
           !item.enchantments.some(
@@ -135,12 +146,12 @@ class Item extends React.PureComponent {
                         type="number"
                         value={enchantment.level}
                         min="1"
-                        max={enchantment.max_level}
+                        max={enchantment.specification?.max_level ?? 1}
                         onChange={(e) => onChangeLevel(e, enchantment)}
                       />
                     </td>
-                    <td>{enchantment.item_multiplier}</td>
-                    <td>{enchantment.book_multiplier}</td>
+                    <td>{enchantment.specification?.item_multiplier ?? 0}</td>
+                    <td>{enchantment.specification?.book_multiplier ?? 0}</td>
                     <td>
                       <Form.Check
                         type="checkbox"

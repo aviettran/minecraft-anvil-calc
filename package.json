@@ -6,6 +6,9 @@
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^11.0.0-beta.1",
     "@testing-library/user-event": "^14.4.1",
+    "@types/jest": "^28.1.6",
+    "@types/react": "^18.0.15",
+    "@types/react-dom": "^18.0.6",
     "bootstrap": "^5.2.0",
     "react": "^18.2.0",
     "react-bootstrap": "2.4.0",
@@ -36,8 +39,12 @@
     ]
   },
   "devDependencies": {
+    "@types/node": "^18.6.3",
+    "@typescript-eslint/eslint-plugin": "^5.32.0",
+    "@typescript-eslint/parser": "^5.32.0",
     "customize-cra": "^1.0.0",
     "react-app-rewired": "^2.2.1",
+    "typescript": "^4.7.4",
     "workerize-loader": "^2.0.2"
   },
   "homepage": "."

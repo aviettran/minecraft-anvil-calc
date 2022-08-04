@@ -1,5 +1,6 @@
 import React from "react";
 import { Container, Row, Badge } from "react-bootstrap";
+import { StepData } from "../models";
 import {
   numToNumeral,
   levelToExperience,
@@ -8,7 +9,11 @@ import {
 import { getDisplayName } from "../utils/item";
 import Icon from "./icon";
 
-class Step extends React.PureComponent {
+interface StepProps {
+  step: StepData
+}
+
+class Step extends React.PureComponent<StepProps> {
   render() {
     const { step } = this.props;
     return (
@@ -18,7 +23,7 @@ class Step extends React.PureComponent {
             <Row>
               <Icon name={step.targetItem.name} size={16} />
               {getDisplayName(step.targetItem.name)}
-              <Badge pill variant="warning">
+              <Badge pill bg="warning">
                 {step.targetItem.penalty}
               </Badge>
             </Row>
@@ -28,7 +33,7 @@ class Step extends React.PureComponent {
                   <Badge
                     key={index}
                     pill
-                    variant={enchantment.is_curse ? "danger" : "primary"}
+                    bg={enchantment.is_curse ? "danger" : "primary"}
                   >
                     {getEnchantmentDisplayName(enchantment.name)}{" "}
                     {numToNumeral(enchantment.level)}
@@ -43,7 +48,7 @@ class Step extends React.PureComponent {
             <Row>
               <Icon name={step.sacrificeItem.name} size={16} />
               {getDisplayName(step.sacrificeItem.name)}
-              <Badge pill variant="warning">
+              <Badge pill bg="warning">
                 {step.sacrificeItem.penalty}
               </Badge>
             </Row>
@@ -53,7 +58,7 @@ class Step extends React.PureComponent {
                   <Badge
                     key={index}
                     pill
-                    variant={enchantment.is_curse ? "danger" : "primary"}
+                    bg={enchantment.is_curse ? "danger" : "primary"}
                   >
                     {getEnchantmentDisplayName(enchantment.name)}{" "}
                     {numToNumeral(enchantment.level)}
@@ -68,7 +73,7 @@ class Step extends React.PureComponent {
             <Row>
               <Icon name={step.resultingItem.name} size={16} />
               {getDisplayName(step.resultingItem.name)}
-              <Badge pill variant="warning">
+              <Badge pill bg="warning">
                 {step.resultingItem.penalty}
               </Badge>
             </Row>
@@ -78,7 +83,7 @@ class Step extends React.PureComponent {
                   <Badge
                     key={index}
                     pill
-                    variant={enchantment.is_curse ? "danger" : "primary"}
+                    bg={enchantment.is_curse ? "danger" : "primary"}
                   >
                     {getEnchantmentDisplayName(enchantment.name)}{" "}
                     {numToNumeral(enchantment.level)}

@@ -1,6 +1,6 @@
 import enchantments from "../data/enchantments.json";
 
-const numToNumeral = (num) => {
+const numToNumeral = (num: number) => {
   switch (num) {
     case 1:
       return "I";
@@ -17,7 +17,7 @@ const numToNumeral = (num) => {
   }
 };
 
-const levelToExperience = (level) => {
+const levelToExperience = (level: number) => {
   if (level < 17) {
     return Math.pow(level, 2) + 6 * level;
   } else if (level < 31) {
@@ -27,13 +27,13 @@ const levelToExperience = (level) => {
   }
 };
 
-const addIndexes = (arrayToIndex) => {
+const addIndexes = <A>(arrayToIndex: Array<A>) => {
   return arrayToIndex.map((item, index) => {
     return { ...item, index: index };
   });
 };
 
-const getEnchantmentDisplayName = (enchantment_name) => {
+const getEnchantmentDisplayName = (enchantment_name: string) => {
   const enchantment_data = enchantments.find(
     (find_enchantment) => find_enchantment.name === enchantment_name
   );
