@@ -11,13 +11,14 @@ import {
   Tooltip,
 } from "react-bootstrap";
 import enchantments from "../data/enchantments.json";
-import Select, { StylesConfig } from "react-select";
+import Select, { StylesConfig, ActionMeta, GroupBase } from "react-select";
 import { checkEnchantmentIsCompatible, getDisplayName } from "../utils/item";
 import { getEnchantmentDisplayName } from "../utils/helpers";
 import Icon from "./icon";
 import { Enchantment, EnchantmentSpecification, ItemData } from "../models";
+import { SelectValue } from "../App";
 
-const smallerSelect: StylesConfig = {
+const smallerSelect: StylesConfig<SelectValue, false, GroupBase<SelectValue>> = {
   control: (provided) => ({
     ...provided,
     minHeight: "31px",
@@ -36,11 +37,11 @@ const smallerSelect: StylesConfig = {
 interface ItemProps {
   item: ItemData,
   onDelete: React.MouseEventHandler,
-  onAddEnchantment: (e: any) => void,
+  onAddEnchantment: (option: SelectValue, actionMeta: ActionMeta<SelectValue>) => void,
   onDeleteEnchantment: (enchantment: Enchantment) => void,
-  onChangeLevel: (e: React.ChangeEvent<HTMLInputElement>, enchantment: Enchantment) => void,
-  onChangePenalty: (fn: any, index: number) => void,
-  onCheckPreserve: (e: React.ChangeEvent<HTMLInputElement>, enchantment: Enchantment) => void,
+  onChangeLevel: (fn: React.ChangeEvent<HTMLInputElement>, enchantment: Enchantment) => void,
+  onChangePenalty: (fn: React.ChangeEvent<HTMLInputElement>, index: number) => void,
+  onCheckPreserve: (fn: React.ChangeEvent<HTMLInputElement>, enchantment: Enchantment) => void,
 }
 
 class Item extends React.PureComponent<ItemProps> {
@@ -98,7 +99,7 @@ class Item extends React.PureComponent<ItemProps> {
                       type="number"
                       value={item.penalty || 0}
                       min="0"
-                      onChange={(e) => onChangePenalty(e, item.index)}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChangePenalty(e, item.index)}
                     />
                   </InputGroup>
                 </Col>
@@ -107,7 +108,7 @@ class Item extends React.PureComponent<ItemProps> {
                 <Col>
                   <Select
                     options={this.getPossibleEnchantmentOptions(item)}
-                    onChange={(e) => onAddEnchantment(e)}
+                    onChange={(e, actionMeta) => onAddEnchantment(e, actionMeta)}
                     placeholder="Add enchantments..."
                     value={null} //Enchantments added immediately; this should always be null
                     styles={smallerSelect}
