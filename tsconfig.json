@@ -8,7 +8,8 @@
     "types": [
       "react/next",
       "react-dom/next",
-      "node"
+      "node",
+      "jest"
     ],
     "jsx": "react",
     "resolveJsonModule": true

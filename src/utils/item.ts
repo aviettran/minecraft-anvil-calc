@@ -144,7 +144,7 @@ interface AnvilError {
   status: string
 }
 
-function instanceOfAnvilError(result: AnvilResults | AnvilError): result is AnvilError {
+export function instanceOfAnvilError(result: AnvilResults | AnvilError): result is AnvilError {
   return 'error' in result;
 }
 

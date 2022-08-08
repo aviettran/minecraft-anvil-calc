@@ -16,7 +16,6 @@ interface StepData {
     sacrificeItem: ItemData,
     resultingItem: ItemData,
 }
-
 interface Enchantment {
     name: string,
     level: number,
@@ -30,8 +29,8 @@ interface EnchantmentSpecification {
     display_name: string,
     max_level: number,
     applies_to: Array<string>,
-    item_multiplier: 1,
-    book_multiplier: 1,
+    item_multiplier: number,
+    book_multiplier: number,
     group?: string,
     java_only?: boolean
     group_exception?: string
