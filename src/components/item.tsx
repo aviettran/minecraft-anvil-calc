@@ -78,16 +78,15 @@ class Item extends React.PureComponent<ItemProps> {
         <Row>
           <Col sm="auto">
             <Container fluid>
-              <Row className="align-items-center">
+              <Row className="justify-content-between">
                 <Col xs="1">
                   <Icon name={item.name} size={32} />
                 </Col>
                 <Col xs="5">
                   <h2>{getDisplayName(item.name)}</h2>
                 </Col>
-                <Col>
-                  <button onClick={onDelete} className="close">
-                    ×
+                <Col xs="auto">
+                  <button onClick={onDelete} className="btn-close">
                   </button>
                 </Col>
               </Row>
@@ -162,9 +161,8 @@ class Item extends React.PureComponent<ItemProps> {
                     <td>
                       <button
                         onClick={() => onDeleteEnchantment(enchantment)}
-                        className="close"
+                        className="btn-close"
                       >
-                        ×
                       </button>
                     </td>
                   </tr>

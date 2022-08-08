@@ -355,7 +355,7 @@ class App extends React.Component<Record<string, never>, AppState> {
     return (
       <div className="App">
         <Container fluid>
-          <Row className="align-items-center">
+          <Row className="justify-content-start">
             <Col xs="auto">
               <Icon name="anvil" size={64} />
             </Col>
@@ -372,7 +372,7 @@ class App extends React.Component<Record<string, never>, AppState> {
               </p>
             </Col>
           </Row>
-          <Row xl="auto" className="align-items-center">
+          <Row xl="auto" className="justify-content-start">
             <Col xs="6" xl="2">
               <Select
                 options={this.getAddOptions()}
