@@ -8,7 +8,7 @@ import Step from "./components/step";
 import Icon from "./components/icon";
 import { getItemData, getDisplayName, AnvilResults, CombineItemsError, instanceOfCombineItemsError } from "./utils/item";
 // import { combineItems } from "./utils/item"; //for debugging
-import worker from 'workerize-loader!./utils/worker';
+import Worker from 'worker-loader!./utils/worker';
 import { Container, Row, Col, Table, Button, Form } from "react-bootstrap";
 import { levelToExperience, addIndexes } from "./utils/helpers";
 import Select, { SingleValue } from "react-select";
@@ -32,7 +32,7 @@ export type SelectValue = SingleValue<{
   label: string | null
 }>
 
-let instance = worker();
+const worker = new Worker();
 const presets: { [key: string]: Preset } = {
   clear: { data: [], display_name: "Clear" },
   helmet: { data: (helmet_preset), display_name: "Helmet" },
@@ -126,27 +126,25 @@ class App extends React.Component<Record<string, never>, AppState> {
     this.setState({
       results: { steps: [], status: "Loading..." },
     });
-    instance.terminate();
-    instance = worker();
-    instance
-      .combineItemsExecute(items_to_combine, settings || this.state.settings)
-      .then((results: AnvilResults | CombineItemsError) => {
-        let finalResults: Results;
-        if (instanceOfCombineItemsError(results)) {
-          finalResults = {
-            steps: [],
-            status: results.status
-          }
-        } else {
-          finalResults = {
-            steps: results.steps,
-            cost: results.cost,
-          }
+    worker.postMessage({ items: items_to_combine, settings: settings || this.state.settings });
+    worker.addEventListener("message", (event: MessageEvent<AnvilResults | CombineItemsError>) => {
+      const results = event.data;
+      let finalResults: Results;
+      if (instanceOfCombineItemsError(results)) {
+        finalResults = {
+          steps: [],
+          status: results.status
         }
-        this.setState({
-          results: finalResults
-        });
+      } else {
+        finalResults = {
+          steps: results.steps,
+          cost: results.cost,
+        }
+      }
+      this.setState({
+        results: finalResults
       });
+    });
   }
 
   changeItemToAdd(e: SelectValue) {

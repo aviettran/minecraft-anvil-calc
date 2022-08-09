@@ -1,6 +1,13 @@
 import { ItemData, Settings } from "../models";
 import { combineItems } from "./item";
 
-export function combineItemsExecute(items: Array<ItemData>, settings: Settings) {
-  return combineItems(items, settings);
+export interface CombineMessage { items: Array<ItemData>, settings: Settings }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const ctx: Worker = self as any;
+
+ctx.addEventListener("message", (event: MessageEvent<CombineMessage>) => {
+  console.log(event);
+  ctx.postMessage(combineItems(event.data.items, event.data.settings));
 }
+);

@@ -43,7 +43,7 @@
     "@typescript-eslint/eslint-plugin": "^5.32.0",
     "@typescript-eslint/parser": "^5.32.0",
     "typescript": "^4.7.4",
-    "workerize-loader": "^2.0.2"
+    "worker-loader": "^3.0.8"
   },
   "homepage": "."
 }

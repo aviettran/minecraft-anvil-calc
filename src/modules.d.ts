@@ -4,10 +4,10 @@ declare module "*.json" {
     export default value;
 }
 
-declare module 'workerize-loader!*' {
-    const worker: () => {
-        terminate: () => void,
-        combineItemsExecute: (items: Array<import("./models").ItemData>, settings: import("./models").Settings) => Promise<import("./utils/item").AnvilResults | import("./utils/item").CombineItemsError>
-    };
-    export = worker
+declare module "worker-loader!*" {
+    class WebpackWorker extends Worker {
+        constructor();
+    }
+
+    export default WebpackWorker;
 }
