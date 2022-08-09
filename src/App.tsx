@@ -224,8 +224,7 @@ class App extends React.Component<Record<string, never>, AppState> {
       (item) => item.index === item_index
     );
     if (!modifiedItem) {
-      console.log('changeItemPenalty: could not find modified item');
-      return;
+      throw 'Error: changeItemPenalty could not find modified item';
     }
     modifiedItem.penalty = e.target.valueAsNumber;
     new_items_to_combine = [
@@ -342,7 +341,12 @@ class App extends React.Component<Record<string, never>, AppState> {
       ...this.state.settings,
       java_edition: e.target.checked,
     };
+    const new_items_to_combine = this.state.items_to_combine.map((item) => {
+      const enchantmentsToKeep = getItemData(item).enchantments.filter((enchantment) => new_settings.java_edition || !enchantment.specification?.java_only).map((enchantment) => enchantment.name);
+      return { ...item, enchantments: item.enchantments.filter((enchantment) => enchantmentsToKeep.includes(enchantment.name)) };
+    });
     this.setState({
+      items_to_combine: new_items_to_combine,
       settings: new_settings,
     });
     this.combineAndSetState(this.state.items_to_combine, new_settings);
@@ -412,6 +416,7 @@ class App extends React.Component<Record<string, never>, AppState> {
                 return (
                   <Item
                     item={getItemData(item)}
+                    settings={this.state.settings}
                     key={item.index}
                     onDelete={() => this.deleteItem(item.index)}
                     onAddEnchantment={(e) => this.addEnchantment(e, item.index)}

@@ -7,7 +7,6 @@ export interface CombineMessage { items: Array<ItemData>, settings: Settings }
 const ctx: Worker = self as any;
 
 ctx.addEventListener("message", (event: MessageEvent<CombineMessage>) => {
-  console.log(event);
   ctx.postMessage(combineItems(event.data.items, event.data.settings));
 }
 );
