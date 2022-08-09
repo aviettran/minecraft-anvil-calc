@@ -11,30 +11,42 @@ import {
   Tooltip,
 } from "react-bootstrap";
 import enchantments from "../data/enchantments.json";
-import Select from "react-select";
+import Select, { StylesConfig, ActionMeta, GroupBase } from "react-select";
 import { checkEnchantmentIsCompatible, getDisplayName } from "../utils/item";
 import { getEnchantmentDisplayName } from "../utils/helpers";
 import Icon from "./icon";
+import { Enchantment, EnchantmentSpecification, ItemData } from "../models";
+import { SelectValue } from "../App";
 
-const smallerSelect = {
-  control: (provided, state) => ({
+const smallerSelect: StylesConfig<SelectValue, false, GroupBase<SelectValue>> = {
+  control: (provided) => ({
     ...provided,
     minHeight: "31px",
     height: "31px",
   }),
-  input: (provided, state) => ({
+  input: (provided) => ({
     ...provided,
     margin: "0px",
   }),
-  indicatorsContainer: (provided, state) => ({
+  indicatorsContainer: (provided) => ({
     ...provided,
     height: "31px",
   }),
 };
 
-class Item extends React.PureComponent {
-  getPossibleEnchantmentOptions(item) {
-    return enchantments
+interface ItemProps {
+  item: ItemData,
+  onDelete: React.MouseEventHandler,
+  onAddEnchantment: (option: SelectValue, actionMeta: ActionMeta<SelectValue>) => void,
+  onDeleteEnchantment: (enchantment: Enchantment) => void,
+  onChangeLevel: (fn: React.ChangeEvent<HTMLInputElement>, enchantment: Enchantment) => void,
+  onChangePenalty: (fn: React.ChangeEvent<HTMLInputElement>, index: number) => void,
+  onCheckPreserve: (fn: React.ChangeEvent<HTMLInputElement>, enchantment: Enchantment) => void,
+}
+
+class Item extends React.PureComponent<ItemProps> {
+  getPossibleEnchantmentOptions(item: ItemData) {
+    return (enchantments as Array<EnchantmentSpecification>)
       .filter(
         (filtered_enchantment) =>
           !item.enchantments.some(
@@ -66,30 +78,27 @@ class Item extends React.PureComponent {
         <Row>
           <Col sm="auto">
             <Container fluid>
-              <Row className="align-items-center">
+              <Row className="justify-content-between">
                 <Col xs="1">
                   <Icon name={item.name} size={32} />
                 </Col>
                 <Col xs="5">
                   <h2>{getDisplayName(item.name)}</h2>
                 </Col>
-                <Col>
-                  <button onClick={onDelete} className="close">
-                    ×
+                <Col xs="auto">
+                  <button onClick={onDelete} className="btn-close">
                   </button>
                 </Col>
               </Row>
               <Row>
                 <Col>
                   <InputGroup size="sm">
-                    <InputGroup.Prepend>
-                      <InputGroup.Text>Penalty</InputGroup.Text>
-                    </InputGroup.Prepend>
+                    <InputGroup.Text>Penalty</InputGroup.Text>
                     <FormControl
                       type="number"
                       value={item.penalty || 0}
                       min="0"
-                      onChange={(e) => onChangePenalty(e, item.index)}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChangePenalty(e, item.index)}
                     />
                   </InputGroup>
                 </Col>
@@ -98,7 +107,7 @@ class Item extends React.PureComponent {
                 <Col>
                   <Select
                     options={this.getPossibleEnchantmentOptions(item)}
-                    onChange={(e) => onAddEnchantment(e)}
+                    onChange={(e, actionMeta) => onAddEnchantment(e, actionMeta)}
                     placeholder="Add enchantments..."
                     value={null} //Enchantments added immediately; this should always be null
                     styles={smallerSelect}
@@ -137,12 +146,12 @@ class Item extends React.PureComponent {
                         type="number"
                         value={enchantment.level}
                         min="1"
-                        max={enchantment.max_level}
+                        max={enchantment.specification?.max_level ?? 1}
                         onChange={(e) => onChangeLevel(e, enchantment)}
                       />
                     </td>
-                    <td>{enchantment.item_multiplier}</td>
-                    <td>{enchantment.book_multiplier}</td>
+                    <td>{enchantment.specification?.item_multiplier ?? 0}</td>
+                    <td>{enchantment.specification?.book_multiplier ?? 0}</td>
                     <td>
                       <Form.Check
                         type="checkbox"
@@ -152,9 +161,8 @@ class Item extends React.PureComponent {
                     <td>
                       <button
                         onClick={() => onDeleteEnchantment(enchantment)}
-                        className="close"
+                        className="btn-close"
                       >
-                        ×
                       </button>
                     </td>
                   </tr>

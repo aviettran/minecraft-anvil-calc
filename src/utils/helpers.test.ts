@@ -1,5 +1,5 @@
-import { addIndexes, getEnchantmentDisplayName } from "../helpers";
-import boots_preset from "../../data/boots_preset.json";
+import { addIndexes, getEnchantmentDisplayName } from "./helpers";
+import boots_preset from "../data/boots_preset.json";
 
 it("add indexes", () => {
   const boots_preset_with_indexes = addIndexes(boots_preset);
