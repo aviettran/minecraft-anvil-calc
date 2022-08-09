@@ -38,5 +38,14 @@
         "level": 1
       }
     ]
+  },
+  {
+    "name": "book",
+    "enchantments": [
+      {
+        "name": "swift_sneak",
+        "level": 3
+      }
+    ]
   }
 ]

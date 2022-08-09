@@ -32,8 +32,9 @@ interface EnchantmentSpecification {
     item_multiplier: number,
     book_multiplier: number,
     group?: string,
-    java_only?: boolean
-    group_exception?: string
+    java_only?: boolean,
+    group_exception?: string,
+    java_overrides?: Partial<EnchantmentSpecification>
 }
 
 interface Preset {

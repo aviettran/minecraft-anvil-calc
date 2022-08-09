@@ -402,3 +402,35 @@ it("test combine items", () => {
     expect(combine_results.cost).toEqual(29);
   }
 });
+
+it("test java overrides", () => {
+  const settings = { java_edition: true };
+  const test_trident = {
+    name: "trident",
+    enchantments: [
+    ],
+    index: 0,
+    penalty: 0,
+  };
+
+  const test_book_1 = {
+    name: "book",
+    enchantments: [
+      {
+        ...createEnchantmentByName("impaling"),
+        level: 5
+      },
+    ],
+    index: 0,
+    penalty: 0,
+  };
+
+  const combine_results = combineItems(
+    [test_trident, test_book_1],
+    settings
+  );
+  expect(instanceOfCombineItemsError(combine_results)).toBeFalsy;
+  if (!instanceOfCombineItemsError(combine_results)) {
+    expect(combine_results.cost).toEqual(10);
+  }
+});

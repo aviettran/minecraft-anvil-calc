@@ -60,6 +60,17 @@ const checkEnchantmentIsCompatible = (targetItem: ItemData, newEnchantment: Ench
   );
 };
 
+const getMultiplier = (item: ItemData, enchantmentSpecification: EnchantmentSpecification, isJavaEdition: boolean): number => {
+  if (isJavaEdition) {
+    return item.name === "book"
+      ? (enchantmentSpecification.java_overrides?.book_multiplier ?? enchantmentSpecification.book_multiplier)
+      : (enchantmentSpecification.java_overrides?.item_multiplier ?? enchantmentSpecification.item_multiplier);
+  }
+  return item.name === "book"
+    ? enchantmentSpecification.book_multiplier
+    : enchantmentSpecification.item_multiplier;
+}
+
 const mergeEnchantments = (
   sacrificeItem: ItemData,
   targetEnchantments: Array<Enchantment>,
@@ -71,10 +82,8 @@ const mergeEnchantments = (
       if (!sacrificeEnchantment.specification) {
         throw 'Error: no specification for Enchantment.';
       }
-      const multiplier =
-        sacrificeItem.name === "book"
-          ? sacrificeEnchantment.specification.book_multiplier
-          : sacrificeEnchantment.specification.item_multiplier;
+
+      const multiplier = getMultiplier(sacrificeItem, sacrificeEnchantment.specification, settings.java_edition);
 
       // Find if target already has enchantment
       const matchedEnchantment = mergeResults.resultingEnchantments.find(
