@@ -6,12 +6,13 @@ import enchantments from "./data/enchantments.json";
 import Item from "./components/item";
 import Step from "./components/step";
 import Icon from "./components/icon";
-import { getItemData, getDisplayName } from "./utils/item";
+import { getItemData, getDisplayName, AnvilResults, CombineItemsError, instanceOfCombineItemsError } from "./utils/item";
 // import { combineItems } from "./utils/item"; //for debugging
-import worker from "workerize-loader!./utils/worker.js"; // eslint-disable-line import/no-webpack-loader-syntax
+import Worker from 'worker-loader!./utils/worker';
 import { Container, Row, Col, Table, Button, Form } from "react-bootstrap";
 import { levelToExperience, addIndexes } from "./utils/helpers";
-import Select from "react-select";
+import Select, { SingleValue } from "react-select";
+
 
 // Presets
 import helmet_preset from "./data/helmet_preset.json";
@@ -24,11 +25,17 @@ import pickaxe_silk_touch_preset from "./data/pickaxe_silk_touch_preset.json";
 import bow_preset from "./data/bow_preset.json";
 import hoe_fortune_preset from "./data/hoe_fortune_preset.json";
 import hoe_silk_touch_preset from "./data/hoe_silk_touch_preset.json";
+import { Enchantment, ItemData, Preset, Settings, StepData } from "./models";
 
-let instance = worker();
-const presets = {
+export type SelectValue = SingleValue<{
+  value: string,
+  label: string | null
+}>
+
+const worker = new Worker();
+const presets: { [key: string]: Preset } = {
   clear: { data: [], display_name: "Clear" },
-  helmet: { data: helmet_preset, display_name: "Helmet" },
+  helmet: { data: (helmet_preset), display_name: "Helmet" },
   chestplate: { data: chestplate_preset, display_name: "Chestplate" },
   leggings: { data: leggings_preset, display_name: "Leggings" },
   boots: { data: boots_preset, display_name: "Boots" },
@@ -55,24 +62,63 @@ const presets = {
   },
 };
 
-class App extends React.Component {
-  constructor(props) {
+
+interface Results {
+  steps: Array<StepData>,
+  status?: string,
+  cost?: number
+}
+
+interface AppState {
+  items_to_combine: Array<ItemData>,
+  results: Results,
+  nextIndex: number,
+  settings: Settings,
+  itemToAdd?: string,
+  preset?: string
+}
+
+class App extends React.Component<Record<string, never>, AppState> {
+  constructor(props: Record<string, never>) {
     super(props);
-    this.state = {
-      items_to_combine: [],
+    this.state = this.getInitialState();
+  }
+
+  getInitialState(): AppState {
+    const params = new URLSearchParams(location.search);
+    const newState: AppState = {
+      items_to_combine: JSON.parse(params.get("items") ?? "null") ?? [],
       results: {
-        targetItem: {},
         steps: [],
         status: "No items or items cannot be combined.",
       },
       nextIndex: 0,
-      settings: { java_edition: false },
-    };
+      settings: { java_edition: JSON.parse(params.get("settings_java_edition") ?? "null") ?? false },
+    }
+
+    return newState;
+  }
+
+  componentDidMount() {
+    if (this.state.items_to_combine.length > 0) {
+      this.combine(this.state.items_to_combine, this.state.settings);
+    }
+  }
+
+  setUrlState(items_to_combine: Array<ItemData>, settings?: Settings) {
+    const url = new URL(location.href);
+    const params = new URLSearchParams();
+    params.append("items", JSON.stringify(items_to_combine));
+    if (settings) {
+      params.append("settings_java_edition", settings.java_edition.toString());
+    }
+    url.search = params.toString();
+    history.replaceState(null, '', url);
   }
 
   getAddOptions() {
     // e.g., if boots is in items_to_combine, the type is boots
-    const to_combine_item_type = this.state.items_to_combine.reduce(
+    const to_combine_item_type = this.state.items_to_combine.reduce<string | null>(
       (type, item) => {
         return type || item.name === "book" ? type : item.name;
       },
@@ -100,20 +146,41 @@ class App extends React.Component {
   // combineItems(addIndexes(test_preset));
   // }
 
-  combineAndSetState(items_to_combine, settings) {
+  combineAndSetState(items_to_combine: Array<ItemData>, settings?: Settings) {
+    this.setUrlState(items_to_combine, settings);
     this.setState({
-      results: { targetItem: {}, steps: [], status: "Loading..." },
+      items_to_combine: items_to_combine,
+      results: { steps: [], status: "Loading..." },
     });
-    instance.terminate();
-    instance = worker();
-    instance
-      .combineItemsExecute(items_to_combine, settings || this.state.settings)
-      .then((results) => {
-        this.setState({ results: results });
-      });
+    this.combine(items_to_combine, settings);
   }
 
-  changeItemToAdd(e) {
+  combine(items_to_combine: Array<ItemData>, settings?: Settings) {
+    worker.postMessage({ items: items_to_combine, settings: settings || this.state.settings });
+    worker.addEventListener("message", (event: MessageEvent<AnvilResults | CombineItemsError>) => {
+      const results = event.data;
+      let finalResults: Results;
+      if (instanceOfCombineItemsError(results)) {
+        finalResults = {
+          steps: [],
+          status: results.status
+        }
+      } else {
+        finalResults = {
+          steps: results.steps,
+          cost: results.cost,
+        }
+      }
+      this.setState({
+        results: finalResults
+      });
+    });
+  }
+
+  changeItemToAdd(e: SelectValue) {
+    if (!e?.value) {
+      throw 'Error: no item to add';
+    }
     this.setState({
       itemToAdd: e.value,
     });
@@ -121,29 +188,26 @@ class App extends React.Component {
 
   addItem() {
     if (this.state.itemToAdd) {
-      const new_items_to_combine = [
+      const new_items_to_combine: Array<ItemData> = [
         ...this.state.items_to_combine,
         {
           name: this.state.itemToAdd,
-          enchantments: [],
+          enchantments: new Array<Enchantment>(),
           index: this.state.nextIndex,
+          penalty: 0
         },
       ];
       this.setState({
-        items_to_combine: new_items_to_combine,
         nextIndex: this.state.nextIndex + 1,
       });
       this.combineAndSetState(new_items_to_combine);
     }
   }
 
-  deleteItem(index) {
+  deleteItem(index: number) {
     const new_items_to_combine = this.state.items_to_combine.filter(
       (item) => item.index !== index
     );
-    this.setState({
-      items_to_combine: new_items_to_combine,
-    });
     this.combineAndSetState(new_items_to_combine);
   }
 
@@ -153,53 +217,65 @@ class App extends React.Component {
     });
   }
 
-  changePreset(e) {
-    this.setState({
-      preset: e.value,
-    });
+  changePreset(e: SelectValue) {
+    if (e) {
+      this.setState({
+        preset: e.value,
+      });
+    }
   }
 
   setPreset() {
-    const new_items_to_combine = addIndexes(presets[this.state.preset].data);
-    this.setState({
-      items_to_combine: new_items_to_combine,
-      nextIndex: new_items_to_combine.length,
-    });
-    this.combineAndSetState(new_items_to_combine);
+    if (this.state.preset) {
+      const new_items_to_combine = addIndexes(presets[this.state.preset].data).map<ItemData>((item_to_combine) => {
+        return {
+          ...item_to_combine,
+          penalty: 0
+        };
+      });
+      this.setState({
+        nextIndex: new_items_to_combine.length,
+      });
+      this.combineAndSetState(new_items_to_combine);
+    }
   }
 
-  changeItemPenalty(e, item_index) {
-    if (!e.target) {
+  changeItemPenalty(e: React.ChangeEvent<HTMLInputElement>, item_index: number) {
+    if (!(e.target)) {
       return;
     }
     let new_items_to_combine = [...this.state.items_to_combine];
     const modifiedItem = new_items_to_combine.find(
       (item) => item.index === item_index
     );
+    if (!modifiedItem) {
+      throw 'Error: changeItemPenalty could not find modified item';
+    }
     modifiedItem.penalty = e.target.valueAsNumber;
     new_items_to_combine = [
       ...new_items_to_combine.filter((item) => item.index !== item_index),
       modifiedItem,
     ];
     new_items_to_combine.sort((item_a, item_b) => item_a.index - item_b.index);
-    this.setState({
-      items_to_combine: new_items_to_combine,
-    });
     this.combineAndSetState(new_items_to_combine);
   }
 
-  getEnchantmentMaxLevel(enchantmentName) {
-    return enchantments.find(
+  getEnchantmentMaxLevel(enchantmentName: string): number {
+    const max_level = enchantments.find(
       (enchantment) => enchantment.name === enchantmentName
-    ).max_level;
+    )?.max_level;
+    if (!max_level) {
+      throw 'Error: could not get max enchantment level.'
+    }
+    return max_level;
   }
 
-  addEnchantment(e, item_index) {
+  addEnchantment(e: SelectValue, item_index: number) {
     const new_items_to_combine = [...this.state.items_to_combine];
     const new_item = new_items_to_combine.find(
       (item) => item.index === item_index
     );
-    if (e.value) {
+    if (e?.value && new_item) {
       new_item.enchantments = [
         ...new_item.enchantments,
         {
@@ -207,28 +283,25 @@ class App extends React.Component {
           level: this.getEnchantmentMaxLevel(e.value),
         },
       ];
-      this.setState({
-        items_to_combine: new_items_to_combine,
-      });
       this.combineAndSetState(new_items_to_combine);
     }
   }
 
-  deleteEnchantment(item_index, enchantment) {
+  deleteEnchantment(item_index: number, enchantment: Enchantment) {
     const new_items_to_combine = [...this.state.items_to_combine];
     const new_item = new_items_to_combine.find(
       (item) => item.index === item_index
     );
+    if (!new_item) {
+      throw 'Error: could not delete Enchantment.';
+    }
     new_item.enchantments = new_item.enchantments.filter(
       (filter_enchantment) => filter_enchantment.name !== enchantment.name
     );
-    this.setState({
-      items_to_combine: new_items_to_combine,
-    });
     this.combineAndSetState(new_items_to_combine);
   }
 
-  changeEnchantmentLevel(e, item_index, enchantment) {
+  changeEnchantmentLevel(e: React.ChangeEvent<HTMLInputElement>, item_index: number, enchantment: Enchantment) {
     if (!e.target) {
       return;
     }
@@ -236,17 +309,20 @@ class App extends React.Component {
     const new_item = new_items_to_combine.find(
       (item) => item.index === item_index
     );
+    if (!new_item) {
+      throw 'Error: could not change Enchantment level.';
+    }
     const new_enchantment = new_item.enchantments.find(
       (find_enchantment) => find_enchantment.name === enchantment.name
     );
+    if (!new_enchantment) {
+      throw 'Error: could not change Enchantment level.';
+    }
     new_enchantment.level = e.target.valueAsNumber;
-    this.setState({
-      items_to_combine: new_items_to_combine,
-    });
     this.combineAndSetState(new_items_to_combine);
   }
 
-  checkPreserve(e, item_index, enchantment) {
+  checkPreserve(e: React.ChangeEvent<HTMLInputElement>, item_index: number, enchantment: Enchantment) {
     if (!e.target) {
       return;
     }
@@ -254,17 +330,20 @@ class App extends React.Component {
     const new_item = new_items_to_combine.find(
       (item) => item.index === item_index
     );
+    if (!new_item) {
+      throw 'Error: could not check preserve.';
+    }
     const new_enchantment = new_item.enchantments.find(
       (find_enchantment) => find_enchantment.name === enchantment.name
     );
+    if (!new_enchantment) {
+      throw 'Error: could not check preserve.';
+    }
     new_enchantment.preserve = e.target.checked;
-    this.setState({
-      items_to_combine: new_items_to_combine,
-    });
     this.combineAndSetState(new_items_to_combine);
   }
 
-  checkJavaEdition(e) {
+  checkJavaEdition(e: React.ChangeEvent<HTMLInputElement>) {
     if (!e.target) {
       return;
     }
@@ -272,10 +351,14 @@ class App extends React.Component {
       ...this.state.settings,
       java_edition: e.target.checked,
     };
+    const new_items_to_combine = this.state.items_to_combine.map((item) => {
+      const enchantmentsToKeep = getItemData(item).enchantments.filter((enchantment) => new_settings.java_edition || !enchantment.specification?.java_only).map((enchantment) => enchantment.name);
+      return { ...item, enchantments: item.enchantments.filter((enchantment) => enchantmentsToKeep.includes(enchantment.name)) };
+    });
     this.setState({
       settings: new_settings,
     });
-    this.combineAndSetState(this.state.items_to_combine, new_settings);
+    this.combineAndSetState(new_items_to_combine, new_settings);
   }
 
   render() {
@@ -283,9 +366,9 @@ class App extends React.Component {
     return (
       <div className="App">
         <Container fluid>
-          <Row className="align-items-center">
+          <Row className="justify-content-start">
             <Col xs="auto">
-              <Icon name="anvil" size="64" />
+              <Icon name="anvil" size={64} />
             </Col>
             <Col>
               <h1>Minecraft Anvil Calculator</h1>
@@ -300,7 +383,7 @@ class App extends React.Component {
               </p>
             </Col>
           </Row>
-          <Row xl="auto" className="align-items-center">
+          <Row xl="auto" className="justify-content-start">
             <Col xs="6" xl="2">
               <Select
                 options={this.getAddOptions()}
@@ -333,6 +416,7 @@ class App extends React.Component {
                 type="checkbox"
                 label="Java Edition"
                 onChange={(e) => this.checkJavaEdition(e)}
+                defaultChecked={this.state.settings?.java_edition ?? false}
               />
             </Col>
           </Row>
@@ -342,14 +426,12 @@ class App extends React.Component {
                 return (
                   <Item
                     item={getItemData(item)}
+                    settings={this.state.settings}
                     key={item.index}
                     onDelete={() => this.deleteItem(item.index)}
                     onAddEnchantment={(e) => this.addEnchantment(e, item.index)}
                     onDeleteEnchantment={(enchantment) =>
                       this.deleteEnchantment(item.index, enchantment)
-                    }
-                    changeEnchantmentToAdd={(e) =>
-                      this.changeEchantmentToAdd(e, item.index)
                     }
                     onChangeLevel={(e, enchantment) =>
                       this.changeEnchantmentLevel(e, item.index, enchantment)
@@ -367,7 +449,7 @@ class App extends React.Component {
             <Col xs="6">
               <h3>Results</h3>
               <p>{results.status}</p>
-              <p>Total Levels: {results.cost || 0}</p>
+              <p>Total Levels: {results.cost ?? 0}</p>
               <p>
                 Total Experience:{" "}
                 {results.steps.reduce(
@@ -395,7 +477,7 @@ class App extends React.Component {
             </Col>
           </Row>
         </Container>
-      </div>
+      </div >
     );
   }
 }

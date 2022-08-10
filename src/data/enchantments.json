@@ -416,8 +416,12 @@
     "applies_to": [
       "trident"
     ],
-    "item_multiplier": 4,
-    "book_multiplier": 2
+    "item_multiplier": 2,
+    "book_multiplier": 1,
+    "java_overrides": {
+      "item_multiplier": 4,
+      "book_multiplier": 2
+    }
   },
   {
     "name": "riptide",
@@ -507,5 +511,15 @@
     "item_multiplier": 4,
     "book_multiplier": 2,
     "java_only": true
+  },
+  {
+    "name": "swift_sneak",
+    "display_name": "Swift Sneak",
+    "max_level": 3,
+    "applies_to": [
+      "leggings"
+    ],
+    "item_multiplier": 8,
+    "book_multiplier": 4
   }
 ]

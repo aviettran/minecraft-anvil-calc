@@ -1,19 +1,20 @@
 import enchantments from "../data/enchantments.json";
 import { levelToExperience } from "../utils/helpers";
-import items from "../data/items.json";
+import itemSpecifications from "../data/items.json";
+import { Enchantment, EnchantmentSpecification, ItemData, ItemSpecification, Settings, StepData } from "../models";
 
-const getEnchantments = (item) => {
+const getEnchantments = (item: string) => {
   return enchantments.filter((enchantment) =>
     enchantment.applies_to.some((possible_item) => possible_item === item)
   );
 };
 
-const getItemData = (item) => {
-  const new_item = { ...item };
+const getItemData = (item: ItemData) => {
+  const new_item: ItemData = { ...item };
   new_item.enchantments = new_item.enchantments.map((enchantment) => {
     return {
       ...enchantment,
-      ...enchantments.find(
+      specification: (enchantments as Array<EnchantmentSpecification>).find(
         (enchantment_data) => enchantment_data.name === enchantment.name
       ),
     };
@@ -23,8 +24,8 @@ const getItemData = (item) => {
 
 //If the box is checked on preserve enchantment, the end result must contain it
 const areEnchantmentsPreserved = (
-  sacrificedItemEnchantments,
-  filtered_enchantments
+  sacrificedItemEnchantments: Array<Enchantment>,
+  filtered_enchantments: Array<Enchantment>
 ) => {
   const removedEnchantments = sacrificedItemEnchantments.filter(
     (sacrificed_enchantment) =>
@@ -35,19 +36,20 @@ const areEnchantmentsPreserved = (
   );
 };
 
-const checkEnchantmentIsCompatible = (targetItem, newEnchantment) => {
+const checkEnchantmentIsCompatible = (targetItem: ItemData, newEnchantment: EnchantmentSpecification) => {
   return (
     // There isn't an existing enchantment in a mutal exclusion group
     !targetItem.enchantments.some(
       (some_enchantment) =>
+        some_enchantment.specification &&
         some_enchantment.name !== newEnchantment.name &&
-        some_enchantment.group &&
+        some_enchantment.specification.group &&
         newEnchantment.group &&
-        some_enchantment.group === newEnchantment.group &&
+        some_enchantment.specification.group === newEnchantment.group &&
         !(
-          some_enchantment.group_exception &&
+          some_enchantment.specification.group_exception &&
           newEnchantment.group_exception &&
-          some_enchantment.group_exception === newEnchantment.group_exception
+          some_enchantment.specification.group_exception === newEnchantment.group_exception
         ) // Rule exception for tridents
     ) &&
     //Possible enchantment is applicable to the given item
@@ -58,18 +60,30 @@ const checkEnchantmentIsCompatible = (targetItem, newEnchantment) => {
   );
 };
 
+const getMultiplier = (item: ItemData, enchantmentSpecification: EnchantmentSpecification, isJavaEdition: boolean): number => {
+  if (isJavaEdition) {
+    return item.name === "book"
+      ? (enchantmentSpecification.java_overrides?.book_multiplier ?? enchantmentSpecification.book_multiplier)
+      : (enchantmentSpecification.java_overrides?.item_multiplier ?? enchantmentSpecification.item_multiplier);
+  }
+  return item.name === "book"
+    ? enchantmentSpecification.book_multiplier
+    : enchantmentSpecification.item_multiplier;
+}
+
 const mergeEnchantments = (
-  sacrificeItem,
-  targetEnchantments,
-  sacrificeEnchantments, //mutable
-  settings
+  sacrificeItem: ItemData,
+  targetEnchantments: Array<Enchantment>,
+  sacrificeEnchantments: Array<Enchantment>, //mutable
+  settings: Settings
 ) => {
   return sacrificeEnchantments.reduce(
     (mergeResults, sacrificeEnchantment) => {
-      const multiplier =
-        sacrificeItem.name === "book"
-          ? sacrificeEnchantment.book_multiplier
-          : sacrificeEnchantment.item_multiplier;
+      if (!sacrificeEnchantment.specification) {
+        throw 'Error: no specification for Enchantment.';
+      }
+
+      const multiplier = getMultiplier(sacrificeItem, sacrificeEnchantment.specification, settings.java_edition);
 
       // Find if target already has enchantment
       const matchedEnchantment = mergeResults.resultingEnchantments.find(
@@ -80,13 +94,14 @@ const mergeEnchantments = (
       // Enchantment matched. Check Level.
       if (matchedEnchantment) {
         // Make a copy of the matched enchantment.
-        const newMatchedEnchantment = { ...matchedEnchantment };
+        const newMatchedEnchantment: Enchantment = { ...matchedEnchantment };
         let levelDifference =
           sacrificeEnchantment.level - newMatchedEnchantment.level;
         // Levels are the same. Bump level.
         if (
           levelDifference === 0 &&
-          newMatchedEnchantment.max_level > newMatchedEnchantment.level
+          newMatchedEnchantment.specification &&
+          newMatchedEnchantment.specification.max_level > newMatchedEnchantment.level
         ) {
           levelDifference += 1;
           newLevel += 1;
@@ -121,12 +136,33 @@ const mergeEnchantments = (
   );
 };
 
-const anvil = (targetItem, sacrificeItem, settings) => {
+export interface AnvilResults {
+  resultingItem: ItemData;
+  cost: number;
+  exp: number;
+  steps: {
+    targetItem: ItemData;
+    sacrificeItem: ItemData;
+    resultingItem: ItemData;
+    stepCost: number;
+  }[]
+}
+
+interface AnvilError {
+  error: boolean,
+  status: string
+}
+
+export function instanceOfAnvilError(result: AnvilResults | AnvilError): result is AnvilError {
+  return 'error' in result;
+}
+
+const anvil = (targetItem: ItemData, sacrificeItem: ItemData, settings: Settings): AnvilResults | AnvilError => {
   const targetPenalty = targetItem.penalty || 0;
   const sacrificePenalty = sacrificeItem.penalty || 0;
   // Filter non-applicable enchantments
   const filtered_enchantments = sacrificeItem.enchantments.filter(
-    (enchantment) => checkEnchantmentIsCompatible(targetItem, enchantment)
+    (enchantment) => enchantment.specification && checkEnchantmentIsCompatible(targetItem, enchantment.specification)
   );
   if (
     !areEnchantmentsPreserved(sacrificeItem.enchantments, filtered_enchantments)
@@ -139,7 +175,7 @@ const anvil = (targetItem, sacrificeItem, settings) => {
     filtered_enchantments,
     settings
   );
-  const resultingItem = {
+  const resultingItem: ItemData = {
     ...targetItem,
     enchantments: mergeResults.resultingEnchantments,
   };
@@ -169,11 +205,22 @@ const anvil = (targetItem, sacrificeItem, settings) => {
   return results;
 };
 
-const combineItems = (items, settings) => {
+export interface CombineItemsError {
+  targetItem: ItemData,
+  steps: Array<StepData>,
+  error: boolean,
+  status: string
+}
+
+export function instanceOfCombineItemsError(result: AnvilResults | CombineItemsError): result is CombineItemsError {
+  return 'error' in result;
+}
+
+const combineItems = (items: Array<ItemData>, settings: Settings): AnvilResults | CombineItemsError => {
   items = items.map(getItemData);
 
   //For each item, determine what can be combined into it, use anvil, then call combineItems with what remains
-  let allResults = [];
+  let allResults: Array<AnvilResults> = [];
   items.forEach((targetItem) => {
     const nonTargets = items.filter(
       (sacrificeItem) => sacrificeItem !== targetItem
@@ -209,9 +256,10 @@ const combineItems = (items, settings) => {
       eligibleItems.forEach((sacrificeItem) => {
         let anvilResults = anvil(targetItem, sacrificeItem, settings);
         //Constraint violated in anvil call; return
-        if (anvilResults.error) {
+        if ((instanceOfAnvilError(anvilResults)) && anvilResults.error) {
           return;
         }
+        anvilResults = anvilResults as AnvilResults;
         const remaining_items = nonTargets.filter(
           (item) => item !== sacrificeItem
         );
@@ -223,7 +271,7 @@ const combineItems = (items, settings) => {
           );
 
           //Error found in the recursive call means that a constraint was violated; return
-          if (remaining_items_results.error) {
+          if (instanceOfCombineItemsError(remaining_items_results)) {
             return;
           }
 
@@ -257,8 +305,8 @@ const combineItems = (items, settings) => {
   }
 };
 
-const getDisplayName = (item_name) => {
-  const item_data = items.find((find_item) => find_item.name === item_name);
+const getDisplayName = (item_name: string) => {
+  const item_data = (itemSpecifications as Array<ItemSpecification>).find((find_item) => find_item.name === item_name);
   return item_data ? item_data.display_name : null;
 };
 

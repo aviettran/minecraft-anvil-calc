@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "es2016",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "types": [
+      "react/next",
+      "react-dom/next",
+      "node",
+      "jest"
+    ],
+    "jsx": "react",
+    "resolveJsonModule": true
+  }
+}
