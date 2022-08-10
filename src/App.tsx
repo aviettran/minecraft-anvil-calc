@@ -81,15 +81,39 @@ interface AppState {
 class App extends React.Component<Record<string, never>, AppState> {
   constructor(props: Record<string, never>) {
     super(props);
-    this.state = {
-      items_to_combine: [],
+    this.state = this.getInitialState();
+  }
+
+  getInitialState(): AppState {
+    const params = new URLSearchParams(location.search);
+    const newState: AppState = {
+      items_to_combine: JSON.parse(params.get("items") ?? "null") ?? [],
       results: {
         steps: [],
         status: "No items or items cannot be combined.",
       },
       nextIndex: 0,
-      settings: { java_edition: false },
-    };
+      settings: { java_edition: JSON.parse(params.get("settings_java_edition") ?? "null") ?? false },
+    }
+
+    return newState;
+  }
+
+  componentDidMount() {
+    if (this.state.items_to_combine.length > 0) {
+      this.combine(this.state.items_to_combine, this.state.settings);
+    }
+  }
+
+  setUrlState(items_to_combine: Array<ItemData>, settings?: Settings) {
+    const url = new URL(location.href);
+    const params = new URLSearchParams();
+    params.append("items", JSON.stringify(items_to_combine));
+    if (settings) {
+      params.append("settings_java_edition", settings.java_edition.toString());
+    }
+    url.search = params.toString();
+    history.replaceState(null, '', url);
   }
 
   getAddOptions() {
@@ -123,9 +147,15 @@ class App extends React.Component<Record<string, never>, AppState> {
   // }
 
   combineAndSetState(items_to_combine: Array<ItemData>, settings?: Settings) {
+    this.setUrlState(items_to_combine, settings);
     this.setState({
+      items_to_combine: items_to_combine,
       results: { steps: [], status: "Loading..." },
     });
+    this.combine(items_to_combine, settings);
+  }
+
+  combine(items_to_combine: Array<ItemData>, settings?: Settings) {
     worker.postMessage({ items: items_to_combine, settings: settings || this.state.settings });
     worker.addEventListener("message", (event: MessageEvent<AnvilResults | CombineItemsError>) => {
       const results = event.data;
@@ -168,7 +198,6 @@ class App extends React.Component<Record<string, never>, AppState> {
         },
       ];
       this.setState({
-        items_to_combine: new_items_to_combine,
         nextIndex: this.state.nextIndex + 1,
       });
       this.combineAndSetState(new_items_to_combine);
@@ -179,9 +208,6 @@ class App extends React.Component<Record<string, never>, AppState> {
     const new_items_to_combine = this.state.items_to_combine.filter(
       (item) => item.index !== index
     );
-    this.setState({
-      items_to_combine: new_items_to_combine,
-    });
     this.combineAndSetState(new_items_to_combine);
   }
 
@@ -208,7 +234,6 @@ class App extends React.Component<Record<string, never>, AppState> {
         };
       });
       this.setState({
-        items_to_combine: new_items_to_combine,
         nextIndex: new_items_to_combine.length,
       });
       this.combineAndSetState(new_items_to_combine);
@@ -232,9 +257,6 @@ class App extends React.Component<Record<string, never>, AppState> {
       modifiedItem,
     ];
     new_items_to_combine.sort((item_a, item_b) => item_a.index - item_b.index);
-    this.setState({
-      items_to_combine: new_items_to_combine,
-    });
     this.combineAndSetState(new_items_to_combine);
   }
 
@@ -261,9 +283,6 @@ class App extends React.Component<Record<string, never>, AppState> {
           level: this.getEnchantmentMaxLevel(e.value),
         },
       ];
-      this.setState({
-        items_to_combine: new_items_to_combine,
-      });
       this.combineAndSetState(new_items_to_combine);
     }
   }
@@ -279,9 +298,6 @@ class App extends React.Component<Record<string, never>, AppState> {
     new_item.enchantments = new_item.enchantments.filter(
       (filter_enchantment) => filter_enchantment.name !== enchantment.name
     );
-    this.setState({
-      items_to_combine: new_items_to_combine,
-    });
     this.combineAndSetState(new_items_to_combine);
   }
 
@@ -303,9 +319,6 @@ class App extends React.Component<Record<string, never>, AppState> {
       throw 'Error: could not change Enchantment level.';
     }
     new_enchantment.level = e.target.valueAsNumber;
-    this.setState({
-      items_to_combine: new_items_to_combine,
-    });
     this.combineAndSetState(new_items_to_combine);
   }
 
@@ -327,9 +340,6 @@ class App extends React.Component<Record<string, never>, AppState> {
       throw 'Error: could not check preserve.';
     }
     new_enchantment.preserve = e.target.checked;
-    this.setState({
-      items_to_combine: new_items_to_combine,
-    });
     this.combineAndSetState(new_items_to_combine);
   }
 
@@ -346,10 +356,9 @@ class App extends React.Component<Record<string, never>, AppState> {
       return { ...item, enchantments: item.enchantments.filter((enchantment) => enchantmentsToKeep.includes(enchantment.name)) };
     });
     this.setState({
-      items_to_combine: new_items_to_combine,
       settings: new_settings,
     });
-    this.combineAndSetState(this.state.items_to_combine, new_settings);
+    this.combineAndSetState(new_items_to_combine, new_settings);
   }
 
   render() {
@@ -407,6 +416,7 @@ class App extends React.Component<Record<string, never>, AppState> {
                 type="checkbox"
                 label="Java Edition"
                 onChange={(e) => this.checkJavaEdition(e)}
+                defaultChecked={this.state.settings?.java_edition ?? false}
               />
             </Col>
           </Row>
