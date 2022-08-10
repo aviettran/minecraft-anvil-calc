@@ -149,13 +149,15 @@ class App extends React.Component<Record<string, never>, AppState> {
   combineAndSetState(items_to_combine: Array<ItemData>, settings?: Settings) {
     this.setUrlState(items_to_combine, settings);
     this.setState({
-      items_to_combine: items_to_combine,
-      results: { steps: [], status: "Loading..." },
+      items_to_combine: items_to_combine
     });
     this.combine(items_to_combine, settings);
   }
 
   combine(items_to_combine: Array<ItemData>, settings?: Settings) {
+    this.setState({
+      results: { steps: [], status: "Loading..." },
+    });
     worker.postMessage({ items: items_to_combine, settings: settings || this.state.settings });
     worker.addEventListener("message", (event: MessageEvent<AnvilResults | CombineItemsError>) => {
       const results = event.data;
