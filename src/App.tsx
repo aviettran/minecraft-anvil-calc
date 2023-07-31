@@ -25,6 +25,7 @@ import pickaxe_silk_touch_preset from "./data/pickaxe_silk_touch_preset.json";
 import bow_preset from "./data/bow_preset.json";
 import hoe_fortune_preset from "./data/hoe_fortune_preset.json";
 import hoe_silk_touch_preset from "./data/hoe_silk_touch_preset.json";
+import brush_preset from "./data/brush_preset.json";
 import { Enchantment, ItemData, Preset, Settings, StepData } from "./models";
 
 export type SelectValue = SingleValue<{
@@ -60,6 +61,10 @@ const presets: { [key: string]: Preset } = {
     data: hoe_silk_touch_preset,
     display_name: "Hoe (Silk Touch)",
   },
+  brush: {
+    data: brush_preset,
+    display_name: "Brush",
+  }
 };
 
 
