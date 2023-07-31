@@ -364,7 +364,7 @@ class App extends React.Component<Record<string, never>, AppState> {
         .filter((enchantment) => {
           let appliesTo = enchantment.specification?.applies_to ?? [];
           appliesTo = e.target.checked && enchantment.specification?.java_overrides?.applies_to ? enchantment.specification?.java_overrides?.applies_to : appliesTo;
-          return appliesTo.includes(item.name);
+          return appliesTo.includes(item.name) || item.name === "book";
         })
         // Filter when an enchantment is Java exclusive
         .filter((enchantment) => new_settings.java_edition || !enchantment.specification?.java_only).map((enchantment) => enchantment.name);
