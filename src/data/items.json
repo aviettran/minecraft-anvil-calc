@@ -1,28 +1,98 @@
 [
-  { "name": "pickaxe", "display_name": "Pickaxe" },
-  { "name": "shovel", "display_name": "Shovel" },
-  { "name": "axe", "display_name": "Axe" },
-  { "name": "fishing_rod", "display_name": "Fishing Rod" },
-  { "name": "helmet", "display_name": "Helmet" },
-  { "name": "chestplate", "display_name": "Chestplate" },
-  { "name": "leggings", "display_name": "Leggings" },
-  { "name": "boots", "display_name": "Boots" },
-  { "name": "sword", "display_name": "Sword" },
-  { "name": "bow", "display_name": "Bow" },
-  { "name": "hoe", "display_name": "Hoe" },
-  { "name": "shears", "display_name": "Shears" },
-  { "name": "flint_and_steel", "display_name": "Flint and Steel" },
-  { "name": "carrot_on_a_stick", "display_name": "Carrot on a Stick" },
+  {
+    "name": "pickaxe",
+    "display_name": "Pickaxe"
+  },
+  {
+    "name": "shovel",
+    "display_name": "Shovel"
+  },
+  {
+    "name": "axe",
+    "display_name": "Axe"
+  },
+  {
+    "name": "fishing_rod",
+    "display_name": "Fishing Rod"
+  },
+  {
+    "name": "helmet",
+    "display_name": "Helmet"
+  },
+  {
+    "name": "chestplate",
+    "display_name": "Chestplate"
+  },
+  {
+    "name": "leggings",
+    "display_name": "Leggings"
+  },
+  {
+    "name": "boots",
+    "display_name": "Boots"
+  },
+  {
+    "name": "sword",
+    "display_name": "Sword"
+  },
+  {
+    "name": "bow",
+    "display_name": "Bow"
+  },
+  {
+    "name": "hoe",
+    "display_name": "Hoe"
+  },
+  {
+    "name": "shears",
+    "display_name": "Shears"
+  },
+  {
+    "name": "flint_and_steel",
+    "display_name": "Flint and Steel"
+  },
+  {
+    "name": "carrot_on_a_stick",
+    "display_name": "Carrot on a Stick"
+  },
   {
     "name": "warped_fungus_on_a_stick",
     "display_name": "Warped Fungus on a Stick"
   },
-  { "name": "shield", "display_name": "Shield" },
-  { "name": "elytra", "display_name": "Elytra" },
-  { "name": "carved_pumpkin", "display_name": "Carved Pumpkin" },
-  { "name": "head", "display_name": "Head" },
-  { "name": "turtle_helmet", "display_name": "Turtle Helmet" },
-  { "name": "trident", "display_name": "Trident" },
-  { "name": "crossbow", "display_name": "Crossbow" },
-  { "name": "book", "display_name": "Book" }
+  {
+    "name": "shield",
+    "display_name": "Shield"
+  },
+  {
+    "name": "elytra",
+    "display_name": "Elytra"
+  },
+  {
+    "name": "carved_pumpkin",
+    "display_name": "Carved Pumpkin"
+  },
+  {
+    "name": "head",
+    "display_name": "Head"
+  },
+  {
+    "name": "turtle_helmet",
+    "display_name": "Turtle Helmet"
+  },
+  {
+    "name": "trident",
+    "display_name": "Trident"
+  },
+  {
+    "name": "crossbow",
+    "display_name": "Crossbow"
+  },
+  {
+    "name": "book",
+    "display_name": "Book"
+  },
+  {
+    "name": "brush",
+    "display_name": "Brush"
+  }
 ]

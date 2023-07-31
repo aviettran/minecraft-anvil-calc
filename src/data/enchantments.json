@@ -204,11 +204,20 @@
       "pickaxe",
       "shovel",
       "axe",
-      "hoe"
+      "hoe",
+      "shears"
     ],
     "item_multiplier": 8,
     "book_multiplier": 4,
-    "group": "tool_type"
+    "group": "tool_type",
+    "java_overrides": {
+      "applies_to": [
+        "pickaxe",
+        "shovel",
+        "axe",
+        "hoe"
+      ]
+    }
   },
   {
     "name": "unbreaking",
@@ -234,7 +243,8 @@
       "elytra",
       "turtle_helmet",
       "trident",
-      "crossbow"
+      "crossbow",
+      "brush"
     ],
     "item_multiplier": 2,
     "book_multiplier": 1
@@ -369,7 +379,8 @@
       "elytra",
       "carved_pumpkin",
       "head",
-      "turtle_helmet"
+      "turtle_helmet",
+      "brush"
     ],
     "item_multiplier": 8,
     "book_multiplier": 4,
@@ -402,7 +413,8 @@
       "head",
       "turtle_helmet",
       "trident",
-      "crossbow"
+      "crossbow",
+      "brush"
     ],
     "item_multiplier": 8,
     "book_multiplier": 4,
