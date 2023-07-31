@@ -1,4 +1,6 @@
 import enchantments from "../data/enchantments.json";
+import itemSpecifications from "../data/items.json";
+import { ItemSpecification } from "../models";
 
 const numToNumeral = (num: number) => {
   switch (num) {
@@ -40,9 +42,15 @@ const getEnchantmentDisplayName = (enchantment_name: string) => {
   return enchantment_data ? enchantment_data.display_name : null;
 };
 
+const itemNameToSpecificationMap = (itemSpecifications as Array<ItemSpecification>).reduce((result, item) => {
+  result.set(item.name, item);
+  return result;
+}, new Map<string, ItemSpecification>);
+
 export {
   numToNumeral,
   levelToExperience,
   addIndexes,
   getEnchantmentDisplayName,
+  itemNameToSpecificationMap,
 };
