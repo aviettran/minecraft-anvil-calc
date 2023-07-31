@@ -7,7 +7,8 @@ interface ItemData {
 
 interface ItemSpecification {
     name: string,
-    display_name: string
+    display_name: string,
+    image?: string,
 }
 
 interface StepData {

@@ -94,5 +94,15 @@
   {
     "name": "brush",
     "display_name": "Brush"
+  },
+  {
+    "name": "compass",
+    "display_name": "Compass",
+    "image": "compass.webp"
+  },
+  {
+    "name": "recovery_compass",
+    "display_name": "Recovery Compass",
+    "image": "recovery_compass.webp"
   }
 ]

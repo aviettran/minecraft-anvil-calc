@@ -414,7 +414,9 @@
       "turtle_helmet",
       "trident",
       "crossbow",
-      "brush"
+      "brush",
+      "compass",
+      "recovery_compass"
     ],
     "item_multiplier": 8,
     "book_multiplier": 4,
