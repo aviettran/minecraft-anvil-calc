@@ -360,7 +360,8 @@
       "elytra",
       "turtle_helmet",
       "trident",
-      "crossbow"
+      "crossbow",
+      "brush"
     ],
     "item_multiplier": 4,
     "book_multiplier": 2,
@@ -379,8 +380,7 @@
       "elytra",
       "carved_pumpkin",
       "head",
-      "turtle_helmet",
-      "brush"
+      "turtle_helmet"
     ],
     "item_multiplier": 8,
     "book_multiplier": 4,
