@@ -48,6 +48,15 @@ interface ItemProps {
 class Item extends React.PureComponent<ItemProps> {
   getPossibleEnchantmentOptions(item: ItemData) {
     return (enchantments as Array<EnchantmentSpecification>)
+      .map((enchantment) => {
+        if (this.props.settings.java_edition && enchantment.java_overrides) {
+          return {
+            ...enchantment,
+            ...enchantment.java_overrides,
+          }
+        }
+        return enchantment;
+      })
       .filter(
         (filtered_enchantment) =>
           !item.enchantments.some(

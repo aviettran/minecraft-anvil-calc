@@ -1,0 +1,15 @@
+[
+  {
+    "name": "brush",
+    "enchantments": []
+  },
+  {
+    "name": "book",
+    "enchantments": [
+      {
+        "name": "unbreaking",
+        "level": 3
+      }
+    ]
+  }
+]

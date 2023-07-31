@@ -354,7 +354,15 @@ class App extends React.Component<Record<string, never>, AppState> {
       java_edition: e.target.checked,
     };
     const new_items_to_combine = this.state.items_to_combine.map((item) => {
-      const enchantmentsToKeep = getItemData(item).enchantments.filter((enchantment) => new_settings.java_edition || !enchantment.specification?.java_only).map((enchantment) => enchantment.name);
+      const enchantmentsToKeep = getItemData(item).enchantments
+        // Filter according to applies_to overrides  
+        .filter((enchantment) => {
+          let appliesTo = enchantment.specification?.applies_to ?? [];
+          appliesTo = e.target.checked && enchantment.specification?.java_overrides?.applies_to ? enchantment.specification?.java_overrides?.applies_to : appliesTo;
+          return appliesTo.includes(item.name);
+        })
+        // Filter when an enchantment is Java exclusive
+        .filter((enchantment) => new_settings.java_edition || !enchantment.specification?.java_only).map((enchantment) => enchantment.name);
       return { ...item, enchantments: item.enchantments.filter((enchantment) => enchantmentsToKeep.includes(enchantment.name)) };
     });
     this.setState({
