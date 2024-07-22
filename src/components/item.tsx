@@ -46,7 +46,7 @@ interface ItemProps {
 }
 
 class Item extends React.PureComponent<ItemProps> {
-  getPossibleEnchantmentOptions(item: ItemData) {
+  getPossibleEnchantmentOptions(item: ItemData, settings: Settings) {
     return (enchantments as Array<EnchantmentSpecification>)
       .map((enchantment) => {
         if (this.props.settings.java_edition && enchantment.java_overrides) {
@@ -63,7 +63,7 @@ class Item extends React.PureComponent<ItemProps> {
             (some_enchantment) =>
               some_enchantment.name === filtered_enchantment.name
           )
-          && checkEnchantmentIsCompatible(item, filtered_enchantment)
+          && checkEnchantmentIsCompatible(item, filtered_enchantment, settings)
           && (this.props.settings.java_edition || !filtered_enchantment.java_only)
       )
       .map((enchantment) => {
@@ -91,6 +91,7 @@ class Item extends React.PureComponent<ItemProps> {
   render() {
     const {
       item,
+      settings,
       onDelete,
       onAddEnchantment,
       onDeleteEnchantment,
@@ -132,7 +133,7 @@ class Item extends React.PureComponent<ItemProps> {
               <Row>
                 <Col>
                   <Select
-                    options={this.getPossibleEnchantmentOptions(item)}
+                    options={this.getPossibleEnchantmentOptions(item, settings)}
                     onChange={(e, actionMeta) => onAddEnchantment(e, actionMeta)}
                     placeholder="Add enchantments..."
                     value={null} //Enchantments added immediately; this should always be null
