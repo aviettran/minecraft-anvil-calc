@@ -10,7 +10,7 @@ import {
   instanceOfCombineItemsError,
 } from "./item";
 import enchantments from "../data/enchantments.json";
-import { Enchantment, EnchantmentSpecification, ItemData } from "../models";
+import { Enchantment, EnchantmentSpecification, ItemData, Settings } from "../models";
 
 const createEnchantmentByName = (enchantment_name: string): Enchantment => {
   const enchantment_specification = enchantments.find(
@@ -76,6 +76,7 @@ it("test enchantment preservation", () => {
 });
 
 it("test item-enchantment compatibility", () => {
+  const settings: Settings = { java_edition: false, allow_multiple_armor_enhancements: false };
   let test_sword = {
     name: "sword",
     enchantments: [
@@ -88,18 +89,21 @@ it("test item-enchantment compatibility", () => {
   expect(
     checkEnchantmentIsCompatible(
       test_sword,
-      getEnchantmentSpecificationByName("smite")
+      getEnchantmentSpecificationByName("smite"),
+      settings
     )
   ).toEqual(false);
   expect(
     checkEnchantmentIsCompatible(
       test_sword,
-      getEnchantmentSpecificationByName("unbreaking")
+      getEnchantmentSpecificationByName("unbreaking"),
+      settings
     )
   ).toEqual(true);
 });
 
 it("test trident compatibility", () => {
+  const settings: Settings = { java_edition: false, allow_multiple_armor_enhancements: false };
   let test_trident = {
     name: "trident",
     enchantments: [
@@ -112,19 +116,21 @@ it("test trident compatibility", () => {
   expect(
     checkEnchantmentIsCompatible(
       test_trident,
-      getEnchantmentSpecificationByName("riptide")
+      getEnchantmentSpecificationByName("riptide"),
+      settings
     )
   ).toEqual(false);
   expect(
     checkEnchantmentIsCompatible(
       test_trident,
-      getEnchantmentSpecificationByName("loyalty")
+      getEnchantmentSpecificationByName("loyalty"),
+      settings
     )
   ).toEqual(true);
 });
 
 it("test merging enchanntments", () => {
-  const settings = { java_edition: false };
+  const settings: Settings = { java_edition: false, allow_multiple_armor_enhancements: false };
   const test_sword = {
     name: "sword",
     enchantments: [
@@ -191,7 +197,7 @@ it("test merging enchanntments", () => {
 });
 
 it("test anvil", () => {
-  const settings = { java_edition: false };
+  const settings: Settings = { java_edition: false, allow_multiple_armor_enhancements: false };
   const test_sword = {
     name: "sword",
     enchantments: [
@@ -265,7 +271,7 @@ it("test anvil", () => {
 });
 
 it("test combine items", () => {
-  const settings = { java_edition: false };
+  const settings: Settings = { java_edition: false, allow_multiple_armor_enhancements: false };
   const test_sword = {
     name: "sword",
     enchantments: [
@@ -404,7 +410,7 @@ it("test combine items", () => {
 });
 
 it("test java overrides", () => {
-  const settings = { java_edition: true };
+  const settings: Settings = { java_edition: true, allow_multiple_armor_enhancements: false };
   const test_trident = {
     name: "trident",
     enchantments: [
@@ -432,5 +438,41 @@ it("test java overrides", () => {
   expect(instanceOfCombineItemsError(combine_results)).toBeFalsy;
   if (!instanceOfCombineItemsError(combine_results)) {
     expect(combine_results.cost).toEqual(10);
+  }
+});
+
+it("test allow multiple armor enhancements", () => {
+  const settings: Settings = { java_edition: false, allow_multiple_armor_enhancements: true };
+    const test_boots: ItemData = {
+    name: "boots",
+    enchantments: [
+      {
+        name: "protection",
+        level: 4,
+      },
+    ],
+    index: 0,
+    penalty: 0
+  };
+
+  const test_book_1 = {
+    name: "book",
+    enchantments: [
+      {
+        ...createEnchantmentByName("fire_protection"),
+        level: 4
+      },
+    ],
+    index: 0,
+    penalty: 0,
+  };
+
+  const combine_results = combineItems(
+    [test_boots, test_book_1],
+    settings
+  );
+  expect(instanceOfCombineItemsError(combine_results)).toBeFalsy;
+  if (!instanceOfCombineItemsError(combine_results)) {
+    expect(combine_results.resultingItem.enchantments).toHaveLength(2);
   }
 });

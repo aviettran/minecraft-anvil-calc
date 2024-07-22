@@ -36,7 +36,7 @@ const areEnchantmentsPreserved = (
   );
 };
 
-const checkEnchantmentIsCompatible = (targetItem: ItemData, newEnchantment: EnchantmentSpecification) => {
+const checkEnchantmentIsCompatible = (targetItem: ItemData, newEnchantment: EnchantmentSpecification, settings: Settings) => {
   return (
     // There isn't an existing enchantment in a mutal exclusion group
     !targetItem.enchantments.some(
@@ -50,7 +50,10 @@ const checkEnchantmentIsCompatible = (targetItem: ItemData, newEnchantment: Ench
           some_enchantment.specification.group_exception &&
           newEnchantment.group_exception &&
           some_enchantment.specification.group_exception === newEnchantment.group_exception
-        ) // Rule exception for tridents
+        ) && // Rule exception for tridents
+        !(
+          some_enchantment.specification.group === "protection" && settings.allow_multiple_armor_enhancements
+        ) // Special case for v1.14 -1.14.2 where multiple armor enhancements are allowed
     ) &&
     //Possible enchantment is applicable to the given item
     (newEnchantment.applies_to.some(
@@ -162,7 +165,7 @@ const anvil = (targetItem: ItemData, sacrificeItem: ItemData, settings: Settings
   const sacrificePenalty = sacrificeItem.penalty || 0;
   // Filter non-applicable enchantments
   const filtered_enchantments = sacrificeItem.enchantments.filter(
-    (enchantment) => enchantment.specification && checkEnchantmentIsCompatible(targetItem, enchantment.specification)
+    (enchantment) => enchantment.specification && checkEnchantmentIsCompatible(targetItem, enchantment.specification, settings)
   );
   if (
     !areEnchantmentsPreserved(sacrificeItem.enchantments, filtered_enchantments)

@@ -49,7 +49,8 @@ interface ItemPreset {
 }
 
 interface Settings {
-    java_edition: boolean
+    java_edition: boolean,
+    allow_multiple_armor_enhancements: boolean
 }
 
 export {

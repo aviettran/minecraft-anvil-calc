@@ -1,17 +1,17 @@
 import React from "react";
 import "./App.scss";
 
-import items from "./data/items.json";
-import enchantments from "./data/enchantments.json";
+import Icon from "./components/icon";
 import Item from "./components/item";
 import Step from "./components/step";
-import Icon from "./components/icon";
-import { getItemData, getDisplayName, AnvilResults, CombineItemsError, instanceOfCombineItemsError } from "./utils/item";
+import enchantments from "./data/enchantments.json";
+import items from "./data/items.json";
+import { AnvilResults, CombineItemsError, getDisplayName, getItemData, instanceOfCombineItemsError } from "./utils/item";
 // import { combineItems } from "./utils/item"; //for debugging
-import Worker from 'worker-loader!./utils/worker';
-import { Container, Row, Col, Table, Button, Form } from "react-bootstrap";
-import { levelToExperience, addIndexes } from "./utils/helpers";
+import { Button, Col, Container, Form, Row, Table } from "react-bootstrap";
 import Select, { SingleValue } from "react-select";
+import Worker from 'worker-loader!./utils/worker';
+import { addIndexes, levelToExperience } from "./utils/helpers";
 
 
 // Presets
@@ -72,24 +72,24 @@ const presets: { [key: string]: Preset } = {
     display_name: "Axe (Sharpness, Silk Touch)",
   },
   bow: {
-	data: bow_preset, 
-	display_name: "Bow" 
+    data: bow_preset,
+    display_name: "Bow"
   },
   crossbow_multishot: {
-	data: crossbow_multishot_preset, 
-	display_name: "Crossbow (Multishot)",
+    data: crossbow_multishot_preset,
+    display_name: "Crossbow (Multishot)",
   },
   crossbow_piercing: {
-	data: crossbow_piercing_preset, 
-	display_name: "Crossbow (Piercing)",
+    data: crossbow_piercing_preset,
+    display_name: "Crossbow (Piercing)",
   },
   trident_channeling: {
-	data: trident_channeling_preset, 
-	display_name: "Trident (Channeling)",
+    data: trident_channeling_preset,
+    display_name: "Trident (Channeling)",
   },
   trident_riptide: {
-	data: trident_riptide_preset, 
-	display_name: "Trident (Riptide)",
+    data: trident_riptide_preset,
+    display_name: "Trident (Riptide)",
   },
   pickaxe_fortune: {
     data: pickaxe_fortune_preset,
@@ -156,7 +156,10 @@ class App extends React.Component<Record<string, never>, AppState> {
         status: "No items or items cannot be combined.",
       },
       nextIndex: 0,
-      settings: { java_edition: JSON.parse(params.get("settings_java_edition") ?? "null") ?? false },
+      settings: { 
+        java_edition: JSON.parse(params.get("settings_java_edition") ?? "null") ?? false,
+        allow_multiple_armor_enhancements: JSON.parse(params.get("settings_allow_multiple_armor_enhancements") ?? "null") ?? false
+       },
     }
 
     return newState;
@@ -174,6 +177,7 @@ class App extends React.Component<Record<string, never>, AppState> {
     params.append("items", JSON.stringify(items_to_combine));
     if (settings) {
       params.append("settings_java_edition", settings.java_edition.toString());
+      params.append("settings_allow_multiple_armor_enhancements", settings.allow_multiple_armor_enhancements.toString());
     }
     url.search = params.toString();
     history.replaceState(null, '', url);
@@ -434,6 +438,20 @@ class App extends React.Component<Record<string, never>, AppState> {
     this.combineAndSetState(new_items_to_combine, new_settings);
   }
 
+  checkAllowMultipleArmorEnhancements(e: React.ChangeEvent<HTMLInputElement>) {
+    if (!e.target) {
+      return;
+    }
+    const new_settings = {
+      ...this.state.settings,
+      allow_multiple_armor_enhancements: e.target.checked,
+    };
+    this.setState({
+      settings: new_settings,
+    });
+    this.combineAndSetState(this.state.items_to_combine, new_settings);
+  }
+
   render() {
     const { results, items_to_combine } = this.state;
     return (
@@ -490,6 +508,14 @@ class App extends React.Component<Record<string, never>, AppState> {
                 label="Java Edition"
                 onChange={(e) => this.checkJavaEdition(e)}
                 defaultChecked={this.state.settings?.java_edition ?? false}
+              />
+            </Col>
+            <Col xl="2">
+              <Form.Check
+                type="checkbox"
+                label="Allow Multiple Armor Enhancements"
+                onChange={(e) => this.checkAllowMultipleArmorEnhancements(e)}
+                defaultChecked={this.state.settings?.allow_multiple_armor_enhancements ?? false}
               />
             </Col>
           </Row>
