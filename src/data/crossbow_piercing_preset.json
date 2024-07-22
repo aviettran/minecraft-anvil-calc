@@ -1,0 +1,38 @@
+[
+	{
+		"name": "crossbow",
+		"enchantments": [
+			{
+				"name": "piercing",
+				"level": 4
+			}
+		]
+	},
+	{
+		"name": "book",
+		"enchantments": [
+			{
+				"name": "quick_charge",
+				"level": 3
+			}
+		]
+	},
+	{
+		"name": "book",
+		"enchantments": [
+			{
+				"name": "unbreaking",
+				"level": 3
+			}
+		]
+	},
+	{
+		"name": "book",
+		"enchantments": [
+			{
+				"name": "mending",
+				"level": 1
+			}
+		]
+	}
+]

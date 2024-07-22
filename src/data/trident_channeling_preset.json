@@ -1,0 +1,47 @@
+[
+	{
+		"name": "trident",
+		"enchantments": [
+			{
+				"name": "channeling",
+				"level": 1
+			}
+		]
+	},
+    {
+		"name": "book",
+		"enchantments": [
+			{
+				"name": "loyalty",
+				"level": 3
+			}
+		]
+	},
+	{
+		"name": "book",
+		"enchantments": [
+			{
+				"name": "impaling",
+				"level": 5
+			}
+		]
+	},
+	{
+		"name": "book",
+		"enchantments": [
+			{
+				"name": "unbreaking",
+				"level": 3
+			}
+		]
+	},
+	{
+		"name": "book",
+		"enchantments": [
+			{
+				"name": "mending",
+				"level": 1
+			}
+		]
+	}
+]
