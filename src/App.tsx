@@ -20,12 +20,20 @@ import chestplate_preset from "./data/chestplate_preset.json";
 import leggings_preset from "./data/leggings_preset.json";
 import boots_preset from "./data/boots_preset.json";
 import sword_sharpness_preset from "./data/sword_sharpness_preset.json";
+import axe_sharpness_preset from "./data/axe_sharpness_preset.json";
+import bow_preset from "./data/bow_preset.json";
+import crossbow_multishot_preset from "./data/crossbow_multishot_preset.json";
+import crossbow_piercing_preset from "./data/crossbow_piercing_preset.json";
+import trident_channeling_preset from "./data/trident_channeling_preset.json";
+import trident_riptide_preset from "./data/trident_riptide_preset.json";
 import pickaxe_fortune_preset from "./data/pickaxe_fortune_preset.json";
 import pickaxe_silk_touch_preset from "./data/pickaxe_silk_touch_preset.json";
-import bow_preset from "./data/bow_preset.json";
+import shovel_fortune_preset from "./data/shovel_fortune_preset.json";
+import shovel_silk_touch_preset from "./data/shovel_silk_touch_preset.json";
 import hoe_fortune_preset from "./data/hoe_fortune_preset.json";
 import hoe_silk_touch_preset from "./data/hoe_silk_touch_preset.json";
 import brush_preset from "./data/brush_preset.json";
+import elytra_preset from "./data/elytra_preset.json";
 import { Enchantment, ItemData, Preset, Settings, StepData } from "./models";
 
 export type SelectValue = SingleValue<{
@@ -35,14 +43,53 @@ export type SelectValue = SingleValue<{
 
 const worker = new Worker();
 const presets: { [key: string]: Preset } = {
-  clear: { data: [], display_name: "Clear" },
-  helmet: { data: (helmet_preset), display_name: "Helmet" },
-  chestplate: { data: chestplate_preset, display_name: "Chestplate" },
-  leggings: { data: leggings_preset, display_name: "Leggings" },
-  boots: { data: boots_preset, display_name: "Boots" },
+  clear: {
+    data: [],
+    display_name: "Clear",
+  },
+  helmet: {
+    data: helmet_preset,
+    display_name: "Helmet",
+  },
+  chestplate: {
+    data: chestplate_preset,
+    display_name: "Chestplate",
+  },
+  leggings: {
+    data: leggings_preset,
+    display_name: "Leggings",
+  },
+  boots: {
+    data: boots_preset,
+    display_name: "Boots",
+  },
   sword_sharpness: {
     data: sword_sharpness_preset,
     display_name: "Sword (Sharpness)",
+  },
+  axe_sharpness: {
+    data: axe_sharpness_preset,
+    display_name: "Axe (Sharpness, Silk Touch)",
+  },
+  bow: {
+	data: bow_preset, 
+	display_name: "Bow" 
+  },
+  crossbow_multishot: {
+	data: crossbow_multishot_preset, 
+	display_name: "Crossbow (Multishot)",
+  },
+  crossbow_piercing: {
+	data: crossbow_piercing_preset, 
+	display_name: "Crossbow (Piercing)",
+  },
+  trident_channeling: {
+	data: trident_channeling_preset, 
+	display_name: "Trident (Channeling)",
+  },
+  trident_riptide: {
+	data: trident_riptide_preset, 
+	display_name: "Trident (Riptide)",
   },
   pickaxe_fortune: {
     data: pickaxe_fortune_preset,
@@ -52,7 +99,14 @@ const presets: { [key: string]: Preset } = {
     data: pickaxe_silk_touch_preset,
     display_name: "Pickaxe (Silk Touch)",
   },
-  bow: { data: bow_preset, display_name: "Bow" },
+  shovel_fortune: {
+    data: shovel_fortune_preset,
+    display_name: "Shovel (Fortune)",
+  },
+  shovel_silk_touch: {
+    data: shovel_silk_touch_preset,
+    display_name: "Shovel (Silk Touch)",
+  },
   hoe_fortune: {
     data: hoe_fortune_preset,
     display_name: "Hoe (Fortune)",
@@ -64,6 +118,10 @@ const presets: { [key: string]: Preset } = {
   brush: {
     data: brush_preset,
     display_name: "Brush",
+  },
+  elytra: {
+    data: brush_preset,
+    display_name: "Elytra",
   }
 };
 
