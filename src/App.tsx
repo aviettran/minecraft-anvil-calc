@@ -120,7 +120,7 @@ const presets: { [key: string]: Preset } = {
     display_name: "Brush",
   },
   elytra: {
-    data: brush_preset,
+    data: elytra_preset,
     display_name: "Elytra",
   }
 };
