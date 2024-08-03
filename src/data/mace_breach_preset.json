@@ -10,28 +10,11 @@
 	},
 	{
 		"name": "book",
+		"penalty": 2,
 		"enchantments": [
 			{
 				"name": "wind_burst",
-				"level": 1
-			}
-		]
-	},
-	{
-		"name": "book",
-		"enchantments": [
-			{
-				"name": "wind_burst",
-				"level": 1
-			}
-		]
-	},
-	{
-		"name": "book",
-		"enchantments": [
-			{
-				"name": "wind_burst",
-				"level": 1
+				"level": 3
 			}
 		]
 	},

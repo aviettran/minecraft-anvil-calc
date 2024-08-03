@@ -46,6 +46,7 @@ interface Preset {
 
 interface ItemPreset {
     name: string,
+    penalty?: number,
     enchantments: Array<Enchantment>
 }
 

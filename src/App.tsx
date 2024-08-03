@@ -304,7 +304,7 @@ class App extends React.Component<Record<string, never>, AppState> {
       const new_items_to_combine = addIndexes(presets[this.state.preset].data).map<ItemData>((item_to_combine) => {
         return {
           ...item_to_combine,
-          penalty: 0
+          penalty: item_to_combine.penalty ?? 0
         };
       });
       this.setState({
