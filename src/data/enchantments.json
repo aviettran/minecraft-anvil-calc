@@ -134,7 +134,8 @@
     "max_level": 5,
     "applies_to": [
       "sword",
-      "axe"
+      "axe",
+      "mace"
     ],
     "item_multiplier": 2,
     "book_multiplier": 1,
@@ -146,7 +147,8 @@
     "max_level": 5,
     "applies_to": [
       "sword",
-      "axe"
+      "axe",
+      "mace"
     ],
     "item_multiplier": 2,
     "book_multiplier": 1,
@@ -167,7 +169,8 @@
     "display_name": "Fire Aspect",
     "max_level": 2,
     "applies_to": [
-      "sword"
+      "sword",
+      "mace"
     ],
     "item_multiplier": 4,
     "book_multiplier": 2
@@ -244,7 +247,8 @@
       "turtle_helmet",
       "trident",
       "crossbow",
-      "brush"
+      "brush",
+      "mace"
     ],
     "item_multiplier": 2,
     "book_multiplier": 1
@@ -361,7 +365,8 @@
       "turtle_helmet",
       "trident",
       "crossbow",
-      "brush"
+      "brush",
+      "mace"
     ],
     "item_multiplier": 4,
     "book_multiplier": 2,
@@ -416,7 +421,8 @@
       "crossbow",
       "brush",
       "compass",
-      "recovery_compass"
+      "recovery_compass",
+      "mace"
     ],
     "item_multiplier": 8,
     "book_multiplier": 4,
@@ -535,5 +541,38 @@
     ],
     "item_multiplier": 8,
     "book_multiplier": 4
+  },
+  {
+    "name": "wind_burst",
+    "display_name": "Wind Burst",
+    "max_level": 3,
+    "base_max_level": 1,
+    "applies_to": [
+      "mace"
+    ],
+    "item_multiplier": 4,
+    "book_multiplier": 2
+  },
+  {
+    "name": "density",
+    "display_name": "Density",
+    "max_level": 5,
+    "applies_to": [
+      "mace"
+    ],
+    "item_multiplier": 2,
+    "book_multiplier": 1,
+    "group": "attack"
+  },
+  {
+    "name": "breach",
+    "display_name": "Breach",
+    "max_level": 4,
+    "applies_to": [
+      "mace"
+    ],
+    "item_multiplier": 4,
+    "book_multiplier": 2,
+    "group": "attack"
   }
 ]

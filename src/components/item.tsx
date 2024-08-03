@@ -1,22 +1,23 @@
 import React from "react";
 import {
-  Container,
-  Row,
+  Badge,
   Col,
-  Table,
-  InputGroup,
-  FormControl,
+  Container,
   Form,
+  FormControl,
+  InputGroup,
   OverlayTrigger,
-  Tooltip,
+  Row,
+  Table,
+  Tooltip
 } from "react-bootstrap";
-import enchantments from "../data/enchantments.json";
-import Select, { StylesConfig, ActionMeta, GroupBase } from "react-select";
-import { checkEnchantmentIsCompatible, getDisplayName } from "../utils/item";
-import { getEnchantmentDisplayName } from "../utils/helpers";
-import Icon from "./icon";
-import { Enchantment, EnchantmentSpecification, ItemData, Settings } from "../models";
+import Select, { ActionMeta, GroupBase, StylesConfig } from "react-select";
 import { SelectValue } from "../App";
+import enchantments from "../data/enchantments.json";
+import { Enchantment, EnchantmentSpecification, ItemData, Settings } from "../models";
+import { getEnchantmentDisplayName } from "../utils/helpers";
+import { checkEnchantmentIsCompatible, getDisplayName } from "../utils/item";
+import Icon from "./icon";
 
 const smallerSelect: StylesConfig<SelectValue, false, GroupBase<SelectValue>> = {
   control: (provided) => ({
@@ -86,6 +87,11 @@ class Item extends React.PureComponent<ItemProps> {
       return null;
     }
     return this.props.settings.java_edition ? enchantmentSpecification.java_overrides?.item_multiplier ?? enchantmentSpecification.item_multiplier : enchantmentSpecification.item_multiplier;
+  }
+
+  // Some enchantments may not be available, without penalty, at a high level (e.g., Wind Burst)
+  isLevelValid(item: ItemData, enchantment: Enchantment): boolean {
+    return enchantment.level - item.penalty > (enchantment.specification?.base_max_level ?? Number.POSITIVE_INFINITY)
   }
 
   render() {
@@ -167,7 +173,18 @@ class Item extends React.PureComponent<ItemProps> {
               <tbody>
                 {item.enchantments.map((enchantment, index) => (
                   <tr key={index}>
-                    <td>{getEnchantmentDisplayName(enchantment.name)}</td>
+
+                    <td>{getEnchantmentDisplayName(enchantment.name)} {this.isLevelValid(item, enchantment) &&
+
+                      <OverlayTrigger
+                        placement="right"
+                        overlay={
+                          <Tooltip id={`tooltip-level-warning-${item.index}`}>
+                            Item may not be available at this enchantment level without a penalty
+                          </Tooltip>
+                        }
+                      ><Badge pill bg="warning">Warning!</Badge></OverlayTrigger>
+                    }</td>
                     <td>
                       <input
                         type="number"

@@ -104,5 +104,9 @@
     "name": "recovery_compass",
     "display_name": "Recovery Compass",
     "image": "recovery_compass.webp"
+  },
+  {
+    "name": "mace",
+    "display_name": "Mace"
   }
 ]

@@ -34,6 +34,7 @@ import hoe_fortune_preset from "./data/hoe_fortune_preset.json";
 import hoe_silk_touch_preset from "./data/hoe_silk_touch_preset.json";
 import brush_preset from "./data/brush_preset.json";
 import elytra_preset from "./data/elytra_preset.json";
+import mace_breach_preset from "./data/mace_breach_preset.json";
 import { Enchantment, ItemData, Preset, Settings, StepData } from "./models";
 
 export type SelectValue = SingleValue<{
@@ -70,6 +71,10 @@ const presets: { [key: string]: Preset } = {
   axe_sharpness: {
     data: axe_sharpness_preset,
     display_name: "Axe (Sharpness, Silk Touch)",
+  },
+  mace_breach_preset: {
+    data: mace_breach_preset,
+    display_name: "Mace (Breach)",
   },
   bow: {
     data: bow_preset,
@@ -330,13 +335,14 @@ class App extends React.Component<Record<string, never>, AppState> {
   }
 
   getEnchantmentMaxLevel(enchantmentName: string): number {
-    const max_level = enchantments.find(
+    const enchantmentSpecification = enchantments.find(
       (enchantment) => enchantment.name === enchantmentName
-    )?.max_level;
-    if (!max_level) {
+    );
+    const level = enchantmentSpecification?.base_max_level ?? enchantmentSpecification?.max_level
+    if (!level) {
       throw 'Error: could not get max enchantment level.'
     }
-    return max_level;
+    return level;
   }
 
   addEnchantment(e: SelectValue, item_index: number) {

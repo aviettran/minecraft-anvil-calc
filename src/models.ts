@@ -29,6 +29,7 @@ interface EnchantmentSpecification {
     name: string,
     display_name: string,
     max_level: number,
+    base_max_level?: number,
     applies_to: Array<string>,
     item_multiplier: number,
     book_multiplier: number,
