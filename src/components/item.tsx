@@ -199,6 +199,7 @@ class Item extends React.PureComponent<ItemProps> {
                     <td>
                       <Form.Check
                         type="checkbox"
+                        checked={enchantment.preserve}
                         onChange={(e) => onCheckPreserve(e, enchantment)}
                       />
                     </td>
