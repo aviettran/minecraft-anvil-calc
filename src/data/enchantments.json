@@ -122,7 +122,8 @@
     "max_level": 5,
     "applies_to": [
       "sword",
-      "axe"
+      "axe",
+      "spear"
     ],
     "item_multiplier": 1,
     "book_multiplier": 1,
@@ -135,7 +136,8 @@
     "applies_to": [
       "sword",
       "axe",
-      "mace"
+      "mace",
+      "spear"
     ],
     "item_multiplier": 2,
     "book_multiplier": 1,
@@ -148,7 +150,8 @@
     "applies_to": [
       "sword",
       "axe",
-      "mace"
+      "mace",
+      "spear"
     ],
     "item_multiplier": 2,
     "book_multiplier": 1,
@@ -159,7 +162,8 @@
     "display_name": "Knockback",
     "max_level": 2,
     "applies_to": [
-      "sword"
+      "sword",
+      "spear"
     ],
     "item_multiplier": 2,
     "book_multiplier": 1
@@ -170,7 +174,8 @@
     "max_level": 2,
     "applies_to": [
       "sword",
-      "mace"
+      "mace",
+      "spear"
     ],
     "item_multiplier": 4,
     "book_multiplier": 2
@@ -180,7 +185,8 @@
     "display_name": "Looting",
     "max_level": 3,
     "applies_to": [
-      "sword"
+      "sword",
+      "spear"
     ],
     "item_multiplier": 4,
     "book_multiplier": 2
@@ -248,7 +254,8 @@
       "trident",
       "crossbow",
       "brush",
-      "mace"
+      "mace",
+      "spear"
     ],
     "item_multiplier": 2,
     "book_multiplier": 1
@@ -366,7 +373,8 @@
       "trident",
       "crossbow",
       "brush",
-      "mace"
+      "mace",
+      "spear"
     ],
     "item_multiplier": 4,
     "book_multiplier": 2,
@@ -574,5 +582,15 @@
     "item_multiplier": 4,
     "book_multiplier": 2,
     "group": "attack"
+  },
+  {
+    "name": "lunge",
+    "display_name": "Lunge",
+    "max_level": 3,
+    "applies_to": [
+      "spear"
+    ],
+    "item_multiplier": 2,
+    "book_multiplier": 1
   }
 ]
