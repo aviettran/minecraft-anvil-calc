@@ -35,6 +35,7 @@ import hoe_silk_touch_preset from "./data/hoe_silk_touch_preset.json";
 import brush_preset from "./data/brush_preset.json";
 import elytra_preset from "./data/elytra_preset.json";
 import mace_breach_preset from "./data/mace_breach_preset.json";
+import spear_preset from "./data/spear_preset.json";
 import { Enchantment, ItemData, Preset, Settings, StepData } from "./models";
 
 export type SelectValue = SingleValue<{
@@ -75,6 +76,10 @@ const presets: { [key: string]: Preset } = {
   mace_breach_preset: {
     data: mace_breach_preset,
     display_name: "Mace (Breach)",
+  },
+  spear_preset: {
+    data: spear_preset,
+    display_name: "Spear"
   },
   bow: {
     data: bow_preset,
