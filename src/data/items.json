@@ -108,5 +108,9 @@
   {
     "name": "mace",
     "display_name": "Mace"
+  },
+  {
+    "name": "spear",
+    "display_name": "Spear"
   }
 ]
